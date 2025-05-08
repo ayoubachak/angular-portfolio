@@ -108,24 +108,41 @@
   <!-- Project Preview Modal (Hidden by default) -->
   <div 
     *ngIf="showIframe" 
-    class="fixed inset-0 z-50 overflow-hidden flex items-center justify-center p-4 md:p-8"
+    class="fixed inset-0 z-50 overflow-hidden flex items-center justify-center p-2 sm:p-4 md:p-8"
     #previewModal>
     
     <!-- Backdrop -->
     <div class="absolute inset-0 bg-black/80" (click)="closePreview()"></div>
     
     <!-- Modal Content -->
-    <div class="relative bg-primary-color rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+    <div class="relative bg-primary-color rounded-lg shadow-xl w-full max-w-6xl h-[90vh] sm:h-[85vh] flex flex-col overflow-hidden">
       <!-- Modal Header -->
-      <div class="p-4 border-b border-accent-color/10 flex justify-between items-center">
-        <h3 class="text-xl font-semibold text-white">{{ activeRepo?.name }} Preview</h3>
-        <button (click)="closePreview()" class="text-text-secondary hover:text-accent-color transition-colors">
-          <fa-icon [icon]="faTimesCircle" size="lg"></fa-icon>
-        </button>
+      <div class="p-3 md:p-4 border-b border-accent-color/10 flex justify-between items-center">
+        <h3 class="text-lg md:text-xl font-semibold text-white truncate pr-2">{{ activeRepo?.name }} Preview</h3>
+        <div class="flex space-x-2 items-center">
+          <button 
+            (click)="toggleMobileView()" 
+            class="text-text-secondary hover:text-accent-color transition-colors p-1 hidden sm:block"
+            title="Toggle Mobile View">
+            <fa-icon [icon]="isMobileView ? faDesktop : faMobile"></fa-icon>
+          </button>
+          <a 
+            [href]="activeRepo?.demoUrl || activeRepo?.homepage" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="text-text-secondary hover:text-accent-color transition-colors p-1"
+            title="Open in New Tab">
+            <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
+          </a>
+          <button (click)="closePreview()" class="text-text-secondary hover:text-accent-color transition-colors">
+            <fa-icon [icon]="faTimesCircle" size="lg"></fa-icon>
+          </button>
+        </div>
       </div>
       
       <!-- IFrame Container -->
-      <div class="p-4 flex-1 min-h-0 relative">
+      <div class="p-2 md:p-4 flex-1 relative"
+           style="height: calc(90vh - 130px);">
         <!-- Loading indicator -->
         <div *ngIf="iframeLoading && safePreviewUrl" class="absolute inset-0 flex items-center justify-center bg-primary-color/80 z-10">
           <div class="flex flex-col items-center">
@@ -134,8 +151,25 @@
           </div>
         </div>
         
+        <!-- Mobile Container (shown when mobile view is enabled) -->
+        <div *ngIf="isMobileView && safePreviewUrl" class="mobile-device-frame mx-auto h-full flex flex-col items-center justify-center">
+          <div class="mobile-frame relative rounded-[40px] bg-gray-900 border-8 border-gray-900 shadow-lg p-1 overflow-hidden h-[95%] max-h-[740px] w-[360px] max-w-full">
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-6 bg-gray-900 rounded-b-xl z-10"></div>
+            <iframe 
+              [src]="safePreviewUrl" 
+              class="w-full h-full border-0 rounded-lg"
+              loading="lazy"
+              sandbox="allow-scripts allow-same-origin allow-forms"
+              referrerpolicy="no-referrer"
+              title="Mobile Preview"
+              (load)="onIframeLoad()">
+            </iframe>
+          </div>
+        </div>
+        
+        <!-- Regular iframe (shown when mobile view is disabled) -->
         <iframe 
-          *ngIf="safePreviewUrl" 
+          *ngIf="safePreviewUrl && !isMobileView" 
           [src]="safePreviewUrl" 
           class="w-full h-full border-0 rounded-md"
           loading="lazy"
@@ -151,18 +185,18 @@
       </div>
       
       <!-- Modal Footer -->
-      <div class="p-4 border-t border-accent-color/10 flex justify-between">
+      <div class="p-3 md:p-4 border-t border-accent-color/10 flex justify-between items-center">
         <a 
           [href]="activeRepo?.html_url" 
           target="_blank" 
           rel="noopener noreferrer" 
-          class="px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md hover:bg-accent-color/10 transition-colors">
+          class="px-3 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md hover:bg-accent-color/10 transition-colors text-sm md:text-base">
           View on GitHub
         </a>
         
         <button 
           (click)="closePreview()" 
-          class="px-4 py-2 bg-accent-color text-white rounded-md hover:bg-accent-color/90 transition-colors">
+          class="px-3 py-2 bg-accent-color text-white rounded-md hover:bg-accent-color/90 transition-colors text-sm md:text-base">
           Close Preview
         </button>
       </div>
@@ -171,4 +205,4 @@
 
   <!-- Add the webview preview component at the end of the section -->
   <app-webview-preview></app-webview-preview>
-</section>
+</section> 

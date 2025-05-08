@@ -1,0 +1,26 @@
+/* Mobile device frame */
+.mobile-device-frame {
+  perspective: 1000px;
+}
+
+.mobile-frame {
+  transform: rotateY(0deg);
+  transition: transform 0.5s ease-in-out;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.mobile-frame:hover {
+  transform: rotateY(5deg);
+}
+
+/* Modal transitions */
+.fixed.inset-0 {
+  animation: modal-fade-in 0.3s ease forwards;
+}
+
+@keyframes modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

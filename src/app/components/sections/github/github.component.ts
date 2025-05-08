@@ -6,7 +6,11 @@ import { LinkHoverWebviewDirective } from '../../../directives/link-hover-webvie
 import { WebviewPreviewComponent } from '../../webview-preview/webview-preview.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faCode, faExternalLinkAlt, faCodeBranch, faStar, faEye, faCalendarAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faCode, faExternalLinkAlt, faCodeBranch, faStar, 
+  faEye, faCalendarAlt, faTimesCircle, faMobile as fasMobile,
+  faDesktop as fasDesktop
+} from '@fortawesome/free-solid-svg-icons';
 import { WebviewService } from '../../../services/webview.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -31,6 +35,7 @@ export class GithubComponent implements OnInit {
   showIframe: boolean = false;
   safePreviewUrl: SafeResourceUrl | null = null;
   iframeLoading: boolean = true;
+  isMobileView: boolean = false;
   
   // Icons
   faGithub = faGithub;
@@ -41,6 +46,8 @@ export class GithubComponent implements OnInit {
   faCode = faCode;
   faCalendarAlt = faCalendarAlt;
   faTimesCircle = faTimesCircle;
+  faMobile = fasMobile;
+  faDesktop = fasDesktop;
   
   @ViewChild('previewModal') previewModal!: ElementRef;
 
@@ -113,5 +120,12 @@ export class GithubComponent implements OnInit {
 
   onIframeLoad(): void {
     this.iframeLoading = false;
+  }
+
+  /**
+   * Toggle between mobile and desktop view
+   */
+  toggleMobileView(): void {
+    this.isMobileView = !this.isMobileView;
   }
 }
