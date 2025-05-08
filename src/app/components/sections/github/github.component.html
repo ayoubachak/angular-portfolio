@@ -1,0 +1,157 @@
+<section id="github" class="py-24 bg-secondary-color">
+  <div class="container mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16" appScrollAnimation animationClass="animate-fade-in-up">
+      <h2 class="text-4xl font-bold mb-4">GitHub <span class="text-accent-color">Projects</span></h2>
+      <div class="w-20 h-1 bg-accent-color mx-auto"></div>
+      <p class="text-text-secondary mt-4 max-w-2xl mx-auto">
+        Explore my latest open-source projects directly from GitHub
+      </p>
+    </div>
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="text-center py-12">
+      <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent-color"></div>
+      <p class="text-text-secondary mt-4">Loading projects from GitHub...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div *ngIf="error" class="text-center py-12 text-red-400">
+      <p>{{ error }}</p>
+    </div>
+    
+    <!-- Repository Grid -->
+    <div *ngIf="!loading && !error" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div 
+        *ngFor="let repo of repos; let i = index" 
+        class="bg-primary-color rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-accent-color/20 transform hover:-translate-y-1"
+        appScrollAnimation
+        [animationClass]="'animate-fade-in-up'">
+        
+        <!-- Repository Header -->
+        <div class="p-6 border-b border-accent-color/10">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-xl font-semibold text-white truncate">{{ repo.name }}</h3>
+            <a [href]="repo.html_url" target="_blank" rel="noopener noreferrer" class="text-accent-color hover:text-accent-color/80 transition-colors">
+              <fa-icon [icon]="faGithub"></fa-icon>
+            </a>
+          </div>
+          
+          <!-- Language Badge -->
+          <div *ngIf="repo.language" class="inline-block px-3 py-1 rounded-full bg-accent-color/10 text-accent-color text-sm font-medium">
+            {{ repo.language }}
+          </div>
+        </div>
+        
+        <!-- Repository Description -->
+        <div class="p-6">
+          <p class="text-text-secondary mb-4 h-20 overflow-hidden">{{ repo.description || 'No description available' }}</p>
+          
+          <!-- Repository Stats -->
+          <div class="flex justify-between text-text-secondary text-sm">
+            <div class="flex items-center space-x-4">
+              <span class="flex items-center">
+                <fa-icon [icon]="faStar" class="mr-1"></fa-icon>
+                {{ repo.stargazers_count }}
+              </span>
+              
+              <span class="flex items-center">
+                <fa-icon [icon]="faCodeBranch" class="mr-1"></fa-icon>
+                {{ repo.forks_count }}
+              </span>
+            </div>
+            
+            <span class="flex items-center">
+              <fa-icon [icon]="faCalendarAlt" class="mr-1"></fa-icon>
+              {{ repo.pushed_at | date:'MMM yyyy' }}
+            </span>
+          </div>
+          
+          <!-- Action Buttons -->
+          <div class="mt-6 flex space-x-3">
+            <a 
+              [href]="repo.html_url" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="flex-1 px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md text-center hover:bg-accent-color/10 transition-colors duration-300">
+              View Code
+            </a>
+            
+            <button 
+              *ngIf="hasPreviewUrl(repo)" 
+              (click)="openPreview(repo)" 
+              class="flex-1 px-4 py-2 bg-accent-color text-white rounded-md text-center hover:bg-accent-color/90 transition-colors duration-300">
+              Live Preview
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- View More Button -->
+    <div class="text-center mt-12">
+      <a 
+        href="https://github.com/ayoubachak"
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="inline-block px-8 py-3 bg-primary-color text-text-color border border-accent-color/20 rounded-md hover:bg-accent-color/10 transition-all duration-300 hover:-translate-y-1">
+        View More Projects
+      </a>
+    </div>
+  </div>
+  
+  <!-- Project Preview Modal (Hidden by default) -->
+  <div 
+    *ngIf="showIframe" 
+    class="fixed inset-0 z-50 overflow-hidden flex items-center justify-center p-4 md:p-8"
+    #previewModal>
+    
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/80" (click)="closePreview()"></div>
+    
+    <!-- Modal Content -->
+    <div class="relative bg-primary-color rounded-lg shadow-xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+      <!-- Modal Header -->
+      <div class="p-4 border-b border-accent-color/10 flex justify-between items-center">
+        <h3 class="text-xl font-semibold text-white">{{ activeRepo?.name }} Preview</h3>
+        <button (click)="closePreview()" class="text-text-secondary hover:text-accent-color transition-colors">
+          <fa-icon [icon]="faTimesCircle" size="lg"></fa-icon>
+        </button>
+      </div>
+      
+      <!-- IFrame Container -->
+      <div class="p-4 flex-1 min-h-0">
+        <iframe 
+          *ngIf="getPreviewUrl()" 
+          [src]="getPreviewUrl()" 
+          class="w-full h-full border-0 rounded-md"
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin allow-forms"
+          referrerpolicy="no-referrer"
+          title="Project Preview">
+        </iframe>
+        
+        <div *ngIf="!getPreviewUrl()" class="w-full h-full flex items-center justify-center text-text-secondary">
+          <p>No preview available for this project.</p>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-accent-color/10 flex justify-between">
+        <a 
+          [href]="activeRepo?.html_url" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md hover:bg-accent-color/10 transition-colors">
+          View on GitHub
+        </a>
+        
+        <button 
+          (click)="closePreview()" 
+          class="px-4 py-2 bg-accent-color text-white rounded-md hover:bg-accent-color/90 transition-colors">
+          Close Preview
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

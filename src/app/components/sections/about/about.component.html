@@ -1,0 +1,101 @@
+<section id="about" class="py-24 bg-secondary-color">
+  <div class="container mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16" appScrollAnimation animationClass="animate-fade-in-up">
+      <h2 class="text-4xl font-bold mb-4">About <span class="text-accent-color">Me</span></h2>
+      <div class="w-20 h-1 bg-accent-color mx-auto"></div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+      <!-- About Me Text -->
+      <div class="space-y-6">
+        <div 
+          class="text-lg text-text-secondary leading-relaxed space-y-4"
+          appScrollAnimation
+          animationClass="animate-fade-in-right">
+          <p>{{ about }}</p>
+        </div>
+        
+        <!-- Key Facts -->
+        <div 
+          class="grid grid-cols-2 gap-6 mt-8" 
+          appScrollAnimation
+          animationClass="animate-fade-in-up">
+          <div class="p-6 bg-primary-color rounded-lg shadow-lg hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1">
+            <h3 class="text-xl font-semibold text-accent-color mb-2">Experience</h3>
+            <p class="text-text-secondary">5+ Years</p>
+          </div>
+          
+          <div class="p-6 bg-primary-color rounded-lg shadow-lg hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1">
+            <h3 class="text-xl font-semibold text-accent-color mb-2">Completed</h3>
+            <p class="text-text-secondary">20+ Projects</p>
+          </div>
+          
+          <div class="p-6 bg-primary-color rounded-lg shadow-lg hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1">
+            <h3 class="text-xl font-semibold text-accent-color mb-2">Education</h3>
+            <p class="text-text-secondary">Master's Degree</p>
+          </div>
+          
+          <div class="p-6 bg-primary-color rounded-lg shadow-lg hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1">
+            <h3 class="text-xl font-semibold text-accent-color mb-2">Location</h3>
+            <p class="text-text-secondary">New York, USA</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Skills -->
+      <div class="space-y-8">
+        <h3 
+          class="text-2xl font-bold mb-6"
+          appScrollAnimation
+          animationClass="animate-fade-in-left">
+          My Skills
+        </h3>
+        
+        <!-- Skill Categories Tabs -->
+        <div 
+          class="flex flex-wrap gap-2 mb-6"
+          appScrollAnimation
+          animationClass="animate-fade-in-left">
+          <button 
+            *ngFor="let category of skillCategories"
+            class="px-4 py-2 rounded-full bg-primary-color text-text-color border border-accent-color/30 hover:border-accent-color hover:bg-accent-color/10 transition-all duration-300">
+            {{ category }}
+          </button>
+        </div>
+        
+        <!-- Skills List -->
+        <div class="space-y-4">
+          <ng-container *ngFor="let category of skillCategories; let i = index">
+            <div class="mb-8" 
+              appScrollAnimation
+              animationClass="animate-fade-in-left">
+              <h4 class="text-xl font-semibold mb-4 text-text-color">{{ category }}</h4>
+              
+              <div class="space-y-4">
+                <div 
+                  *ngFor="let skill of skillsByCategory[category]; let j = index" 
+                  class="mb-2"
+                  appScrollAnimation
+                  [animationClass]="'animate-fade-in-left'">
+                  
+                  <div class="flex justify-between mb-1">
+                    <span class="text-text-secondary">{{ skill.name }}</span>
+                    <span class="text-accent-color">{{ skill.level }}%</span>
+                  </div>
+                  
+                  <div class="w-full bg-primary-color rounded-full h-2.5">
+                    <div 
+                      class="bg-accent-color h-2.5 rounded-full transition-all duration-1000" 
+                      [style]="getSkillBarStyle(skill.level)">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,1 +1,116 @@
+@import "tailwindcss";
+
 /* You can add global styles to this file, and also import other style files */
+
+/* Global styles */
+:root {
+  --primary-color: #1e1e2a;
+  --secondary-color: #2c2c3a;
+  --accent-color: #6d28d9;
+  --text-color: #f3f4f6;
+  --text-secondary: #d1d5db;
+  --animation-duration: 0.8s;
+  --animation-timing: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scroll animations base class */
+.scroll-animation {
+  transition: all var(--animation-duration) var(--animation-timing);
+  will-change: transform, opacity;
+  opacity: 0;
+}
+
+/* Fade In */
+.animate-fade-in {
+  opacity: 1;
+}
+
+/* Fade In Up */
+.scroll-animation.animate-fade-in-up {
+  transform: translateY(40px);
+}
+.animate-fade-in-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade In Down */
+.scroll-animation.animate-fade-in-down {
+  transform: translateY(-40px);
+}
+.animate-fade-in-down {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Fade In Left */
+.scroll-animation.animate-fade-in-left {
+  transform: translateX(-40px);
+}
+.animate-fade-in-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Fade In Right */
+.scroll-animation.animate-fade-in-right {
+  transform: translateX(40px);
+}
+.animate-fade-in-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scale In */
+.scroll-animation.animate-scale-in {
+  transform: scale(0.8);
+}
+.animate-scale-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Slide In Left */
+.scroll-animation.animate-slide-in-left {
+  transform: translateX(-100%);
+}
+.animate-slide-in-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Slide In Right */
+.scroll-animation.animate-slide-in-right {
+  transform: translateX(100%);
+}
+.animate-slide-in-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Rotate In */
+.scroll-animation.animate-rotate-in {
+  transform: rotate(-10deg) scale(0.8);
+}
+.animate-rotate-in {
+  opacity: 1;
+  transform: rotate(0) scale(1);
+}
+
+/* Animation delays */
+.animation-delay-100 { animation-delay: 100ms; transition-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; transition-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; transition-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; transition-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; transition-delay: 500ms; }
+.animation-delay-600 { animation-delay: 600ms; transition-delay: 600ms; }
+.animation-delay-700 { animation-delay: 700ms; transition-delay: 700ms; }
+.animation-delay-800 { animation-delay: 800ms; transition-delay: 800ms; }
+.animation-delay-900 { animation-delay: 900ms; transition-delay: 900ms; }
+.animation-delay-1000 { animation-delay: 1000ms; transition-delay: 1000ms; }

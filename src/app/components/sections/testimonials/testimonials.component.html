@@ -1,0 +1,104 @@
+<section id="testimonials" class="py-24 bg-secondary-color">
+  <div class="container mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16" appScrollAnimation animationClass="animate-fade-in-up">
+      <h2 class="text-4xl font-bold mb-4"><span class="text-accent-color">Testimonials</span></h2>
+      <div class="w-20 h-1 bg-accent-color mx-auto"></div>
+      <p class="text-text-secondary mt-4 max-w-2xl mx-auto">
+        What people say about my work and collaboration
+      </p>
+    </div>
+    
+    <!-- Testimonial Carousel -->
+    <div 
+      *ngIf="testimonials.length > 0" 
+      class="max-w-4xl mx-auto relative overflow-hidden"
+      appScrollAnimation
+      animationClass="animate-fade-in-up">
+      
+      <!-- Quote Icon -->
+      <div class="absolute -top-4 left-0 text-accent-color/20 text-8xl z-0 opacity-30">
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+        </svg>
+      </div>
+      
+      <!-- Testimonial Slide -->
+      <div class="bg-primary-color rounded-xl p-8 shadow-lg relative z-10">
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+          <!-- Avatar -->
+          <div class="flex-shrink-0">
+            <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-accent-color/30">
+              <img 
+                [src]="testimonials[currentIndex].avatar" 
+                [alt]="testimonials[currentIndex].name"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://via.placeholder.com/100?text=Avatar'">
+            </div>
+          </div>
+          
+          <!-- Content -->
+          <div class="flex-1">
+            <!-- Testimonial Text -->
+            <p class="text-text-secondary text-lg italic mb-6 leading-relaxed">
+              "{{ testimonials[currentIndex].text }}"
+            </p>
+            
+            <!-- Author Info -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
+              <div>
+                <h4 class="text-white font-semibold text-lg">{{ testimonials[currentIndex].name }}</h4>
+                <p class="text-text-secondary">{{ testimonials[currentIndex].position }}, {{ testimonials[currentIndex].company }}</p>
+              </div>
+              
+              <!-- LinkedIn Link -->
+              <a 
+                *ngIf="testimonials[currentIndex].linkedinUrl" 
+                [href]="testimonials[currentIndex].linkedinUrl"
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="text-accent-color hover:text-accent-color/80 transition-colors mt-3 md:mt-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Navigation Arrows -->
+      <div class="flex justify-between mt-8">
+        <button 
+          (click)="previous()" 
+          class="w-12 h-12 rounded-full bg-primary-color text-text-color flex items-center justify-center hover:bg-accent-color hover:text-white transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        
+        <div class="flex items-center space-x-2">
+          <span 
+            *ngFor="let _ of testimonials; let i = index" 
+            (click)="goToSlide(i)"
+            class="w-3 h-3 rounded-full cursor-pointer transition-all duration-300"
+            [ngClass]="{'bg-accent-color': i === currentIndex, 'bg-accent-color/30 hover:bg-accent-color/50': i !== currentIndex}">
+          </span>
+        </div>
+        
+        <button 
+          (click)="next()" 
+          class="w-12 h-12 rounded-full bg-primary-color text-text-color flex items-center justify-center hover:bg-accent-color hover:text-white transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- No Testimonials Message -->
+    <div *ngIf="testimonials.length === 0" class="text-center py-12">
+      <p class="text-text-secondary">No testimonials available at the moment.</p>
+    </div>
+  </div>
+</section>

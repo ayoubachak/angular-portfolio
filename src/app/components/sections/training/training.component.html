@@ -1,0 +1,95 @@
+<section id="training" class="py-24 bg-primary-color">
+  <div class="container mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16" appScrollAnimation animationClass="animate-fade-in-up">
+      <h2 class="text-4xl font-bold mb-4">Training & <span class="text-accent-color">Volunteering</span></h2>
+      <div class="w-20 h-1 bg-accent-color mx-auto"></div>
+      <p class="text-text-secondary mt-4 max-w-2xl mx-auto">
+        My professional training and volunteering experience giving back to the community
+      </p>
+    </div>
+    
+    <!-- Filter Tabs -->
+    <div 
+      class="flex justify-center mb-12 space-x-4" 
+      appScrollAnimation 
+      animationClass="animate-fade-in-up">
+      <button 
+        (click)="showAll()" 
+        class="px-5 py-2 rounded-md transition-all duration-300" 
+        [ngClass]="{'bg-accent-color text-white': activeTab === 'all', 'bg-secondary-color text-text-color hover:bg-accent-color/10': activeTab !== 'all'}">
+        All
+      </button>
+      
+      <button 
+        (click)="showTraining()" 
+        class="px-5 py-2 rounded-md transition-all duration-300" 
+        [ngClass]="{'bg-accent-color text-white': activeTab === 'training', 'bg-secondary-color text-text-color hover:bg-accent-color/10': activeTab !== 'training'}">
+        Training
+      </button>
+      
+      <button 
+        (click)="showVolunteering()" 
+        class="px-5 py-2 rounded-md transition-all duration-300"
+        [ngClass]="{'bg-accent-color text-white': activeTab === 'volunteering', 'bg-secondary-color text-text-color hover:bg-accent-color/10': activeTab !== 'volunteering'}">
+        Volunteering
+      </button>
+    </div>
+    
+    <!-- Training & Volunteering Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div 
+        *ngFor="let item of getDisplayItems(); let i = index" 
+        class="bg-secondary-color rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-accent-color/20 transform hover:-translate-y-1"
+        appScrollAnimation
+        [animationClass]="'animate-fade-in-up'">
+        
+        <!-- Card Header with Volunteering Badge -->
+        <div class="relative">
+          <div class="flex items-center justify-between p-6 border-b border-accent-color/10">
+            <div class="flex items-center space-x-4">
+              <!-- Logo -->
+              <div class="w-14 h-14 rounded-md bg-white/5 p-2 flex items-center justify-center overflow-hidden">
+                <img 
+                  [src]="item.logo" 
+                  [alt]="item.organization"
+                  class="max-h-full max-w-full object-contain"
+                  onerror="this.src='https://via.placeholder.com/50?text=Logo'">
+              </div>
+              
+              <!-- Title -->
+              <div>
+                <h3 class="text-xl font-semibold text-white">{{ item.title }}</h3>
+                <p class="text-text-secondary">{{ item.organization }}</p>
+              </div>
+            </div>
+            
+            <!-- Volunteering Badge if applicable -->
+            <div *ngIf="item.isVolunteering" class="px-3 py-1 bg-accent-color/10 text-accent-color text-xs font-semibold rounded-full">
+              Volunteer
+            </div>
+          </div>
+        </div>
+        
+        <!-- Card Content -->
+        <div class="p-6">
+          <!-- Period -->
+          <div class="mb-4 text-sm text-text-secondary flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+            </svg>
+            {{ item.period }}
+          </div>
+          
+          <!-- Description -->
+          <p class="text-text-secondary">{{ item.description }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- No Items Message -->
+    <div *ngIf="getDisplayItems().length === 0" class="text-center py-12">
+      <p class="text-text-secondary">No items to display for this category.</p>
+    </div>
+  </div>
+</section>

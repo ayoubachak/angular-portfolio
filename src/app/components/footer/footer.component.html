@@ -1,0 +1,101 @@
+<footer class="bg-primary-color pt-16 pb-8">
+  <div class="container mx-auto px-6">
+    <!-- Top Footer with Links -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+      <!-- Logo & About -->
+      <div class="md:col-span-1">
+        <div class="flex items-center mb-4">
+          <!-- Logo or Avatar (if available) -->
+          <div class="h-10 w-10 rounded-full overflow-hidden mr-3 border border-accent-color/30">
+            <img src="assets/images/avatar.jpg" alt="{{ name }}" class="h-full w-full object-cover" onerror="this.src='https://via.placeholder.com/100?text=Logo'">
+          </div>
+          <h3 class="text-white text-lg font-semibold">{{ name }}</h3>
+        </div>
+        <p class="text-text-secondary text-sm mb-4">
+          A passionate developer focused on creating beautiful and functional web experiences.
+        </p>
+        
+        <!-- Social Links -->
+        <div class="flex space-x-3">
+          <a 
+            *ngFor="let link of socialLinks" 
+            [href]="link.url" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="text-text-secondary hover:text-accent-color transition-colors">
+            <fa-icon [icon]="getIcon(link.platform)"></fa-icon>
+          </a>
+          
+          <!-- Email -->
+          <a 
+            [href]="'mailto:' + email" 
+            class="text-text-secondary hover:text-accent-color transition-colors">
+            <fa-icon [icon]="faEnvelope"></fa-icon>
+          </a>
+        </div>
+      </div>
+      
+      <!-- Quick Links -->
+      <div class="md:col-span-1">
+        <h3 class="text-white text-lg font-semibold mb-4">Quick Links</h3>
+        <ul class="space-y-2 text-text-secondary">
+          <li><a href="#intro" class="hover:text-accent-color transition-colors">Home</a></li>
+          <li><a href="#about" class="hover:text-accent-color transition-colors">About</a></li>
+          <li><a href="#education" class="hover:text-accent-color transition-colors">Education</a></li>
+          <li><a href="#github" class="hover:text-accent-color transition-colors">Projects</a></li>
+          <li><a href="#contact" class="hover:text-accent-color transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      
+      <!-- Contact Info -->
+      <div class="md:col-span-1">
+        <h3 class="text-white text-lg font-semibold mb-4">Contact</h3>
+        <ul class="space-y-2 text-text-secondary">
+          <li>{{ email }}</li>
+          <li>Available for freelance work</li>
+          <li>Based in New York, USA</li>
+        </ul>
+      </div>
+      
+      <!-- Newsletter (can be connected to Firebase later) -->
+      <div class="md:col-span-1">
+        <h3 class="text-white text-lg font-semibold mb-4">Newsletter</h3>
+        <p class="text-text-secondary text-sm mb-3">
+          Subscribe to my newsletter for the latest updates and articles.
+        </p>
+        <div class="flex">
+          <input 
+            type="email" 
+            placeholder="Your email" 
+            class="px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-l-md focus:outline-none focus:border-accent-color flex-1">
+          <button 
+            class="px-4 py-2 bg-accent-color text-white rounded-r-md hover:bg-accent-color/90 transition-colors">
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Divider -->
+    <div class="h-px bg-accent-color/10 my-6"></div>
+    
+    <!-- Bottom Footer -->
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <p class="text-text-secondary text-sm">
+        &copy; {{ currentYear }} {{ name }}. All rights reserved.
+      </p>
+      
+      <div class="flex space-x-4 mt-3 md:mt-0">
+        <a href="#" class="text-text-secondary hover:text-accent-color transition-colors text-sm">Privacy Policy</a>
+        <a href="#" class="text-text-secondary hover:text-accent-color transition-colors text-sm">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Scroll to Top Button -->
+  <button 
+    (click)="scrollToTop()" 
+    class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-accent-color text-white flex items-center justify-center shadow-lg hover:bg-accent-color/90 transition-colors">
+    <fa-icon [icon]="faArrowUp"></fa-icon>
+  </button>
+</footer>
