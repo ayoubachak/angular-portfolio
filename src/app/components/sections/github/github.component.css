@@ -1,3 +1,11 @@
+/* Disabled button */
+button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: translateY(0) !important;
+  box-shadow: none !important;
+}
+
 /* Mobile device frame */
 .mobile-device-frame {
   perspective: 1000px;

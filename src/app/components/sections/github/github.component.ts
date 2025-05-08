@@ -9,7 +9,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { 
   faCode, faExternalLinkAlt, faCodeBranch, faStar, 
   faEye, faCalendarAlt, faTimesCircle, faMobile as fasMobile,
-  faDesktop as fasDesktop
+  faDesktop as fasDesktop, faAngleDown, faCheck
 } from '@fortawesome/free-solid-svg-icons';
 import { WebviewService } from '../../../services/webview.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -48,8 +48,17 @@ export class GithubComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   faMobile = fasMobile;
   faDesktop = fasDesktop;
+  faAngleDown = faAngleDown;
+  faCheck = faCheck;
   
   @ViewChild('previewModal') previewModal!: ElementRef;
+
+  // Add new properties to track pagination
+  private currentPage: number = 1;
+  private reposPerPage: number = 6;
+  isLoadingMore: boolean = false;
+  private maxRepos: number = 18; // Maximum number of repos to load
+  allReposLoaded: boolean = false;
 
   constructor(
     private githubService: GithubService,
@@ -61,17 +70,43 @@ export class GithubComponent implements OnInit {
     this.loadRepositories();
   }
 
-  loadRepositories(): void {
-    this.loading = true;
-    this.githubService.getRepositories(6).subscribe({
+  loadRepositories(loadMore: boolean = false): void {
+    if (!loadMore) {
+      this.loading = true;
+      this.currentPage = 1;
+      this.allReposLoaded = false;
+    } else {
+      this.isLoadingMore = true;
+    }
+
+    this.githubService.getRepositories(this.reposPerPage * this.currentPage).subscribe({
       next: (repos) => {
-        this.repos = repos;
-        this.loading = false;
+        // If loading more, only show new repos we haven't seen before
+        if (loadMore) {
+          const existingReposIds = new Set(this.repos.map(repo => repo.id));
+          const newRepos = repos.filter(repo => !existingReposIds.has(repo.id));
+          this.repos = [...this.repos, ...newRepos];
+          this.isLoadingMore = false;
+          
+          // Check if we've loaded all available repos or reached max
+          if (newRepos.length === 0 || this.repos.length >= this.maxRepos) {
+            this.allReposLoaded = true;
+          }
+        } else {
+          this.repos = repos;
+          this.loading = false;
+          
+          // Check if initial load already has all repos
+          if (repos.length < this.reposPerPage) {
+            this.allReposLoaded = true;
+          }
+        }
       },
       error: (err) => {
         console.error('Error loading repositories', err);
         this.error = 'Failed to load GitHub repositories. Please try again later.';
         this.loading = false;
+        this.isLoadingMore = false;
       }
     });
   }
@@ -127,5 +162,11 @@ export class GithubComponent implements OnInit {
    */
   toggleMobileView(): void {
     this.isMobileView = !this.isMobileView;
+  }
+
+  // Add the loadMoreRepos method
+  loadMoreRepos(): void {
+    this.currentPage++;
+    this.loadRepositories(true);
   }
 }

@@ -54,28 +54,32 @@ export class GithubService {
    * @param limit Maximum number of repos to return
    */
   getRepositories(limit: number = 10): Observable<GitHubRepo[]> {
-    return this.http.get<GitHubRepo[]>(`${this.apiUrl}/users/${this.username}/repos?sort=updated&per_page=${limit}`)
-      .pipe(
-        map(repos => repos.map(repo => {
-          // Extract demo URL from description or homepage
-          const demoUrlMatch = repo.description?.match(/demo[:\s]*(https?:\/\/\S+)/i);
-          const liveUrlMatch = repo.description?.match(/live[:\s]*(https?:\/\/\S+)/i);
-          const siteUrlMatch = repo.description?.match(/site[:\s]*(https?:\/\/\S+)/i);
-          const urlMatch = repo.description?.match(/\b(https?:\/\/\S+)/i);
-          
-          // Prioritize the matches in order: demo > live > site > any URL
-          repo.demoUrl = demoUrlMatch ? demoUrlMatch[1] : 
-                        liveUrlMatch ? liveUrlMatch[1] :
-                        siteUrlMatch ? siteUrlMatch[1] :
-                        urlMatch ? urlMatch[1] :
-                        repo.homepage;
-          return repo;
-        })),
-        catchError(err => {
-          console.error('Error fetching GitHub repositories', err);
-          return of([]); // Return empty array on error
-        })
-      );
+    // GitHub API has a per_page limit of 100, so use that as maximum
+    const perPage = Math.min(limit, 100);
+    
+    return this.http.get<GitHubRepo[]>(
+      `${this.apiUrl}/users/${this.username}/repos?sort=updated&per_page=${perPage}`
+    ).pipe(
+      map(repos => repos.map(repo => {
+        // Extract demo URL from description or homepage
+        const demoUrlMatch = repo.description?.match(/demo[:\s]*(https?:\/\/\S+)/i);
+        const liveUrlMatch = repo.description?.match(/live[:\s]*(https?:\/\/\S+)/i);
+        const siteUrlMatch = repo.description?.match(/site[:\s]*(https?:\/\/\S+)/i);
+        const urlMatch = repo.description?.match(/\b(https?:\/\/\S+)/i);
+        
+        // Prioritize the matches in order: demo > live > site > any URL
+        repo.demoUrl = demoUrlMatch ? demoUrlMatch[1] : 
+                      liveUrlMatch ? liveUrlMatch[1] :
+                      siteUrlMatch ? siteUrlMatch[1] :
+                      urlMatch ? urlMatch[1] :
+                      repo.homepage;
+        return repo;
+      })),
+      catchError(err => {
+        console.error('Error fetching GitHub repositories', err);
+        return of([]); // Return empty array on error
+      })
+    );
   }
 
   /**
