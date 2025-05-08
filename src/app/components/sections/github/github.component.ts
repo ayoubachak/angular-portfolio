@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faCode, faExternalLinkAlt, faCodeBranch, faStar, faEye, faCalendarAlt, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { WebviewService } from '../../../services/webview.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-github',
@@ -28,6 +29,8 @@ export class GithubComponent implements OnInit {
   error: string | null = null;
   activeRepo: GitHubRepo | null = null;
   showIframe: boolean = false;
+  safePreviewUrl: SafeResourceUrl | null = null;
+  iframeLoading: boolean = true;
   
   // Icons
   faGithub = faGithub;
@@ -43,7 +46,8 @@ export class GithubComponent implements OnInit {
 
   constructor(
     private githubService: GithubService,
-    private webviewService: WebviewService
+    private webviewService: WebviewService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +71,16 @@ export class GithubComponent implements OnInit {
 
   openPreview(repo: GitHubRepo): void {
     this.activeRepo = repo;
+    this.iframeLoading = true;
+    
+    // Create a sanitized URL for the iframe
+    const url = repo.demoUrl || repo.homepage || '';
+    if (url) {
+      this.safePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    } else {
+      this.safePreviewUrl = null;
+    }
+    
     this.showIframe = true;
     
     // Add body class to prevent scrolling
@@ -76,13 +90,14 @@ export class GithubComponent implements OnInit {
   closePreview(): void {
     this.showIframe = false;
     this.activeRepo = null;
+    this.safePreviewUrl = null;
     
     // Remove body class to allow scrolling
     document.body.classList.remove('overflow-hidden');
   }
 
-  getPreviewUrl(): string {
-    return this.activeRepo?.demoUrl || this.activeRepo?.homepage || '';
+  getPreviewUrl(): SafeResourceUrl | null {
+    return this.safePreviewUrl;
   }
 
   hasPreviewUrl(repo: GitHubRepo): boolean {
@@ -94,5 +109,9 @@ export class GithubComponent implements OnInit {
    */
   hasLinksInDescription(description: string): boolean {
     return this.webviewService.extractUrls(description).length > 0;
+  }
+
+  onIframeLoad(): void {
+    this.iframeLoading = false;
   }
 }

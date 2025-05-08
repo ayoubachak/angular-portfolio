@@ -125,18 +125,27 @@
       </div>
       
       <!-- IFrame Container -->
-      <div class="p-4 flex-1 min-h-0">
+      <div class="p-4 flex-1 min-h-0 relative">
+        <!-- Loading indicator -->
+        <div *ngIf="iframeLoading && safePreviewUrl" class="absolute inset-0 flex items-center justify-center bg-primary-color/80 z-10">
+          <div class="flex flex-col items-center">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent-color"></div>
+            <p class="text-text-secondary mt-4">Loading preview...</p>
+          </div>
+        </div>
+        
         <iframe 
-          *ngIf="getPreviewUrl()" 
-          [src]="getPreviewUrl()" 
+          *ngIf="safePreviewUrl" 
+          [src]="safePreviewUrl" 
           class="w-full h-full border-0 rounded-md"
           loading="lazy"
           sandbox="allow-scripts allow-same-origin allow-forms"
           referrerpolicy="no-referrer"
-          title="Project Preview">
+          title="Project Preview"
+          (load)="onIframeLoad()">
         </iframe>
         
-        <div *ngIf="!getPreviewUrl()" class="w-full h-full flex items-center justify-center text-text-secondary">
+        <div *ngIf="!safePreviewUrl" class="w-full h-full flex items-center justify-center text-text-secondary">
           <p>No preview available for this project.</p>
         </div>
       </div>
