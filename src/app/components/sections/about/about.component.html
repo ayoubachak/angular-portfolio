@@ -76,7 +76,7 @@
       </div>
       
       <!-- Skills -->
-      <div class="space-y-10">
+      <div class="space-y-10 w-full">
         <h3 
           class="text-2xl font-bold mb-8"
           appScrollAnimation
@@ -114,44 +114,46 @@
         </div>
         
         <!-- Skills List with Scroll Container -->
-        <div class="relative">
+        <div class="relative w-full">
           <!-- Skills Container with Scrollbar -->
-          <div class="skills-container max-h-[500px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-accent-color scrollbar-track-primary-color"
+          <div class="skills-container w-full max-h-[500px] overflow-y-auto custom-scrollbar"
                (scroll)="onSkillsScroll($event)">
-            <div class="space-y-8">
+            <div class="space-y-16 overflow-visible px-4 mx-auto max-w-3xl">
               <ng-container *ngFor="let category of filteredSkillsByCategory | keyvalue; let i = index">
-                <div class="mb-10" 
+                <div class="mb-16 pt-6" 
                   [id]="category.key.toLowerCase().replace(' & ', '-').replace(' ', '-')"
                   appScrollAnimation
                   animationClass="animate-fade-in-left">
-                  <h4 class="text-xl font-semibold mb-6 text-text-color flex items-center">
+                  <h4 class="text-xl font-semibold mb-8 text-text-color flex items-center justify-center">
                     <fa-icon [icon]="getCategoryIcon(category.key)" class="text-accent-color mr-3"></fa-icon>
                     {{ category.key }}
                   </h4>
                   
                   <!-- Grid Layout for Skills -->
-                  <div class="grid grid-cols-2 sm:grid-cols-2 gap-6">
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mx-auto">
                     <div 
                       *ngFor="let skill of category.value; let j = index" 
-                      class="p-4 bg-primary-color rounded-lg shadow-md hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1"
+                      class="bg-primary-color rounded-lg shadow-md hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1"
                       appScrollAnimation
                       [animationClass]="'animate-fade-in-up'"
                       [ngStyle]="{'animation-delay': (j * 100) + 'ms'}">
                       
-                      <div class="flex items-center space-x-4 mb-3">
-                        <div class="p-2 rounded-full bg-accent-color/10 text-accent-color">
-                          <fa-icon [icon]="getSkillIcon(skill.name)" size="lg"></fa-icon>
+                      <div class="p-4">
+                        <div class="flex items-center mb-3">
+                          <div class="flex-shrink-0 w-10 h-10 rounded-full bg-accent-color/10 flex items-center justify-center text-accent-color mr-3">
+                            <fa-icon [icon]="getSkillIcon(skill.name)" size="lg"></fa-icon>
+                          </div>
+                          <div>
+                            <h5 class="font-medium text-text-color">{{ skill.name }}</h5>
+                            <span class="text-accent-color text-sm">{{ skill.level }}%</span>
+                          </div>
                         </div>
-                        <div>
-                          <h5 class="font-medium text-text-color">{{ skill.name }}</h5>
-                          <span class="text-accent-color text-sm">{{ skill.level }}%</span>
-                        </div>
-                      </div>
-                      
-                      <div class="w-full bg-secondary-color rounded-full h-2">
-                        <div 
-                          class="bg-accent-color h-2 rounded-full transition-all duration-1000" 
-                          [style]="getSkillBarStyle(skill.level)">
+                        
+                        <div class="w-full bg-secondary-color rounded-full h-2 mt-2">
+                          <div 
+                            class="bg-accent-color h-2 rounded-full transition-all duration-1000" 
+                            [style]="getSkillBarStyle(skill.level)">
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -162,7 +164,7 @@
           </div>
           
           <!-- Scroll Indicator Dots (only shown when All is selected) -->
-          <div *ngIf="activeCategory === 'All'" class="absolute -right-4 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3">
+          <div *ngIf="activeCategory === 'All'" class="absolute -right-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-10">
             <div *ngFor="let category of skillCategories; let i = index" 
               class="group relative flex items-center"
               (click)="scrollToCategory(category)">
