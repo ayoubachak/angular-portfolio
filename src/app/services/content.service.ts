@@ -147,7 +147,7 @@ export class ContentService {
         startDate: '2023',
         endDate: '2025',
         description: 'Dual Engineer\'s Degree Program',
-        logo: 'assets/images/brest-logo.png'
+        logo: 'assets/images/schools/enib-logo.png'
       },
       {
         institution: 'ENSAM Casablanca Engineering School',
@@ -156,7 +156,7 @@ export class ContentService {
         startDate: '2019',
         endDate: '2025',
         description: 'Dual Engineer\'s Degree Program',
-        logo: 'assets/images/ensam-logo.png'
+        logo: 'assets/images/schools/ensam-logo.png'
       }
     ],
     experience: [

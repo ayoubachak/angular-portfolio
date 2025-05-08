@@ -34,9 +34,14 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     const portfolioContent = this.contentService.getPortfolioContent();
     this.name = portfolioContent.name;
-    this.avatar = portfolioContent.avatarUrl;
+    
+    // Force the avatar URL to use the direct path
+    this.avatar = '/assets/images/avatar.jpg';
+    
     this.socialLinks = portfolioContent.socialLinks;
     this.email = portfolioContent.email;
+    
+    console.log('Avatar URL set to:', this.avatar);
   }
 
   @HostListener('window:scroll', [])
@@ -53,6 +58,25 @@ export class NavbarComponent implements OnInit {
   // Close mobile menu
   closeMobileMenu() {
     this.mobileMenuOpen = false;
+  }
+  
+  // Handle image error
+  handleImageError(event: any): void {
+    console.error('Error loading avatar image:', event);
+    // Fall back to a default image
+    event.target.src = '/assets/images/avatar.jpg';
+    
+    // If that also fails, try with alternate paths
+    event.target.onerror = () => {
+      console.error('Placeholder also failed, trying alternate path');
+      event.target.src = 'avatar.jpg';
+      
+      // Final fallback to an external placeholder if all else fails
+      event.target.onerror = () => {
+        event.target.src = 'https://via.placeholder.com/150?text=Avatar';
+        event.target.onerror = null; // Prevent infinite loop
+      };
+    };
   }
 
   // Helper method to get proper icon

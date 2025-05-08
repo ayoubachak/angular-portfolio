@@ -3,7 +3,12 @@
     <div class="flex items-center space-x-4">
       <!-- Avatar -->
       <div class="relative overflow-hidden rounded-full h-12 w-12 border-2 border-accent-color shadow-md">
-        <img [src]="avatar || 'assets/images/avatar-placeholder.jpg'" alt="{{ name }}" class="object-cover h-full w-full">
+        <img [src]="avatar || 'assets/images/avatar.jpg'" 
+             alt="{{ name }}" 
+             class="object-cover h-full w-full"
+             (error)="handleImageError($event)">
+        <!-- Debug -->
+        <div class="hidden">Avatar URL: {{avatar}}</div>
       </div>
       
       <!-- Name with responsive display -->
