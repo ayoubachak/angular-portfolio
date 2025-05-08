@@ -69,7 +69,7 @@ export class EducationComponent implements OnInit, AfterViewInit {
     });
     
     // Observe all lazy images
-    lazyImages.forEach(img => {
+    lazyImages.forEach((img: Element) => {
       imageObserver.observe(img);
     });
   }

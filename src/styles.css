@@ -156,3 +156,48 @@ body {
 .animation-delay-800 { animation-delay: 800ms; transition-delay: 800ms; }
 .animation-delay-900 { animation-delay: 900ms; transition-delay: 900ms; }
 .animation-delay-1000 { animation-delay: 1000ms; transition-delay: 1000ms; }
+
+/* Hoverable link indicators */
+.has-hoverable-links {
+  position: relative;
+  cursor: pointer;
+}
+
+.has-hoverable-links::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent-color);
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.has-hoverable-links:hover::after {
+  transform: scale(1.5);
+  opacity: 1;
+  box-shadow: 0 0 8px var(--accent-color);
+}
+
+/* Custom scrollbar for webview */
+.webview-modal iframe {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-color) var(--primary-color);
+}
+
+.webview-modal iframe::-webkit-scrollbar {
+  width: 6px;
+}
+
+.webview-modal iframe::-webkit-scrollbar-track {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+.webview-modal iframe::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 10px;
+}

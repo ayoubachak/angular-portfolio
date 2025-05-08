@@ -14,6 +14,7 @@ import { BlogComponent } from './components/sections/blog/blog.component';
 import { ContactComponent } from './components/sections/contact/contact.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ResumeCompilerComponent } from './components/resume-compiler/resume-compiler.component';
+import { WebviewPreviewComponent } from './components/webview-preview/webview-preview.component';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,8 @@ import { ResumeCompilerComponent } from './components/resume-compiler/resume-com
     BlogComponent,
     ContactComponent,
     FooterComponent,
-    ResumeCompilerComponent
+    ResumeCompilerComponent,
+    WebviewPreviewComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

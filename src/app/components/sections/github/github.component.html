@@ -45,7 +45,12 @@
         
         <!-- Repository Description -->
         <div class="p-6">
-          <p class="text-text-secondary mb-4 h-20 overflow-hidden">{{ repo.description || 'No description available' }}</p>
+          <p 
+            class="text-text-secondary mb-4 h-20 overflow-hidden"
+            [appLinkHoverWebview]="repo.description || ''"
+            [class.cursor-pointer]="hasLinksInDescription(repo.description || '')">
+            {{ repo.description || 'No description available' }}
+          </p>
           
           <!-- Repository Stats -->
           <div class="flex justify-between text-text-secondary text-sm">
@@ -154,4 +159,7 @@
       </div>
     </div>
   </div>
+
+  <!-- Add the webview preview component at the end of the section -->
+  <app-webview-preview></app-webview-preview>
 </section>
