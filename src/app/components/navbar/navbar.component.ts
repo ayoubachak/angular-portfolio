@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit {
   socialLinks: SocialLink[] = [];
   email: string = '';
   isScrolled: boolean = false;
+  mobileMenuOpen: boolean = false;
   
   // Icons
   faGithub = faGithub;
@@ -42,6 +43,16 @@ export class NavbarComponent implements OnInit {
   onWindowScroll() {
     // Add shadow and background when scrolled
     this.isScrolled = window.scrollY > 20;
+  }
+
+  // Toggle mobile menu
+  toggleMobileMenu() {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  // Close mobile menu
+  closeMobileMenu() {
+    this.mobileMenuOpen = false;
   }
 
   // Helper method to get proper icon

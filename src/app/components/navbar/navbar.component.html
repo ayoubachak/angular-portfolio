@@ -39,13 +39,25 @@
     </div>
     
     <!-- Mobile Menu Button -->
-    <button class="md:hidden text-text-color focus:outline-none">
+    <button (click)="toggleMobileMenu()" class="md:hidden text-text-color focus:outline-none">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <path *ngIf="!mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <path *ngIf="mobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
   </nav>
   
-  <!-- Mobile Menu (hidden by default) -->
-  <!-- To be implemented later -->
+  <!-- Mobile Menu (shown when mobileMenuOpen is true) -->
+  <div 
+    *ngIf="mobileMenuOpen" 
+    class="md:hidden bg-primary-color/95 backdrop-blur-md shadow-lg py-4 px-6 absolute top-full left-0 right-0 border-t border-accent-color/20 transition-all duration-300">
+    <div class="flex flex-col space-y-4">
+      <a href="#intro" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2">Home</a>
+      <a href="#about" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2">About</a>
+      <a href="#education" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2">Education</a>
+      <a href="#github" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2">Projects</a>
+      <a href="#blog" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2">Blog</a>
+      <a href="#contact" (click)="closeMobileMenu()" class="px-4 py-2 bg-accent-color text-white rounded-md hover:bg-opacity-80 transition-all duration-300 inline-block mt-2">Contact</a>
+    </div>
+  </div>
 </header>

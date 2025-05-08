@@ -10,12 +10,12 @@
     </div>
     
     <!-- Timeline -->
-    <div class="relative">
+    <div class="relative max-w-4xl mx-auto">
       <!-- Timeline Line -->
       <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-accent-color/20"></div>
       
       <!-- Education Items -->
-      <div class="space-y-16">
+      <div class="space-y-12">
         <div 
           *ngFor="let item of education; let i = index" 
           class="relative"
@@ -26,7 +26,7 @@
           <div class="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-accent-color shadow-lg shadow-accent-color/30"></div>
           
           <!-- Content Card -->
-          <div [ngClass]="i % 2 === 0 ? 'ml-auto pl-12 text-right' : 'mr-auto pr-12'" class="w-full md:w-[45%]">
+          <div [ngClass]="i % 2 === 0 ? 'ml-auto pl-8 text-right' : 'mr-auto pr-8'" class="w-full md:w-[48%]">
             <div class="p-6 bg-secondary-color rounded-lg shadow-lg hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1">
               <!-- Timeline Year Badge -->
               <div class="inline-block px-3 py-1 rounded-full bg-accent-color/10 text-accent-color text-sm font-medium mb-4">
