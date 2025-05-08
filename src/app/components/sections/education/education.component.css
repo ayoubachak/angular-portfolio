@@ -1,0 +1,76 @@
+/* Logo hover effect */
+.group:hover .w-32 {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* Modal backdrop animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0); 
+  }
+}
+
+.fixed.inset-0 {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.fixed.inset-0 > div {
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* Skill badges subtle hover effect */
+.bg-primary-color.rounded-full {
+  transition: all 0.2s ease;
+}
+
+.bg-primary-color.rounded-full:hover {
+  background-color: var(--accent-color);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* Enhanced scroll styles for modal */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-color) var(--primary-color);
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-color);
+  border-radius: 10px;
+}
+
+/* Prevent body scrolling when modal is open */
+:host-context(body.modal-open) {
+  overflow: hidden;
+}
+
+/* Images lazy loading fade-in effect */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+img[loading="lazy"].loaded {
+  opacity: 1;
+}

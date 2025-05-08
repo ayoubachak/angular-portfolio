@@ -20,6 +20,11 @@ export interface Education {
   endDate: string;
   description: string;
   logo?: string;
+  website?: string;
+  programPdf?: string;
+  detailedDescription?: string;
+  skills?: string[];
+  courses?: string[];
 }
 
 export interface Experience {
@@ -147,7 +152,12 @@ export class ContentService {
         startDate: '2023',
         endDate: '2025',
         description: 'Dual Engineer\'s Degree Program',
-        logo: 'assets/images/schools/enib-logo.png'
+        logo: 'assets/images/schools/enib-logo.png',
+        website: 'https://www.enib.fr/',
+        programPdf: 'assets/documents/enib-program.pdf',
+        detailedDescription: 'The National School of Engineering in Brest (ENIB) is a public engineering school that specializes in multidisciplinary engineering with a focus on software, electronics, and mechatronics. The program emphasizes practical engineering skills through project-based learning and industry collaborations.',
+        skills: ['Software Architecture', 'System Design', 'Embedded Systems', 'Real-time Programming', 'Applied Mathematics'],
+        courses: ['Advanced Software Engineering', 'Distributed Systems', 'Computer Networks', 'Digital Signal Processing', 'Machine Learning']
       },
       {
         institution: 'ENSAM Casablanca Engineering School',
@@ -156,7 +166,12 @@ export class ContentService {
         startDate: '2019',
         endDate: '2025',
         description: 'Dual Engineer\'s Degree Program',
-        logo: 'assets/images/schools/ensam-logo.png'
+        logo: 'assets/images/schools/ensam-logo.png',
+        website: 'https://ensam-casa.ma/',
+        programPdf: 'assets/documents/ensam-program.pdf',
+        detailedDescription: 'The National Higher School of Arts and Crafts (ENSAM) in Casablanca is one of Morocco\'s premier engineering institutions. The program focuses on developing expertise in software engineering with specialization in artificial intelligence and machine learning. The curriculum includes both theoretical foundations and practical applications through industry partnerships.',
+        skills: ['Machine Learning', 'Deep Learning', 'Natural Language Processing', 'Computer Vision', 'Software Development', 'Data Engineering'],
+        courses: ['Statistical Learning', 'Neural Networks', 'Big Data Processing', 'Cloud Computing', 'Software Engineering Methodologies', 'AI Ethics']
       }
     ],
     experience: [
