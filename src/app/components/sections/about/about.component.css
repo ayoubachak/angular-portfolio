@@ -28,9 +28,24 @@
   padding: 0;
   width: 100%;
   box-sizing: border-box;
+  position: relative; /* Ensure positioned elements inside use this as reference */
+  overflow-y: auto;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Ensure grid items don't overflow */
 .skills-container .grid {
   width: 100%;
+}
+
+/* Animation only show when in container's viewport */
+.skills-container .scroll-animation {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.skills-container .scroll-animation.show {
+  opacity: 1;
+  transform: translateY(0);
 }

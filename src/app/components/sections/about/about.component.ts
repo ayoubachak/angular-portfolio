@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentService, Skill } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
@@ -27,6 +27,8 @@ interface Language {
   styleUrl: './about.component.css'
 })
 export class AboutComponent implements OnInit, AfterViewInit {
+  @ViewChild('skillsContainer') skillsContainerRef!: ElementRef<HTMLElement>;
+  
   about: string = '';
   skillsByCategory: Record<string, Skill[]> = {};
   skillCategories: string[] = [];
@@ -54,7 +56,6 @@ export class AboutComponent implements OnInit, AfterViewInit {
   faChevronRight = faChevronRight;
 
   constructor(private contentService: ContentService) {}
-
   ngOnInit(): void {
     const portfolioContent = this.contentService.getPortfolioContent();
     this.about = portfolioContent.about;
@@ -65,23 +66,31 @@ export class AboutComponent implements OnInit, AfterViewInit {
     
     // Initialize with all skills
     this.showAllSkills();
-  }
-  
-  ngAfterViewInit(): void {
-    // Set initial active scroll category
-    setTimeout(() => {
-      this.checkActiveScrollCategory();
-    }, 500);
-  }
-  
-  @HostListener('scroll', ['$event'])
-  onSkillsScroll(event: Event): void {
-    if (this.activeCategory === 'All') {
-      this.checkActiveScrollCategory();
+    
+    // Ensure Web & DevOps category is in the list
+    const webDevopsCategory = 'Web & DevOps';
+    if (this.skillsByCategory[webDevopsCategory] && !this.filteredSkillsByCategory[webDevopsCategory]) {
+      this.filteredSkillsByCategory[webDevopsCategory] = this.skillsByCategory[webDevopsCategory];
     }
   }
-  
-  /**
+    ngAfterViewInit(): void {
+    // Set initial active scroll category and force animations to be evaluated
+    setTimeout(() => {
+      this.checkActiveScrollCategory();
+      
+      // Manually trigger a scroll event to ensure animations are evaluated
+      if (this.skillsContainerRef?.nativeElement) {
+        const scrollEvent = new Event('scroll');
+        this.skillsContainerRef.nativeElement.dispatchEvent(scrollEvent);
+      }
+    }, 500);
+  }
+    // This event is triggered from the template (scroll)="onSkillsScroll($event)"
+  onSkillsScroll(event: Event): void {
+    // Always check active scroll category when scrolling the skills container
+    this.checkActiveScrollCategory();
+  }
+    /**
    * Check which category is currently in view for scroll indicator
    */
   checkActiveScrollCategory(): void {
@@ -92,16 +101,21 @@ export class AboutComponent implements OnInit, AfterViewInit {
     const containerHeight = container.clientHeight;
     let activeCategory = '';
     
+    // Check each category element
     for (const category of this.skillCategories) {
       const categoryId = category.toLowerCase().replace(' & ', '-').replace(' ', '-');
       const element = document.getElementById(categoryId);
       if (!element) continue;
       
-      const elementTop = element.offsetTop - container.offsetTop;
-      const elementHeight = element.clientHeight;
+      // Get category element position relative to the container
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      const elementTop = elementRect.top - containerRect.top;
+      const elementHeight = elementRect.height;
       
-      if (elementTop <= containerTop + containerHeight/2 && 
-          elementTop + elementHeight > containerTop) {
+      // Category is considered active if it's in the middle section of the viewport
+      if (elementTop <= containerHeight/2 && 
+          elementTop + elementHeight > 0) {
         activeCategory = category;
         break;
       }
@@ -111,8 +125,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
       this.activeScrollCategory = activeCategory;
     }
   }
-  
-  /**
+    /**
    * Filter skills by category
    */
   filterByCategory(category: string): void {
@@ -120,9 +133,21 @@ export class AboutComponent implements OnInit, AfterViewInit {
     
     if (category === 'All') {
       this.showAllSkills();
+      // After rendering all skills, make sure to check which ones are visible
+      setTimeout(() => {
+        this.checkActiveScrollCategory();
+      }, 100);
     } else {
       this.filteredSkillsByCategory = {};
       this.filteredSkillsByCategory[category] = this.skillsByCategory[category];
+      this.activeScrollCategory = category;
+      
+      // After rendering the specific category, scroll to top to ensure visibility
+      setTimeout(() => {
+        if (this.skillsContainerRef?.nativeElement) {
+          this.skillsContainerRef.nativeElement.scrollTop = 0;
+        }
+      }, 100);
     }
   }
   
@@ -174,24 +199,28 @@ export class AboutComponent implements OnInit, AfterViewInit {
     
     return faCube; // Default icon
   }
-  
-  /**
+    /**
    * Scroll to a specific category within the skills container
    */
   scrollToCategory(category: string): void {
     const categoryId = category.toLowerCase().replace(' & ', '-').replace(' ', '-');
     const element = document.getElementById(categoryId);
     
-    if (element) {
-      const container = document.querySelector('.skills-container') as HTMLElement;
-      if (container) {
-        container.scrollTo({
-          top: element.offsetTop - container.offsetTop,
-          behavior: 'smooth'
-        });
-        
-        this.activeScrollCategory = category;
-      }
+    if (element && this.skillsContainerRef?.nativeElement) {
+      const container = this.skillsContainerRef.nativeElement;
+      
+      // Get category element position relative to the container
+      const containerRect = container.getBoundingClientRect();
+      const elementRect = element.getBoundingClientRect();
+      const elementTop = element.offsetTop;
+      
+      // Smooth scroll to the element
+      container.scrollTo({
+        top: elementTop,
+        behavior: 'smooth'
+      });
+      
+      this.activeScrollCategory = category;
     }
   }
 }
