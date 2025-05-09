@@ -60,8 +60,7 @@
             <div class="w-1 h-12 bg-accent-color/50 absolute left-1/2 transform -translate-x-1/2"></div>
             <div class="w-12 h-1 bg-accent-color/50 absolute top-0 transform translate-y-6"></div>
           </div>
-          
-          <!-- Tech Background Animations Layer -->
+            <!-- Tech Background Animations Layer -->
           <div *ngIf="experience.previewMode" class="tech-background-container">
             <ng-container *ngIf="hasTechAnimation(experience)">
               <div 
@@ -69,6 +68,8 @@
                 class="tech-background"
                 [ngStyle]="getBackgroundStyle(experience, anim)">
                 <div class="tech-background-overlay"></div>
+                <!-- Add code directly as a background element -->
+                <div class="code-background" [innerHTML]="formatCodeForBackground(anim.snippet)"></div>
               </div>
             </ng-container>
           </div>

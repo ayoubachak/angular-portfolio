@@ -216,47 +216,47 @@ print(f"Accuracy: {accuracy:.2f}")`,
           });
         },
         { threshold: [0.1, 0.5, 0.9] }
-      );
-
-      // Preview mode observer with more detailed thresholds for scroll progress
+      );      // Preview mode observer with more detailed thresholds for scroll progress
       const previewObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
             const index = parseInt(entry.target.getAttribute('data-preview-index') || '-1');
             if (index >= 0 && this.scrollDrivenMode) {
               // Only update if scroll-driven mode is enabled
-              const prevState = this.experiences[index].previewMode;
               
-              // Update preview mode based on visibility
-              if (entry.isIntersecting && entry.intersectionRatio > 0.7) {
+              // Calculate scroll progress regardless of preview state
+              const bounds = entry.boundingClientRect;
+              const windowHeight = window.innerHeight;
+              const viewportCenter = windowHeight / 2;
+              const elementCenter = bounds.top + (bounds.height / 2);
+              
+              // Calculate how centered the element is in the viewport
+              // 0 = not in view, 1 = perfectly centered
+              const centeredness = 1 - Math.min(1, Math.abs(viewportCenter - elementCenter) / (windowHeight / 1.5));
+              
+              // Update scroll progress
+              this.experiences[index].scrollProgress = centeredness;
+              
+              // Add hysteresis to prevent flickering - only change state when clearly crossing thresholds
+              const wasInPreview = this.experiences[index].previewMode;
+              
+              // Use different thresholds for entering vs exiting preview mode
+              if (!wasInPreview && centeredness > 0.7) {
+                // Enter preview mode only when well into the threshold
                 this.experiences[index].previewMode = true;
-                
-                // Calculate scroll progress
-                const bounds = entry.boundingClientRect;
-                const windowHeight = window.innerHeight;
-                
-                // Normalize to 0-1 range where:
-                // 0 = just entered view (top of element at bottom of viewport)
-                // 0.5 = centered in viewport
-                // 1 = leaving view (bottom of element at top of viewport)
-                let progress = 1 - (bounds.bottom / windowHeight);
-                progress = Math.max(0, Math.min(1, progress * 1.5)); // Scale for better effect
-                
-                this.experiences[index].scrollProgress = progress;
-              } else {
+              } else if (wasInPreview && centeredness < 0.5) {
+                // Exit preview mode only when clearly below threshold
                 this.experiences[index].previewMode = false;
               }
               
-              // If state changed, trigger Angular change detection
-              if (prevState !== this.experiences[index].previewMode) {
-                // Force view update if needed
-              }
+              // No need to force view update - Angular change detection should handle this
             }
           });
         },
         { 
-          threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-          rootMargin: "-10% 0px -10% 0px" // Slight margin to trigger preview mode before fully in view
+          // Fewer thresholds to reduce callback frequency
+          threshold: [0, 0.25, 0.5, 0.75, 1],
+          rootMargin: "-5% 0px -5% 0px" // Adjusted margin to provide more stable behavior
         }
       );
 
@@ -322,35 +322,59 @@ print(f"Accuracy: {accuracy:.2f}")`,
       this.activeExperienceIndex = index;
     }
   }
-
   // Calculate style for preview mode scaling based on scroll progress
   getPreviewModeStyle(experience: ExperienceWithState): any {
     if (!this.scrollDrivenMode) return {};
     
+    // Only apply scaling if preview mode is active
+    // This prevents flickering when an element is at the transition threshold
     const scale = experience.previewMode 
       ? 1 + (experience.scrollProgress * 0.1) // Scale up as we scroll
       : 1;
       
     const opacity = experience.inView ? 1 : 0;
     
+    // Add transition delay to smooth out animations
     return {
       transform: `scale(${scale})`,
-      opacity: opacity
+      opacity: opacity,
+      transitionDelay: experience.previewMode ? '50ms' : '0ms'
     };
   }
-  
-  // Calculate background animation style based on scroll progress
+    // Calculate background animation style based on scroll progress
   getBackgroundStyle(experience: ExperienceWithState, animation: TechAnimation): any {
     if (!animation.backgroundPattern) return {};
     
     const scrollOffset = experience.scrollProgress * 100;
+    const opacity = 0.08 + (experience.scrollProgress * 0.05); // Slightly increase opacity based on scroll
     
     return {
       backgroundImage: animation.backgroundPattern,
       backgroundSize: '400px 400px',
       backgroundPosition: `${scrollOffset}px ${scrollOffset}px`,
-      backgroundColor: `${animation.color}08` // Very light version of the tech color
+      backgroundColor: `${animation.color}15`, // Light version of the tech color
+      '--tech-color': animation.color, // Pass the color as a CSS variable
+      transition: 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)'
     };
+  }
+  // Format code for background display
+  formatCodeForBackground(code: string): string {
+    // Escape HTML entities
+    const escaped = code
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+    
+    // Repeat code to fill the background if needed
+    // We'll wrap each block in a div for easier styling
+    let repeatedCode = '';
+    for (let i = 0; i < 3; i++) {
+      repeatedCode += `<div class="code-block">${escaped}</div>`;
+    }
+    
+    return repeatedCode;
   }
 
   // Utility to slugify tech names for CSS classes
