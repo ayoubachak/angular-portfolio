@@ -33,49 +33,26 @@ export class ExperienceComponent implements OnInit {
 
   ngOnInit(): void {
     const portfolioContent = this.contentService.getPortfolioContent();
-    
-    // Sort experiences by startDate in descending order (most recent first)
-    const sortedExperiences = [...portfolioContent.experience].sort((a, b) => {
-      try {
-        const aStartParts = a.startDate.split(' ');
-        const bStartParts = b.startDate.split(' ');
-        
-        let dateA: Date, dateB: Date;
-        
-        // Handle month name formats like "Oct 2024"
-        if (aStartParts.length > 1) {
-          dateA = new Date(`${aStartParts[0]} 1, ${aStartParts[1]}`);
-        } else {
-          dateA = new Date(a.startDate);
-        }
-        
-        if (bStartParts.length > 1) {
-          dateB = new Date(`${bStartParts[0]} 1, ${bStartParts[1]}`);
-        } else {
-          dateB = new Date(b.startDate);
-        }
-        
-        return dateB.getTime() - dateA.getTime();
-      } catch (e) {
-        console.error("Error sorting dates", e);
-        return 0; // Keep original order if there's an error
-      }
-    });
+    // Initialize experiences by processing raw data from content service
+    this.experiences = this.processExperiences(portfolioContent.experience);
+  }
 
-    // Process experiences to determine overlaps
-    this.experiences = this.processExperiences(sortedExperiences);
-    
-    // Add the part-time experiences from user input
-    this.addPartTimeExperiences();
-    
-    // Log for debugging
-    console.log("Processed experiences:", this.experiences);
+  // Helper method to convert month names to numbers (0-based)
+  private getMonthNumber(monthName: string): number {
+    const months: Record<string, number> = {
+      'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+      'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
+    };
+    return months[monthName] || 0; // Default to January if not found
   }
 
   private processExperiences(experiences: Experience[]): ExperienceWithState[] {
     const result: ExperienceWithState[] = [];
     
-    if (experiences.length === 0) return result;
+    if (experiences.length === 0) {
+      console.log("No experiences found to process");
+      return result;
+    }
     
     // First pass: Add basic state to each experience
     experiences.forEach((exp, index) => {
@@ -100,14 +77,16 @@ export class ExperienceComponent implements OnInit {
       try {
         // Handle month name formats like "Oct 2024"
         if (currentStartParts.length > 1) {
-          currentStart = new Date(`${currentStartParts[0]} 1, ${currentStartParts[1]}`);
+          const monthA = currentStartParts[0];
+          const yearA = parseInt(currentStartParts[1], 10);
+          currentStart = new Date(yearA, this.getMonthNumber(monthA), 1);
         } else {
           currentStart = new Date(current.startDate);
         }
         
         currentEnd = current.endDate === 'Present' ? new Date() : 
                      (currentEndParts.length > 1 ? 
-                      new Date(`${currentEndParts[0]} 1, ${currentEndParts[1]}`) : 
+                      new Date(parseInt(currentEndParts[1], 10), this.getMonthNumber(currentEndParts[0]), 1) : 
                       new Date(current.endDate));
       } catch (e) {
         console.error("Error parsing dates for", current.company, e);
@@ -127,14 +106,16 @@ export class ExperienceComponent implements OnInit {
         try {
           // Handle month name formats like "Oct 2024"
           if (otherStartParts.length > 1) {
-            otherStart = new Date(`${otherStartParts[0]} 1, ${otherStartParts[1]}`);
+            const monthB = otherStartParts[0];
+            const yearB = parseInt(otherStartParts[1], 10);
+            otherStart = new Date(yearB, this.getMonthNumber(monthB), 1);
           } else {
             otherStart = new Date(other.startDate);
           }
           
           otherEnd = other.endDate === 'Present' ? new Date() : 
                      (otherEndParts.length > 1 ? 
-                      new Date(`${otherEndParts[0]} 1, ${otherEndParts[1]}`) : 
+                      new Date(parseInt(otherEndParts[1], 10), this.getMonthNumber(otherEndParts[0]), 1) : 
                       new Date(other.endDate));
         } catch (e) {
           console.error("Error parsing dates for", other.company, e);
@@ -192,6 +173,8 @@ export class ExperienceComponent implements OnInit {
     this.experiences.push(alignerr);
     this.experiences.push(micro1);
     
+    console.log("Added part-time experiences:", this.experiences);
+    
     // Update parallelWith arrays for existing experiences that overlap with the new ones
     for (let i = 0; i < this.experiences.length - 2; i++) {
       const exp = this.experiences[i];
@@ -202,14 +185,16 @@ export class ExperienceComponent implements OnInit {
       let expStart: Date, expEnd: Date;
       try {
         if (expStartParts.length > 1) {
-          expStart = new Date(`${expStartParts[0]} 1, ${expStartParts[1]}`);
+          const monthA = expStartParts[0];
+          const yearA = parseInt(expStartParts[1], 10);
+          expStart = new Date(yearA, this.getMonthNumber(monthA), 1);
         } else {
           expStart = new Date(exp.startDate);
         }
         
         expEnd = exp.endDate === 'Present' ? new Date() : 
                 (expEndParts.length > 1 ? 
-                 new Date(`${expEndParts[0]} 1, ${expEndParts[1]}`) : 
+                 new Date(parseInt(expEndParts[1], 10), this.getMonthNumber(expEndParts[0]), 1) : 
                  new Date(exp.endDate));
       } catch (e) {
         console.error("Error parsing dates for", exp.company, e);
@@ -218,8 +203,8 @@ export class ExperienceComponent implements OnInit {
       }
       
       // Parse dates for new experiences
-      const alignerrStart = new Date('Oct 1, 2024');
-      const micro1Start = new Date('Aug 1, 2024');
+      const alignerrStart = new Date(2024, this.getMonthNumber('Oct'), 1);
+      const micro1Start = new Date(2024, this.getMonthNumber('Aug'), 1);
       const now = new Date();
       
       if (expStart <= now && expEnd >= alignerrStart) {
@@ -238,5 +223,10 @@ export class ExperienceComponent implements OnInit {
 
   toggleExpand(index: number): void {
     this.experiences[index].isExpanded = !this.experiences[index].isExpanded;
+  }
+
+  onImageError(experience: ExperienceWithState): void {
+    console.log(`Failed to load image for ${experience.company}`);
+    experience.logo = undefined;
   }
 }

@@ -40,13 +40,25 @@ export class ScrollAnimationDirective implements OnInit {
     // Element is in view
     if (scrollPosition > elementPosition + this.offset) {
       if (!this.isAnimated) {
-        this.renderer.addClass(this.element, this.animationClass);
+        console.log("Animating element:", this.element, this.animationClass);
+        // Add each class if multiple classes are specified
+        this.animationClass.split(' ').forEach(cls => {
+          this.renderer.addClass(this.element, cls);
+        });
+        // Also add 'show' to trigger CSS animation
+        this.renderer.addClass(this.element, 'show');
         this.isAnimated = true;
       }
     } else if (this.reverse) {
       // Element is out of view and reverse is enabled
       if (this.isAnimated) {
-        this.renderer.removeClass(this.element, this.animationClass);
+        console.log("Removing animation:", this.element, this.animationClass);
+        // Remove each class if multiple classes are specified
+        this.animationClass.split(' ').forEach(cls => {
+          this.renderer.removeClass(this.element, cls);
+        });
+        // Also remove 'show'
+        this.renderer.removeClass(this.element, 'show');
         this.isAnimated = false;
       }
     }

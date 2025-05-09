@@ -10,7 +10,7 @@
     </div>
     
     <!-- Timeline -->
-    <div class="relative max-w-4xl mx-auto">
+    <div class="relative max-w-4xl mx-auto" style="min-height: 300px;">
       <!-- Central Timeline Line -->
       <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-accent-color/30"></div>
       
@@ -45,7 +45,7 @@
                   [src]="experience.logo" 
                   [alt]="experience.company" 
                   class="w-12 h-12 object-contain"
-                  (error)="experience.logo = null">
+                  (error)="onImageError(experience)">
                 <fa-icon 
                   *ngIf="!experience.logo" 
                   [icon]="faBriefcase" 
@@ -107,6 +107,7 @@
     <!-- No Experience Message -->
     <div *ngIf="experiences.length === 0" class="text-center py-12">
       <p class="text-text-secondary">No professional experience available at the moment.</p>
+      <p class="text-text-secondary mt-2">Please check the console for debugging information.</p>
     </div>
   </div>
 </section>

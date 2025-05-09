@@ -130,7 +130,7 @@ export class FirebaseService {
         excerpt: 'Learn how to integrate Firebase with your Angular applications for a powerful backend solution.',
         author: 'John Doe',
         publishDate: new Date('2023-05-15'),
-        imageUrl: 'assets/images/blog/angular-firebase.jpg',
+        imageUrl: 'assets/images/placeholders/placeholder.jpg',
         tags: ['Angular', 'Firebase', 'Web Development']
       },
       {
@@ -140,7 +140,7 @@ export class FirebaseService {
         excerpt: 'Explore advanced CSS animation techniques to create engaging user experiences.',
         author: 'John Doe',
         publishDate: new Date('2023-04-20'),
-        imageUrl: 'assets/images/blog/css-animations.jpg',
+        imageUrl: 'assets/images/placeholders/placeholder.jpg',
         tags: ['CSS', 'Animations', 'Frontend']
       }
     ];
