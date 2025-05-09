@@ -32,9 +32,23 @@
         <div class="p-6 border-b border-accent-color/10">
           <div class="flex justify-between items-center mb-3">
             <h3 class="text-xl font-semibold text-white truncate">{{ repo.name }}</h3>
-            <a [href]="repo.html_url" target="_blank" rel="noopener noreferrer" class="text-accent-color hover:text-accent-color/80 transition-colors">
-              <fa-icon [icon]="faGithub"></fa-icon>
-            </a>
+            <div class="flex items-center space-x-2">
+              <a *ngIf="repo.homepage" 
+                 [href]="repo.homepage" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 class="text-accent-color hover:text-accent-color/80 transition-colors"
+                 title="Visit website">
+                <fa-icon [icon]="faGlobe"></fa-icon>
+              </a>
+              <a [href]="repo.html_url" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 class="text-accent-color hover:text-accent-color/80 transition-colors"
+                 title="View on GitHub">
+                <fa-icon [icon]="faGithub"></fa-icon>
+              </a>
+            </div>
           </div>
           
           <!-- Language Badge -->
@@ -45,12 +59,24 @@
         
         <!-- Repository Description -->
         <div class="p-6">
-          <p 
-            class="text-text-secondary mb-4 h-20 overflow-hidden"
-            [appLinkHoverWebview]="repo.description || ''"
-            [class.cursor-pointer]="hasLinksInDescription(repo.description || '')">
-            {{ repo.description || 'No description available' }}
-          </p>
+          <!-- Expandable Description Container -->
+          <div class="description-container relative mb-4">
+            <div 
+              [class.description-short]="!expandedDescriptions[repo.id]" 
+              [class.description-expanded]="expandedDescriptions[repo.id]"
+              class="text-text-secondary description-text overflow-hidden transition-all duration-300" 
+              [appLinkHoverWebview]="repo.description || ''"
+              [class.cursor-pointer]="hasLinksInDescription(repo.description || '')">
+              {{ repo.description || 'No description available' }}
+            </div>
+            
+            <button 
+              *ngIf="isDescriptionLong(repo.description)" 
+              (click)="toggleDescription(repo.id)"
+              class="text-accent-color text-xs mt-1 hover:underline focus:outline-none">
+              {{ expandedDescriptions[repo.id] ? 'Show less' : 'Show more' }}
+            </button>
+          </div>
           
           <!-- Repository Stats -->
           <div class="flex justify-between text-text-secondary text-sm">
@@ -78,15 +104,27 @@
               [href]="repo.html_url" 
               target="_blank" 
               rel="noopener noreferrer" 
-              class="flex-1 px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md text-center hover:bg-accent-color/10 transition-colors duration-300">
-              View Code
+              class="flex-1 px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md text-center hover:bg-accent-color/10 transition-colors duration-300 flex items-center justify-center space-x-1">
+              <fa-icon [icon]="faCode" class="text-sm"></fa-icon>
+              <span>Code</span>
+            </a>
+            
+            <a 
+              *ngIf="repo.homepage" 
+              [href]="repo.homepage" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="flex-1 px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md text-center hover:bg-accent-color/10 transition-colors duration-300 flex items-center justify-center space-x-1">
+              <fa-icon [icon]="faGlobe" class="text-sm"></fa-icon>
+              <span>Website</span>
             </a>
             
             <button 
               *ngIf="hasPreviewUrl(repo)" 
               (click)="openPreview(repo)" 
-              class="flex-1 px-4 py-2 bg-accent-color text-white rounded-md text-center hover:bg-accent-color/90 transition-colors duration-300">
-              Live Preview
+              class="flex-1 px-4 py-2 bg-accent-color text-white rounded-md text-center hover:bg-accent-color/90 transition-colors duration-300 flex items-center justify-center space-x-1">
+              <fa-icon [icon]="faExternalLinkAlt" class="text-sm"></fa-icon>
+              <span>Preview</span>
             </button>
           </div>
         </div>

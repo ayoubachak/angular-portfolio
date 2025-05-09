@@ -61,18 +61,23 @@ export class GithubService {
       `${this.apiUrl}/users/${this.username}/repos?sort=updated&per_page=${perPage}`
     ).pipe(
       map(repos => repos.map(repo => {
-        // Extract demo URL from description or homepage
-        const demoUrlMatch = repo.description?.match(/demo[:\s]*(https?:\/\/\S+)/i);
-        const liveUrlMatch = repo.description?.match(/live[:\s]*(https?:\/\/\S+)/i);
-        const siteUrlMatch = repo.description?.match(/site[:\s]*(https?:\/\/\S+)/i);
-        const urlMatch = repo.description?.match(/\b(https?:\/\/\S+)/i);
-        
-        // Prioritize the matches in order: demo > live > site > any URL
-        repo.demoUrl = demoUrlMatch ? demoUrlMatch[1] : 
-                      liveUrlMatch ? liveUrlMatch[1] :
-                      siteUrlMatch ? siteUrlMatch[1] :
-                      urlMatch ? urlMatch[1] :
-                      repo.homepage;
+        // Prioritize the homepage field if it exists
+        if (repo.homepage && repo.homepage.trim() !== '') {
+          repo.demoUrl = repo.homepage;
+        } else {
+          // Fall back to URL extraction from description if homepage is not available
+          const demoUrlMatch = repo.description?.match(/demo[:\s]*(https?:\/\/\S+)/i);
+          const liveUrlMatch = repo.description?.match(/live[:\s]*(https?:\/\/\S+)/i);
+          const siteUrlMatch = repo.description?.match(/site[:\s]*(https?:\/\/\S+)/i);
+          const urlMatch = repo.description?.match(/\b(https?:\/\/\S+)/i);
+          
+          // Prioritize the matches in order: demo > live > site > any URL
+          repo.demoUrl = demoUrlMatch ? demoUrlMatch[1] : 
+                        liveUrlMatch ? liveUrlMatch[1] :
+                        siteUrlMatch ? siteUrlMatch[1] :
+                        urlMatch ? urlMatch[1] : 
+                        '';
+        }
         return repo;
       })),
       catchError(err => {

@@ -32,3 +32,44 @@ button[disabled] {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Description styles */
+.description-text {
+  position: relative;
+  line-height: 1.5;
+}
+
+.description-short {
+  max-height: 4.5em; /* Roughly 3 lines of text */
+  overflow: hidden;
+}
+
+.description-short::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 1.5em;
+  background: linear-gradient(to bottom, transparent, var(--primary-color));
+  pointer-events: none;
+}
+
+.description-expanded {
+  max-height: 20em;
+  overflow-y: auto;
+}
+
+/* Scrollbar for expanded description */
+.description-expanded::-webkit-scrollbar {
+  width: 4px;
+}
+
+.description-expanded::-webkit-scrollbar-track {
+  background: var(--primary-color);
+}
+
+.description-expanded::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 10px;
+}

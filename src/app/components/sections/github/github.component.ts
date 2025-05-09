@@ -9,7 +9,7 @@ import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { 
   faCode, faExternalLinkAlt, faCodeBranch, faStar, 
   faEye, faCalendarAlt, faTimesCircle, faMobile as fasMobile,
-  faDesktop as fasDesktop, faAngleDown, faCheck
+  faDesktop as fasDesktop, faAngleDown, faCheck, faGlobe
 } from '@fortawesome/free-solid-svg-icons';
 import { WebviewService } from '../../../services/webview.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -50,6 +50,7 @@ export class GithubComponent implements OnInit {
   faDesktop = fasDesktop;
   faAngleDown = faAngleDown;
   faCheck = faCheck;
+  faGlobe = faGlobe;
   
   @ViewChild('previewModal') previewModal!: ElementRef;
 
@@ -59,6 +60,7 @@ export class GithubComponent implements OnInit {
   isLoadingMore: boolean = false;
   private maxRepos: number = 18; // Maximum number of repos to load
   allReposLoaded: boolean = false;
+  expandedDescriptions: { [key: number]: boolean } = {}; // Track which descriptions are expanded
 
   constructor(
     private githubService: GithubService,
@@ -116,7 +118,7 @@ export class GithubComponent implements OnInit {
     this.iframeLoading = true;
     
     // Create a sanitized URL for the iframe
-    const url = repo.demoUrl || repo.homepage || '';
+    const url = repo.demoUrl || '';
     if (url) {
       this.safePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     } else {
@@ -143,7 +145,7 @@ export class GithubComponent implements OnInit {
   }
 
   hasPreviewUrl(repo: GitHubRepo): boolean {
-    return !!(repo.demoUrl || repo.homepage);
+    return !!repo.demoUrl;
   }
 
   /**
@@ -168,5 +170,21 @@ export class GithubComponent implements OnInit {
   loadMoreRepos(): void {
     this.currentPage++;
     this.loadRepositories(true);
+  }
+
+  /**
+   * Check if a description is long enough to need expansion
+   */
+  isDescriptionLong(description?: string): boolean {
+    if (!description) return false;
+    // Roughly estimate if text is longer than 3 lines (about 180 characters)
+    return description.length > 180;
+  }
+
+  /**
+   * Toggle the expanded state of a repository description
+   */
+  toggleDescription(repoId: number): void {
+    this.expandedDescriptions[repoId] = !this.expandedDescriptions[repoId];
   }
 }
