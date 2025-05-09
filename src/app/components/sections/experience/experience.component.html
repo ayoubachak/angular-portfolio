@@ -1,4 +1,4 @@
-<section id="experience" class="py-24 bg-secondary-color">
+<section id="experience" class="py-24 bg-secondary-color" [class.scrollDrivenMode]="scrollDrivenMode">
   <div class="container mx-auto px-6">
     <!-- Section Header -->
     <div class="text-center mb-16" appScrollAnimation animationClass="animate-fade-in-up">
@@ -160,12 +160,11 @@
               class="text-text-secondary mt-4 line-clamp-2 experience-summary">
               {{ experience.description }}
             </p>
-            
-            <!-- Tech Animations Layer -->
+              <!-- Tech Animations Layer -->
             <ng-container *ngIf="hasTechAnimation(experience)">
               <div 
-                *ngFor="let anim of getExperienceTechAnimations(experience)" 
-                [class]="getTechAnimationClass(anim, experience)"
+                *ngFor="let anim of getExperienceTechAnimations(experience); let animIndex = index" 
+                [class]="getTechAnimationClass(anim, experience, animIndex)"
                 [ngStyle]="{'--tech-color': anim.color}"
                 [class.active]="activeExperienceIndex === i || experience.previewMode">
                 <div class="tech-animation-header">

@@ -26,13 +26,14 @@
 /* Experience card container */
 .experience-card {
   position: relative;
-  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1); /* Smoother, expo-like easing */
 }
 
 .experience-card.preview-active {
   margin-top: 6rem;
   margin-bottom: 6rem;
   z-index: 10;
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1); /* Consistent easing */
 }
 
 /* Timeline dot animation */
@@ -49,7 +50,9 @@
 /* Experience content card */
 .experience-content-card {
   position: relative;
-  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1); /* Smoother, expo-like easing */
+  transform-origin: center;
+  will-change: transform, opacity, width; /* Performance optimization */
 }
 
 .experience-preview-card {
@@ -57,42 +60,61 @@
   max-width: 800px;
   min-height: 300px; /* Minimum height when in preview mode */
   z-index: 10;
+  transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1); /* Slightly slower for more elegance */
 }
 
 /* Preview mode animations */
 .preview-title {
   font-size: 2rem;
   margin-bottom: 1rem;
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translateY(0); /* Start position for transition */
+}
+
+.experience-card:not(.preview-active) .preview-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .preview-logo {
   width: 5rem;
   height: 5rem;
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .preview-logo img {
   width: 3.5rem;
   height: 3.5rem;
+  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .preview-description {
   opacity: 1;
   max-height: 1000px; 
-  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+  transform: translateY(0); /* For smoother entrance */
+}
+
+.experience-card:not(.preview-active) .preview-description {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .preview-text {
   font-size: 1.1rem;
   line-height: 1.6;
+  transition: all 1s ease;
 }
 
 .preview-skills {
   margin-top: 2rem;
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1) 0.2s; /* Slight delay for staggered animation */
 }
 
 .preview-skill {
   font-size: 0.9rem;
   padding: 0.5rem 1rem;
+  transition: all 0.5s ease;
 }
 
 /* Tech background animation */
@@ -126,11 +148,24 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, 
-                rgba(30, 41, 59, 0.95) 0%, 
-                rgba(30, 41, 59, 0.8) 50%, 
-                rgba(30, 41, 59, 0.95) 100%);
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary-color-rgb, 30, 41, 59), 0.7) 0%,
+    rgba(var(--primary-color-rgb, 30, 41, 59), 0.85) 50%,
+    rgba(var(--primary-color-rgb, 30, 41, 59), 0.95) 100%
+  );
+  backdrop-filter: blur(2px);
   z-index: 2;
+  transition: all 1.2s ease;
+}
+
+.experience-card.preview-active .tech-background-overlay {
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--primary-color-rgb, 30, 41, 59), 0.75) 0%,
+    rgba(var(--primary-color-rgb, 30, 41, 59), 0.9) 100%
+  );
+  backdrop-filter: blur(3px);
 }
 
 /* Code background styling */
@@ -140,30 +175,69 @@
   left: 0;
   width: 100%;
   height: 100%;
-  font-family: 'Courier New', monospace;
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.15);
-  line-height: 1.4;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.08); /* More subtle text in scroll mode */
+  line-height: 1.5;
   white-space: pre-wrap;
-  padding: 1rem;
+  padding: 2rem;
   overflow: hidden;
   z-index: 1;
   transform-origin: center;
-  animation: pulseScale 8s ease-in-out infinite;
+  animation: floatCode 25s linear infinite;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.experience-card.preview-active .code-background {
+  opacity: 1;
 }
 
 .code-background .code-block {
   padding: 1rem;
   margin: 0.5rem;
-  width: calc(100% - 1rem);
-  opacity: 0.7;
-  background-color: rgba(0, 0, 0, 0.2);
+  width: calc(100% - 2rem);
+  opacity: 0.8;
+  background-color: transparent;
   border-radius: 0.5rem;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transform: rotate(var(--rotate, 0deg));
+}
+
+.code-background .code-block:nth-child(1) {
+  --rotate: -1deg;
+  font-size: 0.8rem;
+}
+
+.code-background .code-block:nth-child(2) {
+  --rotate: 1deg;
+  transform: scale(0.95);
+}
+
+.code-background .code-block:nth-child(3) {
+  --rotate: -0.5deg;
+  transform: scale(1.05);
+}
+
+@keyframes floatCode {
+  0% {
+    transform: translateY(5%) translateX(-2%);
+  }
+  25% {
+    transform: translateY(-2%) translateX(1%);
+  }
+  50% {
+    transform: translateY(3%) translateX(3%);
+  }
+  75% {
+    transform: translateY(-1%) translateX(-3%);
+  }
+  100% {
+    transform: translateY(5%) translateX(-2%);
+  }
 }
 
 @keyframes pulseScale {
@@ -241,13 +315,33 @@
   opacity: 0;
   transform: scale(0.8);
   pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
   max-height: 250px;
   overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Preview mode tech animations */
-.tech-animation.preview-mode {
+/* Preview mode tech animations - moved to background in scroll mode */
+.scrollDrivenMode .tech-animation.preview-mode {
+  position: absolute;
+  z-index: 1; /* Below content */
+  max-height: 100%;
+  width: 100%;
+  max-width: 100%;
+  opacity: 0.1;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  border: none;
+  background-color: transparent;
+  overflow: visible;
+  transform: scale(1);
+  padding: 0;
+}
+
+/* Manual mode tech animations stay in foreground */
+:not(.scrollDrivenMode) .tech-animation.preview-mode {
   position: absolute;
   z-index: 20;
   max-height: 80%;
@@ -259,15 +353,15 @@
 .tech-animation.active {
   opacity: 0.9;
   transform: scale(1);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-.experience-card:hover .tech-animation {
+.experience-card:hover .tech-animation:not(.preview-mode) {
   opacity: 0.9;
   transform: scale(1);
 }
 
-/* Tech Animation Positions */
+/* Tech Animation Positions - Default state */
 .tech-left {
   left: -320px;
   top: 50px;
@@ -278,14 +372,16 @@
   top: 50px;
 }
 
-/* Preview mode tech positions */
-.tech-animation.preview-mode.tech-left {
+/* Preview mode tech positions - alternating based on even/odd index */
+.experience-card:nth-child(odd) .tech-animation.preview-mode:not(.scrollDrivenMode .tech-animation.preview-mode) {
   left: -30%;
+  right: auto;
   top: 20%;
 }
 
-.tech-animation.preview-mode.tech-right {
+.experience-card:nth-child(even) .tech-animation.preview-mode:not(.scrollDrivenMode .tech-animation.preview-mode) {
   right: -30%;
+  left: auto;
   top: 20%;
 }
 

@@ -216,7 +216,12 @@ print(f"Accuracy: {accuracy:.2f}")`,
           });
         },
         { threshold: [0.1, 0.5, 0.9] }
-      );      // Preview mode observer with more detailed thresholds for scroll progress
+      );
+      
+      // Debounce timer for smoother preview transitions
+      let previewUpdateTimers: { [key: number]: any } = {};
+      
+      // Preview mode observer with more detailed thresholds for scroll progress
       const previewObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
@@ -230,33 +235,44 @@ print(f"Accuracy: {accuracy:.2f}")`,
               const viewportCenter = windowHeight / 2;
               const elementCenter = bounds.top + (bounds.height / 2);
               
-              // Calculate how centered the element is in the viewport
-              // 0 = not in view, 1 = perfectly centered
-              const centeredness = 1 - Math.min(1, Math.abs(viewportCenter - elementCenter) / (windowHeight / 1.5));
+              // Enhanced centeredness calculation for smoother transitions
+              // Uses a bell curve for more natural feeling transitions
+              const normalizedPosition = (elementCenter - viewportCenter) / (windowHeight / 2);
+              const centeredness = Math.max(0, 1 - Math.pow(normalizedPosition, 2) * 0.8);
               
-              // Update scroll progress
-              this.experiences[index].scrollProgress = centeredness;
+              // Smoothly update scroll progress
+              // Slight animation easing by blending with previous value
+              const prevProgress = this.experiences[index].scrollProgress || 0;
+              this.experiences[index].scrollProgress = prevProgress * 0.2 + centeredness * 0.8;
               
-              // Add hysteresis to prevent flickering - only change state when clearly crossing thresholds
-              const wasInPreview = this.experiences[index].previewMode;
-              
-              // Use different thresholds for entering vs exiting preview mode
-              if (!wasInPreview && centeredness > 0.7) {
-                // Enter preview mode only when well into the threshold
-                this.experiences[index].previewMode = true;
-              } else if (wasInPreview && centeredness < 0.5) {
-                // Exit preview mode only when clearly below threshold
-                this.experiences[index].previewMode = false;
+              // Clear any pending timers for this experience
+              if (previewUpdateTimers[index]) {
+                clearTimeout(previewUpdateTimers[index]);
               }
               
-              // No need to force view update - Angular change detection should handle this
+              // Debounced state updates to prevent flickering
+              previewUpdateTimers[index] = setTimeout(() => {
+                // Add hysteresis to prevent flickering - only change state when clearly crossing thresholds
+                const wasInPreview = this.experiences[index].previewMode;
+                const currentProgress = this.experiences[index].scrollProgress;
+                
+                // Use different thresholds for entering vs exiting preview mode
+                // With increased hysteresis
+                if (!wasInPreview && currentProgress > 0.7) {
+                  // Enter preview mode only when well into the threshold
+                  this.experiences[index].previewMode = true;
+                } else if (wasInPreview && currentProgress < 0.45) { // Lower threshold for exiting
+                  // Exit preview mode only when clearly below threshold
+                  this.experiences[index].previewMode = false;
+                }
+              }, 50); // Short delay to smooth out transitions
             }
           });
         },
         { 
-          // Fewer thresholds to reduce callback frequency
-          threshold: [0, 0.25, 0.5, 0.75, 1],
-          rootMargin: "-5% 0px -5% 0px" // Adjusted margin to provide more stable behavior
+          // Smoother, more frequent thresholds for better responsiveness
+          threshold: Array.from({ length: 21 }, (_, i) => i * 0.05), // 0, 0.05, 0.1, ..., 1
+          rootMargin: "-5% 0px -5% 0px" // Adjusted margin to provide stable behavior
         }
       );
 
@@ -308,10 +324,19 @@ print(f"Accuracy: {accuracy:.2f}")`,
       .filter(skill => this.techAnimations[skill])
       .map(skill => this.techAnimations[skill]);
   }
-
   // Create class for tech animation based on position and preview mode
-  getTechAnimationClass(animation: TechAnimation, experience: ExperienceWithState): string {
-    return `tech-animation tech-${this.slugify(animation.tech)} tech-${animation.position || 'left'}${
+  getTechAnimationClass(animation: TechAnimation, experience: ExperienceWithState, index: number): string {
+    // Determine position based on the experience card index to alternate sides
+    let position = animation.position || 'left';
+    
+    // If in preview mode, override the position based on the card index for alternating effect
+    if (experience.previewMode) {
+      // Find the index of this experience in the array
+      const expIndex = this.experiences.findIndex(exp => exp === experience);
+      position = expIndex % 2 === 0 ? 'left' : 'right';
+    }
+    
+    return `tech-animation tech-${this.slugify(animation.tech)} tech-${position}${
       experience.previewMode ? ' preview-mode' : ''
     }`;
   }
@@ -321,25 +346,40 @@ print(f"Accuracy: {accuracy:.2f}")`,
     if (!this.scrollDrivenMode) {
       this.activeExperienceIndex = index;
     }
-  }
-  // Calculate style for preview mode scaling based on scroll progress
+  }  // Calculate style for preview mode scaling based on scroll progress
   getPreviewModeStyle(experience: ExperienceWithState): any {
     if (!this.scrollDrivenMode) return {};
     
-    // Only apply scaling if preview mode is active
-    // This prevents flickering when an element is at the transition threshold
-    const scale = experience.previewMode 
-      ? 1 + (experience.scrollProgress * 0.1) // Scale up as we scroll
-      : 1;
-      
-    const opacity = experience.inView ? 1 : 0;
+    // Create a smooth transition for scaling
+    // Start with a base scale that's slightly larger than 1
+    let scale = 1;
+    let opacity = experience.inView ? 1 : 0;
+    let transformOrigin = 'center';
     
-    // Add transition delay to smooth out animations
+    // If in preview mode, enhance the scale based on scroll progress
+    if (experience.previewMode) {
+      // Non-linear easing for smoother scaling effect
+      const easedProgress = this.easeInOutCubic(experience.scrollProgress);
+      scale = 1 + (easedProgress * 0.12); // Slightly larger scale for more noticeable effect
+      
+      // Find the index to determine transform origin (alternating effect)
+      const expIndex = this.experiences.findIndex(exp => exp === experience);
+      transformOrigin = expIndex % 2 === 0 ? 'center left' : 'center right';
+    }
+    
+    // Add staggered transitions for smoother animations
     return {
       transform: `scale(${scale})`,
       opacity: opacity,
-      transitionDelay: experience.previewMode ? '50ms' : '0ms'
+      transformOrigin: transformOrigin,
+      transitionDelay: experience.previewMode ? '100ms' : '0ms',
+      transitionDuration: experience.previewMode ? '1.2s' : '0.8s'
     };
+  }
+  
+  // Cubic easing function for smoother animations
+  easeInOutCubic(x: number): number {
+    return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
   }
     // Calculate background animation style based on scroll progress
   getBackgroundStyle(experience: ExperienceWithState, animation: TechAnimation): any {
