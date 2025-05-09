@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ContentService, Experience } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBriefcase, faCalendar, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faCalendar, faChevronDown, faChevronUp, faCode } from '@fortawesome/free-solid-svg-icons';
 
 interface ExperienceWithState extends Experience {
   isExpanded: boolean;
@@ -11,6 +11,13 @@ interface ExperienceWithState extends Experience {
   isLast: boolean;
   hasParallel: boolean;
   parallelWith?: number[];
+}
+
+interface TechAnimation {
+  tech: string;
+  snippet: string;
+  color: string;
+  position?: 'left' | 'right' | 'top' | 'bottom';
 }
 
 @Component({
@@ -22,12 +29,117 @@ interface ExperienceWithState extends Experience {
 })
 export class ExperienceComponent implements OnInit {
   experiences: ExperienceWithState[] = [];
+  showPartTime: boolean = false;
+  activeExperienceIndex: number = -1;
+
+  // Tech animations
+  techAnimations: Record<string, TechAnimation> = {
+    'Flask': {
+      tech: 'Flask',
+      snippet: `from flask import Flask, jsonify
+app = Flask(__name__)
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    return jsonify({
+        "status": "success", 
+        "data": {"message": "Hello from Flask!"}
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True)`,
+      color: '#0d7963',
+      position: 'left'
+    },
+    'React': {
+      tech: 'React',
+      snippet: `import React, { useState, useEffect } from 'react';
+
+function App() {
+  const [data, setData] = useState(null);
+  
+  useEffect(() => {
+    fetch('/api/data')
+      .then(res => res.json())
+      .then(data => setData(data));
+  }, []);
+
+  return (
+    <div className="app">
+      {data ? <p>{data.message}</p> : <p>Loading...</p>}
+    </div>
+  );
+}`,
+      color: '#61dafb',
+      position: 'right'
+    },
+    'FastAPI': {
+      tech: 'FastAPI',
+      snippet: `from fastapi import FastAPI, Depends
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class Item(BaseModel):
+    name: str
+    description: str
+
+@app.post("/items/")
+async def create_item(item: Item):
+    return {"name": item.name, "description": item.description}`,
+      color: '#009485',
+      position: 'left'
+    },
+    'Docker': {
+      tech: 'Docker',
+      snippet: `FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["python", "app.py"]`,
+      color: '#2496ed',
+      position: 'right'
+    },
+    'TypeScript': {
+      tech: 'TypeScript',
+      snippet: `interface User {
+  id: number;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
+class UserService {
+  private users: User[] = [];
+
+  async getUser(id: number): Promise<User | undefined> {
+    return this.users.find(user => user.id === id);
+  }
+
+  async addUser(user: Omit<User, "id">): Promise<User> {
+    const newUser = { ...user, id: Date.now() };
+    this.users.push(newUser);
+    return newUser;
+  }
+}`,
+      color: '#3178c6',
+      position: 'right'
+    }
+  };
   
   // Icons
   faBriefcase = faBriefcase;
   faCalendar = faCalendar;
   faChevronDown = faChevronDown;
   faChevronUp = faChevronUp;
+  faCode = faCode;
 
   constructor(private contentService: ContentService) {}
 
@@ -35,6 +147,46 @@ export class ExperienceComponent implements OnInit {
     const portfolioContent = this.contentService.getPortfolioContent();
     // Initialize experiences by processing raw data from content service
     this.experiences = this.processExperiences(portfolioContent.experience);
+    // Add part-time experiences
+    this.addPartTimeExperiences();
+  }
+
+  // Get animation for a specific technology
+  getTechAnimation(tech: string): TechAnimation | undefined {
+    return this.techAnimations[tech];
+  }
+
+  // Check if an experience uses a specific technology that we have animations for
+  hasTechAnimation(experience: ExperienceWithState): boolean {
+    if (!experience.skills) return false;
+    return experience.skills.some(skill => this.techAnimations[skill]);
+  }
+
+  // Get all tech animations that apply to an experience
+  getExperienceTechAnimations(experience: ExperienceWithState): TechAnimation[] {
+    if (!experience.skills) return [];
+    return experience.skills
+      .filter(skill => this.techAnimations[skill])
+      .map(skill => this.techAnimations[skill]);
+  }
+
+  // Create class for tech animation based on position
+  getTechAnimationClass(animation: TechAnimation): string {
+    return `tech-animation tech-${this.slugify(animation.tech)} tech-${animation.position || 'left'}`;
+  }
+
+  // Set active experience for enhanced animations
+  setActiveExperience(index: number): void {
+    this.activeExperienceIndex = index;
+  }
+
+  // Utility to slugify tech names for CSS classes
+  slugify(text: string): string {
+    return text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  }
+
+  togglePartTime(): void {
+    this.showPartTime = !this.showPartTime;
   }
 
   // Helper method to convert month names to numbers (0-based)
@@ -145,9 +297,9 @@ export class ExperienceComponent implements OnInit {
       role: 'AI Trainer',
       startDate: 'Oct 2024',
       endDate: 'Present',
-      description: 'Contract Part-time, Remote position based in France.',
-      logo: 'assets/images/companies/alignerr-logo.jpg', // No logo file available
-      skills: ['AI Training', 'Data Labeling', 'Machine Learning'],
+      description: 'Contract Part-time, Remote position based in France. Specialized in training AI models for dental alignment and orthodontic purposes, improving detection accuracy of misalignments and required corrections.',
+      logo: 'assets/images/companies/alignerr-logo.jpg',
+      skills: ['AI Training', 'Data Labeling', 'Machine Learning', 'Python', 'TensorFlow'],
       isExpanded: false,
       isFirst: false,
       isLast: false,
@@ -156,13 +308,13 @@ export class ExperienceComponent implements OnInit {
     };
     
     const micro1: ExperienceWithState = {
-      company: 'micro1',
-      role: 'AI Trainer',
+      company: 'Micro1',
+      role: 'AI Researcher',
       startDate: 'Aug 2024',
       endDate: 'Present',
-      description: 'Contract Part-time, Remote position based in France.',
-      logo: 'assets/images/companies/micro1-logo.jpg', // No logo file available
-      skills: ['AI Training', 'Data Labeling', 'Machine Learning'],
+      description: 'Part-time research position focused on developing cutting-edge small language models optimized for specific industry verticals. Working on model compression techniques and domain-specific fine-tuning approaches.',
+      logo: 'assets/images/companies/micro1-logo.jpg',
+      skills: ['NLP', 'LLMs', 'PyTorch', 'Model Optimization', 'Research'],
       isExpanded: false,
       isFirst: false,
       isLast: false,
@@ -170,10 +322,14 @@ export class ExperienceComponent implements OnInit {
       parallelWith: [this.experiences.length]
     };
     
-    this.experiences.push(alignerr);
-    this.experiences.push(micro1);
+    // Only add these if they don't already exist
+    if (!this.experiences.find(exp => exp.company === alignerr.company)) {
+      this.experiences.push(alignerr);
+    }
     
-    console.log("Added part-time experiences:", this.experiences);
+    if (!this.experiences.find(exp => exp.company === micro1.company)) {
+      this.experiences.push(micro1);
+    }
     
     // Update parallelWith arrays for existing experiences that overlap with the new ones
     for (let i = 0; i < this.experiences.length - 2; i++) {
@@ -221,8 +377,15 @@ export class ExperienceComponent implements OnInit {
     }
   }
 
+  // Toggle experience expansion
   toggleExpand(index: number): void {
     this.experiences[index].isExpanded = !this.experiences[index].isExpanded;
+    // Add active experience animation when expanded
+    if (this.experiences[index].isExpanded) {
+      this.setActiveExperience(index);
+    } else if (this.activeExperienceIndex === index) {
+      this.activeExperienceIndex = -1;
+    }
   }
 
   onImageError(experience: ExperienceWithState): void {

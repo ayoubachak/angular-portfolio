@@ -50,3 +50,158 @@
   top: 50%;
   left: -10px;
 }
+
+/* Active experience card */
+.active-card {
+  box-shadow: 0 0 15px rgba(var(--accent-color-rgb), 0.3);
+  transform: translateY(-5px);
+}
+
+/* Part-time experiences */
+.part-time-experience {
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+
+.part-time-experience:hover {
+  opacity: 1;
+}
+
+/* Technology skill badges */
+.tech-skill {
+  background-color: var(--tech-color, rgba(255,255,255,0.1)) !important;
+  color: white !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-skill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.tech-skill:hover::before {
+  transform: translateX(100%);
+}
+
+/* Tech Animations */
+.tech-animation {
+  position: absolute;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--tech-color, #61dafb);
+  border-radius: 8px;
+  padding: 1rem;
+  color: #f8f8f8;
+  font-family: 'Courier New', monospace;
+  font-size: 0.75rem;
+  z-index: 5;
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  max-height: 250px;
+  overflow: hidden;
+}
+
+.tech-animation.active {
+  opacity: 0.9;
+  transform: scale(1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.experience-card:hover .tech-animation {
+  opacity: 0.9;
+  transform: scale(1);
+}
+
+/* Tech Animation Positions */
+.tech-left {
+  left: -320px;
+  top: 50px;
+}
+
+.tech-right {
+  right: -320px;
+  top: 50px;
+}
+
+.tech-top {
+  top: -260px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+}
+
+.tech-top.active, .experience-card:hover .tech-top {
+  transform: translateX(-50%) scale(1);
+}
+
+.tech-bottom {
+  bottom: -260px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+}
+
+.tech-bottom.active, .experience-card:hover .tech-bottom {
+  transform: translateX(-50%) scale(1);
+}
+
+/* Header for tech animations */
+.tech-animation-header {
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--tech-color, #61dafb);
+  color: var(--tech-color, #61dafb);
+  font-weight: bold;
+}
+
+/* Code inside tech animations */
+.tech-animation-code {
+  font-size: 0.7rem;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.tech-animation-code::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tech-animation-code::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.1);
+}
+
+.tech-animation-code::-webkit-scrollbar-thumb {
+  background-color: var(--tech-color, #61dafb);
+  border-radius: 4px;
+}
+
+/* Typing animation for code snippets */
+.experience-card:hover .tech-animation-code,
+.tech-animation.active .tech-animation-code {
+  animation: typing 1s steps(30, end);
+}
+
+@keyframes typing {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .tech-animation {
+    display: none;
+  }
+}
