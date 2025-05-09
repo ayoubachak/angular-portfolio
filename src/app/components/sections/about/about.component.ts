@@ -35,13 +35,16 @@ export class AboutComponent implements OnInit, AfterViewInit {
   filteredSkillsByCategory: Record<string, Skill[]> = {};
   activeCategory: string = 'All';
   activeScrollCategory: string = '';
-  
-  // Language proficiency
+    // Language proficiency
   languages: Language[] = [
     { name: 'English', level: 'Fluent', proficiency: 95, flagIcon: '🇬🇧' },
     { name: 'French', level: 'Fluent', proficiency: 90, flagIcon: '🇫🇷' },
     { name: 'Arabic', level: 'Native', proficiency: 100, flagIcon: '🇲🇦' }
   ];
+  
+  // Globe interaction
+  isGlobeSpinning: boolean = false;
+  hoveredLanguage: string = '';
   
   // Icons
   faCode = faCode;
@@ -199,7 +202,54 @@ export class AboutComponent implements OnInit, AfterViewInit {
     
     return faCube; // Default icon
   }
-    /**
+  
+  /**
+   * Toggle globe spinning animation
+   */
+  toggleGlobeSpin(isSpinning: boolean): void {
+    this.isGlobeSpinning = isSpinning;
+  }
+  
+  /**
+   * Set the currently hovered language
+   */
+  setHoveredLanguage(language: string): void {
+    this.hoveredLanguage = language;
+  }
+  
+  /**
+   * Get positioning style for language regions on the globe
+   */
+  getLanguageRegionStyle(language: Language): any {
+    // Position languages in different regions of the globe
+    switch(language.name) {
+      case 'English':
+        return {
+          top: '30%',
+          left: '70%',
+          transform: 'translateZ(20px)'
+        };
+      case 'French':
+        return {
+          top: '40%',
+          left: '45%',
+          transform: 'translateZ(15px)'
+        };
+      case 'Arabic':
+        return {
+          top: '60%',
+          left: '55%',
+          transform: 'translateZ(18px)'
+        };
+      default:
+        return {
+          top: '50%',
+          left: '50%'
+        };
+    }
+  }
+
+  /**
    * Scroll to a specific category within the skills container
    */
   scrollToCategory(category: string): void {

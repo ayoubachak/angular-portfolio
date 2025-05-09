@@ -7,6 +7,7 @@
   --primary-color: #1e1e2a;
   --secondary-color: #2c2c3a;
   --accent-color: #6d28d9;
+  --accent-color-rgb: 109, 40, 217; /* RGB values for accent color */
   --text-color: #f3f4f6;
   --text-secondary: #d1d5db;
   --animation-duration: 0.8s;
