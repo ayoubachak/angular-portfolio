@@ -105,12 +105,30 @@
   opacity: 0.7;
   transform: translateY(0);
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.language-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(var(--accent-color-rgb), 0.7), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .language-card.active-language {
   opacity: 1;
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 10px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.language-card.active-language::before {
+  opacity: 1;
 }
 
 .language-progress-bar {

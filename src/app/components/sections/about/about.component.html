@@ -73,9 +73,8 @@
                 <div class="globe-grid-z absolute inset-0 rounded-full border border-accent-color/10"></div>
               </div>
             </div>
-            
-            <!-- Language Cards -->
-            <div class="language-cards grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <!-- Language Cards -->
+            <div class="language-cards grid grid-cols-1 sm:grid-cols-3 gap-6 mt-10">
               <div 
                 *ngFor="let language of languages" 
                 class="language-card p-5 bg-primary-color rounded-lg shadow-md transition-all duration-300"
@@ -83,13 +82,14 @@
                 (mouseenter)="setHoveredLanguage(language.name)"
                 (mouseleave)="setHoveredLanguage('')"
                 appScrollAnimation
-                animationClass="animate-fade-in-up">
-                  <div class="flex items-center justify-between mb-2">
+                animationClass="animate-fade-in-up">                <div class="mb-2">
                   <div class="flex items-center">
                     <span class="text-2xl mr-3">{{ language.flagIcon }}</span>
                     <h4 class="text-lg font-medium text-white">{{ language.name }}</h4>
                   </div>
-                  <span class="text-accent-color font-medium">{{ language.level }}</span>
+                  <div class="text-right mt-2">
+                    <span class="text-accent-color font-medium bg-accent-color/10 px-3 py-1 rounded-full text-sm">{{ language.level }}</span>
+                  </div>
                 </div>
                   <div class="mt-4 w-full bg-secondary-color rounded-full h-3 overflow-hidden shadow-inner">
                   <div 
