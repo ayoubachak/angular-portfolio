@@ -38,7 +38,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
   languages: Language[] = [
     { name: 'English', level: 'Fluent', proficiency: 95, flagIcon: '🇬🇧' },
     { name: 'French', level: 'Fluent', proficiency: 90, flagIcon: '🇫🇷' },
-    { name: 'Arabic', level: 'Native', proficiency: 100, flagIcon: '🇩🇿' }
+    { name: 'Arabic', level: 'Native', proficiency: 100, flagIcon: '🇲🇦' }
   ];
   
   // Icons

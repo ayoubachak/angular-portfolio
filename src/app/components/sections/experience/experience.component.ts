@@ -323,17 +323,35 @@ print(f"Accuracy: {accuracy:.2f}")`,
     return experience.skills
       .filter(skill => this.techAnimations[skill])
       .map(skill => this.techAnimations[skill]);
-  }
-  // Create class for tech animation based on position and preview mode
+  }  // Create class for tech animation based on position and preview mode
   getTechAnimationClass(animation: TechAnimation, experience: ExperienceWithState, index: number): string {
-    // Determine position based on the experience card index to alternate sides
-    let position = animation.position || 'left';
+    // Find the index of this experience in the array
+    const expIndex = this.experiences.findIndex(exp => exp === experience);
+    const isEvenExperience = expIndex % 2 === 0;
     
-    // If in preview mode, override the position based on the card index for alternating effect
+    // Determine position based on various factors for nice alternating pattern
+    let position;
+    
     if (experience.previewMode) {
-      // Find the index of this experience in the array
-      const expIndex = this.experiences.findIndex(exp => exp === experience);
-      position = expIndex % 2 === 0 ? 'left' : 'right';
+      // In preview mode, create an alternating pattern based on experience index and animation index
+      if (this.scrollDrivenMode) {
+        // For scroll-driven mode, position doesn't matter as much (fullscreen background)
+        position = isEvenExperience ? 'left' : 'right';
+      } else {
+        // For manual preview mode, alternate positions based on both indices
+        if (index === 0) {
+          position = isEvenExperience ? 'left' : 'right';
+        } else if (index === 1) {
+          position = isEvenExperience ? 'right' : 'left';
+        } else if (index % 2 === 0) {
+          position = 'top';
+        } else {
+          position = 'bottom';
+        }
+      }
+    } else {
+      // In regular mode, use the specified position or default to alternating sides
+      position = animation.position || (index % 2 === 0 ? 'right' : 'left');
     }
     
     return `tech-animation tech-${this.slugify(animation.tech)} tech-${position}${
@@ -355,6 +373,9 @@ print(f"Accuracy: {accuracy:.2f}")`,
     let scale = 1;
     let opacity = experience.inView ? 1 : 0;
     let transformOrigin = 'center';
+    let translateY = '0';
+    let boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+    let blur = 0;
     
     // If in preview mode, enhance the scale based on scroll progress
     if (experience.previewMode) {
@@ -362,18 +383,34 @@ print(f"Accuracy: {accuracy:.2f}")`,
       const easedProgress = this.easeInOutCubic(experience.scrollProgress);
       scale = 1 + (easedProgress * 0.12); // Slightly larger scale for more noticeable effect
       
-      // Find the index to determine transform origin (alternating effect)
+      // Enhanced shadow based on scroll progress
+      const shadowIntensity = Math.min(0.3, 0.1 + (easedProgress * 0.2));
+      boxShadow = `0 ${8 + (easedProgress * 12)}px ${15 + (easedProgress * 20)}px rgba(0, 0, 0, ${shadowIntensity})`;
+      
+      // Find the index to determine transform origin and direction (alternating effect)
       const expIndex = this.experiences.findIndex(exp => exp === experience);
-      transformOrigin = expIndex % 2 === 0 ? 'center left' : 'center right';
+      const isEven = expIndex % 2 === 0;
+      
+      // Set transform origin for a more dynamic feel
+      transformOrigin = isEven ? 'center left' : 'center right';
+      
+      // Slight floating effect based on progress
+      translateY = `${-5 * easedProgress}px`;
     }
     
     // Add staggered transitions for smoother animations
+    const expIndex = this.experiences.findIndex(exp => exp === experience);
+    const staggerDelay = Math.min(expIndex * 50, 200); // Max 200ms delay
+    
     return {
-      transform: `scale(${scale})`,
+      transform: `scale(${scale}) translateY(${translateY})`,
       opacity: opacity,
       transformOrigin: transformOrigin,
-      transitionDelay: experience.previewMode ? '100ms' : '0ms',
-      transitionDuration: experience.previewMode ? '1.2s' : '0.8s'
+      boxShadow: boxShadow,
+      transitionDelay: experience.previewMode ? `${staggerDelay}ms` : '0ms',
+      transitionDuration: experience.previewMode ? '1.8s' : '1.2s',
+      transitionProperty: 'transform, opacity, box-shadow, background-color',
+      transitionTimingFunction: 'cubic-bezier(0.19, 1, 0.22, 1)'
     };
   }
   

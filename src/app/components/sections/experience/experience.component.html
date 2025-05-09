@@ -140,14 +140,16 @@
               <!-- Skills -->
               <div *ngIf="experience.skills && experience.skills.length > 0" class="mt-4 experience-skills"
                    [class.preview-skills]="experience.previewMode">
-                <h4 class="text-sm font-semibold uppercase text-accent-color/70 mb-2">Skills</h4>
-                <div class="flex flex-wrap gap-2">
+                <h4 class="text-sm font-semibold uppercase text-accent-color/70 mb-2">Skills</h4>                <div class="flex flex-wrap gap-2">
                   <span 
-                    *ngFor="let skill of experience.skills" 
+                    *ngFor="let skill of experience.skills; let i = index" 
                     class="px-3 py-1 text-xs rounded-full bg-white/5 text-text-secondary skill-badge"
                     [class.tech-skill]="getTechAnimation(skill)"
                     [class.preview-skill]="experience.previewMode"
-                    [ngStyle]="getTechAnimation(skill) && {'--tech-color': getTechAnimation(skill)?.color}">
+                    [ngStyle]="{
+                      '--tech-color': getTechAnimation(skill)?.color, 
+                      '--skill-index': i
+                    }">
                     {{ skill }}
                   </span>
                 </div>
