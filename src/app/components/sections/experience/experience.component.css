@@ -23,32 +23,122 @@
   transform-origin: center;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .timeline-left, .timeline-right {
-    width: calc(100% - 40px);
-    margin-left: 40px;
-  }
-}
-
-/* Expandable content animation */
-.collapsible-content {
-  transition: max-height 0.3s ease-out;
-}
-
-/* Connecting lines visual improvements */
-.parallel-indicator {
+/* Experience card container */
+.experience-card {
   position: relative;
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.parallel-indicator::before {
-  content: '';
+.experience-card.preview-active {
+  margin-top: 6rem;
+  margin-bottom: 6rem;
+  z-index: 10;
+}
+
+/* Timeline dot animation */
+.timeline-dot {
+  transition: all 0.6s ease;
+}
+
+.timeline-dot-active {
+  transform: translate(-50%, -50%) scale(2);
+  background-color: var(--accent-color);
+  box-shadow: 0 0 20px var(--accent-color);
+}
+
+/* Experience content card */
+.experience-content-card {
+  position: relative;
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.experience-preview-card {
+  width: 90% !important;
+  max-width: 800px;
+  min-height: 300px; /* Minimum height when in preview mode */
+  z-index: 10;
+}
+
+/* Preview mode animations */
+.preview-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.preview-logo {
+  width: 5rem;
+  height: 5rem;
+}
+
+.preview-logo img {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.preview-description {
+  opacity: 1;
+  max-height: 1000px; 
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.preview-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.preview-skills {
+  margin-top: 2rem;
+}
+
+.preview-skill {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+/* Tech background animation */
+.tech-background-container {
   position: absolute;
-  width: 20px;
-  height: 1px;
-  background-color: rgba(var(--accent-color-rgb), 0.5);
-  top: 50%;
-  left: -10px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.tech-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 200px 200px;
+  background-repeat: repeat;
+  opacity: 0.5;
+  animation: slideBackground 20s linear infinite;
+  transition: all 0.5s ease;
+}
+
+.tech-background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+                rgba(30, 41, 59, 0.95) 0%, 
+                rgba(30, 41, 59, 0.7) 50%, 
+                rgba(30, 41, 59, 0.95) 100%);
+}
+
+@keyframes slideBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200px 200px;
+  }
 }
 
 /* Active experience card */
@@ -73,6 +163,7 @@
   color: white !important;
   position: relative;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .tech-skill::before {
@@ -89,6 +180,11 @@
 
 .tech-skill:hover::before {
   transform: translateX(100%);
+}
+
+/* Preview mode skill badges */
+.preview-active .tech-skill {
+  transform: scale(1.05);
 }
 
 /* Tech Animations */
@@ -109,6 +205,16 @@
   transition: opacity 0.4s ease, transform 0.4s ease;
   max-height: 250px;
   overflow: hidden;
+}
+
+/* Preview mode tech animations */
+.tech-animation.preview-mode {
+  position: absolute;
+  z-index: 20;
+  max-height: 80%;
+  width: 45%;
+  max-width: 450px;
+  overflow: visible;
 }
 
 .tech-animation.active {
@@ -133,6 +239,17 @@
   top: 50px;
 }
 
+/* Preview mode tech positions */
+.tech-animation.preview-mode.tech-left {
+  left: -30%;
+  top: 20%;
+}
+
+.tech-animation.preview-mode.tech-right {
+  right: -30%;
+  top: 20%;
+}
+
 .tech-top {
   top: -260px;
   left: 50%;
@@ -143,6 +260,11 @@
   transform: translateX(-50%) scale(1);
 }
 
+.tech-animation.preview-mode.tech-top {
+  top: -30%;
+  left: 25%;
+}
+
 .tech-bottom {
   bottom: -260px;
   left: 50%;
@@ -151,6 +273,12 @@
 
 .tech-bottom.active, .experience-card:hover .tech-bottom {
   transform: translateX(-50%) scale(1);
+}
+
+.tech-animation.preview-mode.tech-bottom {
+  bottom: -30%;
+  right: 25%;
+  left: auto;
 }
 
 /* Header for tech animations */
@@ -173,6 +301,11 @@
   max-height: 200px;
   overflow-y: auto;
   padding-right: 5px;
+}
+
+.tech-animation.preview-mode .tech-animation-code {
+  font-size: 0.9rem;
+  max-height: 500px;
 }
 
 .tech-animation-code::-webkit-scrollbar {
@@ -199,9 +332,91 @@
   to { clip-path: inset(0 0 0 0); }
 }
 
-/* Mobile adjustments */
+/* Scroll progress animations */
+.experience-card[data-preview-progress="0"] .experience-content-card {
+  transform: scale(1);
+}
+
+.experience-card[data-preview-progress="0.5"] .experience-content-card {
+  transform: scale(1.05);
+}
+
+.experience-card[data-preview-progress="1"] .experience-content-card {
+  transform: scale(1.1);
+}
+
+/* Parallax effect for background patterns */
+.experience-card.preview-active .tech-background {
+  transform: translateY(var(--scroll-offset, 0));
+  transition: transform 0.3s ease;
+}
+
+/* Parallel experience indicator animation */
+.parallel-indicator {
+  position: relative;
+  transition: all 0.6s ease;
+}
+
+.parallel-indicator::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 1px;
+  background-color: rgba(var(--accent-color-rgb), 0.5);
+  top: 50%;
+  left: -10px;
+}
+
+.parallel-indicator.active {
+  transform: scale(1.5);
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
+  .timeline-left, .timeline-right {
+    width: calc(100% - 40px);
+    margin-left: 40px;
+  }
+  
   .tech-animation {
     display: none;
   }
+  
+  .experience-preview-card {
+    width: 95% !important;
+  }
+  
+  .preview-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Add scrollbar styling for the experience descriptions */
+.experience-description.preview-description {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.experience-description.preview-description::-webkit-scrollbar {
+  width: 6px;
+}
+
+.experience-description.preview-description::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+
+.experience-description.preview-description::-webkit-scrollbar-thumb {
+  background-color: var(--accent-color);
+  border-radius: 10px;
+}
+
+/* Experience enter/exit animations */
+.experience-card.in-view {
+  opacity: 1;
+}
+
+.experience-card:not(.in-view) {
+  opacity: 0.5;
 }

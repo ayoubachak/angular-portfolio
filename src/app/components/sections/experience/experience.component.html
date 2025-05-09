@@ -8,14 +8,26 @@
         A timeline of my professional career and key roles
       </p>
       
-      <!-- Part-time Experience Toggle -->
-      <button 
-        (click)="togglePartTime()" 
-        class="mt-6 px-4 py-2 bg-accent-color/20 hover:bg-accent-color/30 text-accent-color rounded-md transition-all duration-300"
-        appScrollAnimation 
-        animationClass="animate-fade-in-up">
-        {{ showPartTime ? 'Hide Part-time Roles' : 'Show Part-time Roles' }}
-      </button>
+      <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <!-- Part-time Experience Toggle -->
+        <button 
+          (click)="togglePartTime()" 
+          class="px-4 py-2 bg-accent-color/20 hover:bg-accent-color/30 text-accent-color rounded-md transition-all duration-300"
+          appScrollAnimation 
+          animationClass="animate-fade-in-up">
+          {{ showPartTime ? 'Hide Part-time Roles' : 'Show Part-time Roles' }}
+        </button>
+        
+        <!-- Scroll Mode Toggle -->
+        <button 
+          (click)="toggleScrollMode()" 
+          class="px-4 py-2 bg-accent-color/20 hover:bg-accent-color/30 text-accent-color rounded-md transition-all duration-300 flex items-center justify-center gap-2"
+          appScrollAnimation 
+          animationClass="animate-fade-in-up">
+          <fa-icon [icon]="scrollDrivenMode ? faToggleOn : faToggleOff"></fa-icon>
+          <span>{{ scrollDrivenMode ? 'Scroll-Driven Mode' : 'Manual Mode' }}</span>
+        </button>
+      </div>
     </div>
     
     <!-- Timeline -->
@@ -24,50 +36,57 @@
       <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-accent-color/30"></div>
       
       <!-- Experience Cards -->
-      <div class="space-y-12">
+      <div class="space-y-12 md:space-y-20">
         <div 
           *ngFor="let experience of experiences; let i = index" 
           class="relative experience-card"
           [class.part-time-experience]="experience.company === 'Alignerr' || experience.company === 'Micro1'"
           [class.hidden]="(experience.company === 'Alignerr' || experience.company === 'Micro1') && !showPartTime"
+          [class.preview-active]="experience.previewMode"
+          [class.in-view]="experience.inView"
+          [attr.data-preview-progress]="experience.scrollProgress"
           appScrollAnimation
           [animationClass]="i % 2 === 0 ? 'animate-fade-in-right' : 'animate-fade-in-left'"
-          (mouseenter)="setActiveExperience(i)">
+          (mouseenter)="setActiveExperience(i)"
+          #experienceCard>
           
           <!-- Timeline Connector -->
-          <div class="absolute left-1/2 top-8 transform -translate-x-1/2 h-4 w-4 rounded-full bg-accent-color z-10 border-4 border-secondary-color"></div>
+          <div class="absolute left-1/2 top-8 transform -translate-x-1/2 h-4 w-4 rounded-full bg-accent-color z-10 border-4 border-secondary-color timeline-dot"
+               [class.timeline-dot-active]="experience.previewMode"></div>
           
           <!-- Parallel indicator (if applicable) -->
-          <div *ngIf="experience.hasParallel" class="absolute left-1/2 top-10 transform -translate-x-1/2 w-12 h-12">
+          <div *ngIf="experience.hasParallel" class="absolute left-1/2 top-10 transform -translate-x-1/2 w-12 h-12 parallel-indicator"
+               [class.active]="experience.previewMode">
             <div class="w-1 h-12 bg-accent-color/50 absolute left-1/2 transform -translate-x-1/2"></div>
             <div class="w-12 h-1 bg-accent-color/50 absolute top-0 transform translate-y-6"></div>
           </div>
           
-          <!-- Tech Animations Layer -->
-          <ng-container *ngIf="hasTechAnimation(experience)">
-            <div 
-              *ngFor="let anim of getExperienceTechAnimations(experience)" 
-              [class]="getTechAnimationClass(anim)"
-              [ngStyle]="{'--tech-color': anim.color}"
-              [class.active]="activeExperienceIndex === i">
-              <div class="tech-animation-header">
-                <fa-icon [icon]="faCode" class="mr-2"></fa-icon>
-                <span>{{ anim.tech }}</span>
+          <!-- Tech Background Animations Layer -->
+          <div *ngIf="experience.previewMode" class="tech-background-container">
+            <ng-container *ngIf="hasTechAnimation(experience)">
+              <div 
+                *ngFor="let anim of getExperienceTechAnimations(experience)" 
+                class="tech-background"
+                [ngStyle]="getBackgroundStyle(experience, anim)">
+                <div class="tech-background-overlay"></div>
               </div>
-              <pre class="tech-animation-code"><code>{{ anim.snippet }}</code></pre>
-            </div>
-          </ng-container>
+            </ng-container>
+          </div>
           
           <!-- Card positioned left or right -->
           <div 
-            [ngClass]="i % 2 === 0 ? 'ml-auto mr-8 md:mr-0 md:ml-[calc(50%+20px)]' : 'mr-auto ml-8 md:ml-0 md:mr-[calc(50%+20px)]'"
-            class="w-full md:w-[calc(50%-20px)] bg-primary-color rounded-lg p-6 shadow-lg transition-all duration-300 hover:shadow-accent-color/20"
-            [class.active-card]="activeExperienceIndex === i">
+            [ngClass]="{'ml-auto mr-8 md:mr-0 md:ml-[calc(50%+20px)]': i % 2 === 0 && !experience.previewMode, 
+                        'mr-auto ml-8 md:ml-0 md:mr-[calc(50%+20px)]': i % 2 !== 0 && !experience.previewMode,
+                        'experience-preview-card mx-auto': experience.previewMode}"
+            class="experience-content-card w-full md:w-[calc(50%-20px)] bg-primary-color rounded-lg p-6 shadow-lg transition-all duration-500"
+            [class.active-card]="activeExperienceIndex === i"
+            [style]="getPreviewModeStyle(experience)">
             
             <!-- Top Section with Logo, Company, and Role -->
             <div class="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
               <!-- Logo -->
-              <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center overflow-hidden shrink-0">
+              <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center overflow-hidden shrink-0 experience-logo"
+                   [class.preview-logo]="experience.previewMode">
                 <img 
                   *ngIf="experience.logo" 
                   [src]="experience.logo" 
@@ -82,7 +101,8 @@
               
               <!-- Company and Role -->
               <div class="flex-1">
-                <h3 class="text-xl font-semibold">{{ experience.company }}</h3>
+                <h3 class="text-xl font-semibold experience-company"
+                    [class.preview-title]="experience.previewMode">{{ experience.company }}</h3>
                 <p class="text-accent-color font-medium">{{ experience.role }}</p>
                 <div class="flex items-center text-text-secondary text-sm mt-1">
                   <fa-icon [icon]="faCalendar" class="mr-2"></fa-icon>
@@ -92,26 +112,40 @@
               
               <!-- Expand/Collapse Button -->
               <button 
+                *ngIf="!scrollDrivenMode"
                 (click)="toggleExpand(i)" 
                 class="text-accent-color hover:text-white transition-colors duration-300 p-2 rounded-full bg-white/5 hover:bg-white/10">
                 <fa-icon [icon]="experience.isExpanded ? faChevronUp : faChevronDown"></fa-icon>
               </button>
+              
+              <!-- Preview Toggle Button (only in manual mode) -->
+              <button 
+                *ngIf="!scrollDrivenMode"
+                (click)="togglePreview(i)" 
+                class="text-accent-color hover:text-white transition-colors duration-300 p-2 rounded-full bg-white/5 hover:bg-white/10 ml-2">
+                <fa-icon [icon]="faCode"></fa-icon>
+              </button>
             </div>
             
-            <!-- Description Section (collapsible) -->
+            <!-- Description Section -->
             <div 
-              class="mt-4 overflow-hidden transition-all duration-300" 
-              [ngClass]="{'max-h-0': !experience.isExpanded, 'max-h-[1000px]': experience.isExpanded}">
-              <p class="text-text-secondary mb-4">{{ experience.description }}</p>
+              class="mt-4 overflow-hidden transition-all duration-500 experience-description" 
+              [class.preview-description]="experience.previewMode"
+              [ngClass]="{'max-h-0': !experience.isExpanded && !scrollDrivenMode && !experience.previewMode, 
+                         'max-h-[1000px]': experience.isExpanded || scrollDrivenMode || experience.previewMode}">
+              <p class="text-text-secondary mb-4 experience-text"
+                 [class.preview-text]="experience.previewMode">{{ experience.description }}</p>
               
               <!-- Skills -->
-              <div *ngIf="experience.skills && experience.skills.length > 0" class="mt-4">
+              <div *ngIf="experience.skills && experience.skills.length > 0" class="mt-4 experience-skills"
+                   [class.preview-skills]="experience.previewMode">
                 <h4 class="text-sm font-semibold uppercase text-accent-color/70 mb-2">Skills</h4>
                 <div class="flex flex-wrap gap-2">
                   <span 
                     *ngFor="let skill of experience.skills" 
-                    class="px-3 py-1 text-xs rounded-full bg-white/5 text-text-secondary"
+                    class="px-3 py-1 text-xs rounded-full bg-white/5 text-text-secondary skill-badge"
                     [class.tech-skill]="getTechAnimation(skill)"
+                    [class.preview-skill]="experience.previewMode"
                     [ngStyle]="getTechAnimation(skill) && {'--tech-color': getTechAnimation(skill)?.color}">
                     {{ skill }}
                   </span>
@@ -119,12 +153,27 @@
               </div>
             </div>
             
-            <!-- Condensed Description (when collapsed) -->
+            <!-- Condensed Description (when collapsed and not in preview) -->
             <p 
-              *ngIf="!experience.isExpanded" 
-              class="text-text-secondary mt-4 line-clamp-2">
+              *ngIf="!experience.isExpanded && !scrollDrivenMode && !experience.previewMode" 
+              class="text-text-secondary mt-4 line-clamp-2 experience-summary">
               {{ experience.description }}
             </p>
+            
+            <!-- Tech Animations Layer -->
+            <ng-container *ngIf="hasTechAnimation(experience)">
+              <div 
+                *ngFor="let anim of getExperienceTechAnimations(experience)" 
+                [class]="getTechAnimationClass(anim, experience)"
+                [ngStyle]="{'--tech-color': anim.color}"
+                [class.active]="activeExperienceIndex === i || experience.previewMode">
+                <div class="tech-animation-header">
+                  <fa-icon [icon]="faCode" class="mr-2"></fa-icon>
+                  <span>{{ anim.tech }}</span>
+                </div>
+                <pre class="tech-animation-code"><code>{{ anim.snippet }}</code></pre>
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>
