@@ -38,14 +38,16 @@
                  target="_blank" 
                  rel="noopener noreferrer" 
                  class="text-accent-color hover:text-accent-color/80 transition-colors"
-                 title="Visit website">
+                 title="Visit website"
+                 [appLinkHoverWebview]="repo.homepage">
                 <fa-icon [icon]="faGlobe"></fa-icon>
               </a>
               <a [href]="repo.html_url" 
                  target="_blank" 
                  rel="noopener noreferrer" 
                  class="text-accent-color hover:text-accent-color/80 transition-colors"
-                 title="View on GitHub">
+                 title="View on GitHub"
+                 [appLinkHoverWebview]="repo.html_url">
                 <fa-icon [icon]="faGithub"></fa-icon>
               </a>
             </div>
@@ -64,9 +66,7 @@
             <div 
               [class.description-short]="!expandedDescriptions[repo.id]" 
               [class.description-expanded]="expandedDescriptions[repo.id]"
-              class="text-text-secondary description-text overflow-hidden transition-all duration-300" 
-              [appLinkHoverWebview]="repo.description || ''"
-              [class.cursor-pointer]="hasLinksInDescription(repo.description || '')">
+              class="text-text-secondary description-text overflow-hidden transition-all duration-300">
               {{ repo.description || 'No description available' }}
             </div>
             
@@ -114,7 +114,8 @@
               [href]="repo.homepage" 
               target="_blank" 
               rel="noopener noreferrer" 
-              class="flex-1 px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md text-center hover:bg-accent-color/10 transition-colors duration-300 flex items-center justify-center space-x-1">
+              class="flex-1 px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md text-center hover:bg-accent-color/10 transition-colors duration-300 flex items-center justify-center space-x-1"
+              [appLinkHoverWebview]="repo.homepage">
               <fa-icon [icon]="faGlobe" class="text-sm"></fa-icon>
               <span>Website</span>
             </a>
