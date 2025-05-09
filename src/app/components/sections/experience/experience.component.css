@@ -1,0 +1,52 @@
+/* Timeline Animations */
+.animate-fade-in-right, .animate-fade-in-left {
+  opacity: 0;
+  transition: opacity 0.8s, transform 0.8s;
+}
+
+.animate-fade-in-right {
+  transform: translateX(50px);
+}
+
+.animate-fade-in-left {
+  transform: translateX(-50px);
+}
+
+.animate-fade-in-right.show, .animate-fade-in-left.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Timeline indicators */
+.timeline-indicator {
+  transition: all 0.3s;
+  transform-origin: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .timeline-left, .timeline-right {
+    width: calc(100% - 40px);
+    margin-left: 40px;
+  }
+}
+
+/* Expandable content animation */
+.collapsible-content {
+  transition: max-height 0.3s ease-out;
+}
+
+/* Connecting lines visual improvements */
+.parallel-indicator {
+  position: relative;
+}
+
+.parallel-indicator::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 1px;
+  background-color: rgba(var(--accent-color-rgb), 0.5);
+  top: 50%;
+  left: -10px;
+}

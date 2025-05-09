@@ -4,6 +4,7 @@ import { ContentService, Brand } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-brands',
@@ -17,6 +18,8 @@ export class BrandsComponent implements OnInit {
   
   // Icons
   faExternalLinkAlt = faExternalLinkAlt;
+  faGithub = faGithub;
+  faLinkedin = faLinkedin;
 
   constructor(private contentService: ContentService) {}
 

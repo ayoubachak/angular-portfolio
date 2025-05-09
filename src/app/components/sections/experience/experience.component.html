@@ -1,0 +1,112 @@
+<section id="experience" class="py-24 bg-secondary-color">
+  <div class="container mx-auto px-6">
+    <!-- Section Header -->
+    <div class="text-center mb-16" appScrollAnimation animationClass="animate-fade-in-up">
+      <h2 class="text-4xl font-bold mb-4">Professional <span class="text-accent-color">Experience</span></h2>
+      <div class="w-20 h-1 bg-accent-color mx-auto"></div>
+      <p class="text-text-secondary mt-4 max-w-2xl mx-auto">
+        A timeline of my professional career and key roles
+      </p>
+    </div>
+    
+    <!-- Timeline -->
+    <div class="relative max-w-4xl mx-auto">
+      <!-- Central Timeline Line -->
+      <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-accent-color/30"></div>
+      
+      <!-- Experience Cards -->
+      <div class="space-y-12">
+        <div 
+          *ngFor="let experience of experiences; let i = index" 
+          class="relative"
+          appScrollAnimation
+          [animationClass]="i % 2 === 0 ? 'animate-fade-in-right' : 'animate-fade-in-left'">
+          
+          <!-- Timeline Connector Line (horizontal) -->
+          <div class="absolute left-1/2 top-8 transform -translate-x-1/2 h-4 w-4 rounded-full bg-accent-color z-10 border-4 border-secondary-color"></div>
+          
+          <!-- Parallel indicator (if applicable) -->
+          <div *ngIf="experience.hasParallel" class="absolute left-1/2 top-10 transform -translate-x-1/2 w-12 h-12">
+            <div class="w-1 h-12 bg-accent-color/50 absolute left-1/2 transform -translate-x-1/2"></div>
+            <div class="w-12 h-1 bg-accent-color/50 absolute top-0 transform translate-y-6"></div>
+          </div>
+          
+          <!-- Card positioned left or right -->
+          <div 
+            [ngClass]="i % 2 === 0 ? 'ml-auto mr-8 md:mr-0 md:ml-[calc(50%+20px)]' : 'mr-auto ml-8 md:ml-0 md:mr-[calc(50%+20px)]'"
+            class="w-full md:w-[calc(50%-20px)] bg-primary-color rounded-lg p-6 shadow-lg transition-all duration-300 hover:shadow-accent-color/20">
+            
+            <!-- Top Section with Logo, Company, and Role -->
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
+              <!-- Logo -->
+              <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center overflow-hidden shrink-0">
+                <img 
+                  *ngIf="experience.logo" 
+                  [src]="experience.logo" 
+                  [alt]="experience.company" 
+                  class="w-12 h-12 object-contain"
+                  onerror="this.src='assets/images/placeholders/placeholder.jpg'">
+                <fa-icon 
+                  *ngIf="!experience.logo" 
+                  [icon]="faBriefcase" 
+                  class="text-accent-color text-2xl"></fa-icon>
+              </div>
+              
+              <!-- Company and Role -->
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold">{{ experience.company }}</h3>
+                <p class="text-accent-color font-medium">{{ experience.role }}</p>
+                <div class="flex items-center text-text-secondary text-sm mt-1">
+                  <fa-icon [icon]="faCalendar" class="mr-2"></fa-icon>
+                  <span>{{ experience.startDate }} - {{ experience.endDate }}</span>
+                </div>
+              </div>
+              
+              <!-- Expand/Collapse Button -->
+              <button 
+                (click)="toggleExpand(i)" 
+                class="text-accent-color hover:text-white transition-colors duration-300 p-2 rounded-full bg-white/5 hover:bg-white/10">
+                <fa-icon [icon]="experience.isExpanded ? faChevronUp : faChevronDown"></fa-icon>
+              </button>
+            </div>
+            
+            <!-- Description Section (collapsible) -->
+            <div 
+              class="mt-4 overflow-hidden transition-all duration-300" 
+              [ngClass]="{'max-h-0': !experience.isExpanded, 'max-h-[1000px]': experience.isExpanded}">
+              <p class="text-text-secondary mb-4">{{ experience.description }}</p>
+              
+              <!-- Skills -->
+              <div *ngIf="experience.skills && experience.skills.length > 0" class="mt-4">
+                <h4 class="text-sm font-semibold uppercase text-accent-color/70 mb-2">Skills</h4>
+                <div class="flex flex-wrap gap-2">
+                  <span 
+                    *ngFor="let skill of experience.skills" 
+                    class="px-3 py-1 text-xs rounded-full bg-white/5 text-text-secondary">
+                    {{ skill }}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Condensed Description (when collapsed) -->
+            <p 
+              *ngIf="!experience.isExpanded" 
+              class="text-text-secondary mt-4 line-clamp-2">
+              {{ experience.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Timeline Start and End Indicators -->
+      <div class="absolute left-1/2 transform -translate-x-1/2 top-0 w-3 h-3 rounded-full bg-accent-color"></div>
+      <div class="absolute left-1/2 transform -translate-x-1/2 bottom-0 w-3 h-3 rounded-full bg-accent-color"></div>
+    </div>
+    
+    <!-- No Experience Message -->
+    <div *ngIf="experiences.length === 0" class="text-center py-12">
+      <p class="text-text-secondary">No professional experience available at the moment.</p>
+    </div>
+  </div>
+</section>

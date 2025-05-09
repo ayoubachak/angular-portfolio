@@ -73,7 +73,7 @@ export class NavbarComponent implements OnInit {
       
       // Final fallback to an external placeholder if all else fails
       event.target.onerror = () => {
-        event.target.src = 'https://via.placeholder.com/150?text=Avatar';
+        event.target.src = 'assets/images/placeholders/placeholder.jpg';
         event.target.onerror = null; // Prevent infinite loop
       };
     };

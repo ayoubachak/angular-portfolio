@@ -5,6 +5,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { IntroComponent } from './components/sections/intro/intro.component';
 import { AboutComponent } from './components/sections/about/about.component';
 import { EducationComponent } from './components/sections/education/education.component';
+import { ExperienceComponent } from './components/sections/experience/experience.component';
 import { GithubComponent } from './components/sections/github/github.component';
 import { AiProjectsComponent } from './components/sections/ai-projects/ai-projects.component';
 import { BrandsComponent } from './components/sections/brands/brands.component';
@@ -24,6 +25,7 @@ import { WebviewPreviewComponent } from './components/webview-preview/webview-pr
     IntroComponent,
     AboutComponent,
     EducationComponent,
+    ExperienceComponent,
     GithubComponent,
     AiProjectsComponent,
     BrandsComponent,

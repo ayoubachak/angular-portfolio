@@ -52,6 +52,8 @@ export interface Brand {
   description: string;
   logo: string;
   url?: string;
+  github?: string;
+  linkedin?: string;
 }
 
 export interface Testimonial {
@@ -263,13 +265,17 @@ export class ContentService {
         name: 'The Leet AI',
         description: 'Curate and share open-source AI tools for the community of developers.',
         logo: 'assets/images/brands/leetai-logo.jpeg',
-        url: 'https://github.com/orgs/The-Leet-AI/'
+        url: 'https://github.com/orgs/The-Leet-AI/',
+        github: 'https://github.com/orgs/The-Leet-AI/',
+        linkedin: 'https://www.linkedin.com/company/the-leet-ai/'
       },
       {
         name: 'ExtraConnect',
         description: 'A former startup focused on fleet management solutions, leveraging Raspberry Pi, IoT, and machine learning.',
         logo: 'assets/images/brands/extraconnect-logo.jpeg',
-        url: 'https://github.com/orgs/ExtraConnect/'
+        url: 'https://github.com/orgs/ExtraConnect/',
+        github: 'https://github.com/orgs/ExtraConnect/',
+        linkedin: 'https://www.linkedin.com/company/extra-connect/'
       }
     ],
     testimonials: [
