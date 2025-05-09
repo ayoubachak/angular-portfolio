@@ -165,7 +165,7 @@ export class ExperienceComponent implements OnInit {
       startDate: 'Oct 2024',
       endDate: 'Present',
       description: 'Contract Part-time, Remote position based in France.',
-      logo: 'assets/images/alignerr-logo.png',
+      logo: 'assets/images/companies/alignerr-logo.jpg', // No logo file available
       skills: ['AI Training', 'Data Labeling', 'Machine Learning'],
       isExpanded: false,
       isFirst: false,
@@ -180,7 +180,7 @@ export class ExperienceComponent implements OnInit {
       startDate: 'Aug 2024',
       endDate: 'Present',
       description: 'Contract Part-time, Remote position based in France.',
-      logo: 'assets/images/micro1-logo.png',
+      logo: 'assets/images/companies/micro1-logo.jpg', // No logo file available
       skills: ['AI Training', 'Data Labeling', 'Machine Learning'],
       isExpanded: false,
       isFirst: false,

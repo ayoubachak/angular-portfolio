@@ -45,7 +45,7 @@
                   [src]="experience.logo" 
                   [alt]="experience.company" 
                   class="w-12 h-12 object-contain"
-                  onerror="this.src='assets/images/placeholders/placeholder.jpg'">
+                  (error)="experience.logo = null">
                 <fa-icon 
                   *ngIf="!experience.logo" 
                   [icon]="faBriefcase" 
