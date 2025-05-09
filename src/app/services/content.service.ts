@@ -262,19 +262,14 @@ export class ContentService {
       {
         name: 'The Leet AI',
         description: 'Curate and share open-source AI tools for the community of developers.',
-        logo: 'assets/images/brands/leetai-logo.png',
+        logo: 'assets/images/brands/leetai-logo.jpeg',
         url: 'https://github.com/orgs/The-Leet-AI/'
       },
       {
         name: 'ExtraConnect',
         description: 'A former startup focused on fleet management solutions, leveraging Raspberry Pi, IoT, and machine learning.',
-        logo: 'assets/images/brands/extraconnect-logo.png',
+        logo: 'assets/images/brands/extraconnect-logo.jpeg',
         url: 'https://github.com/orgs/ExtraConnect/'
-      },
-      {
-        name: 'AI Trainer & Labeling',
-        description: 'Training and fine-tuning large language models in both Arabic and French for downstream NLP tasks.',
-        logo: 'assets/images/brands/ai-training-logo.png'
       }
     ],
     testimonials: [
