@@ -729,11 +729,41 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
   .experience-preview-card {
     width: 95% !important;
   }
-  
-  .preview-title {
+    .preview-title {
     font-size: 1.5rem;
   }
-    /* Mobile fixes for preview mode */
+  /* Fix for action buttons alignment on mobile */
+  .experience-action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  /* Top section overall adjustments for mobile layout */
+  .experience-card-header {
+    width: 100%;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-wrap: wrap;
+  }
+  
+  .experience-card-header .experience-logo {
+    margin-right: 12px;
+  }
+  
+  .experience-card-header .flex-1 {
+    flex: 1 1 60%;
+  }
+  
+  .experience-card-header .experience-action-buttons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-top: 0;
+  }
+  
+  /* Mobile fixes for preview mode */
   .experience-description.preview-description {
     max-height: 180px; /* Smaller height on mobile to leave room for skills */
     position: relative; /* For the fade indicator */

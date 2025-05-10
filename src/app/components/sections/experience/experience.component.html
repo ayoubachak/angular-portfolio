@@ -82,9 +82,8 @@
             class="experience-content-card w-full md:w-[calc(50%-20px)] bg-primary-color rounded-lg p-6 shadow-lg transition-all duration-500"
             [class.active-card]="activeExperienceIndex === i"
             [style]="getPreviewModeStyle(experience)">
-            
-            <!-- Top Section with Logo, Company, and Role -->
-            <div class="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4">
+              <!-- Top Section with Logo, Company, and Role -->
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4 experience-card-header">
               <!-- Logo -->
               <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center overflow-hidden shrink-0 experience-logo"
                    [class.preview-logo]="experience.previewMode">
@@ -99,8 +98,7 @@
                   [icon]="faBriefcase" 
                   class="text-accent-color text-2xl"></fa-icon>
               </div>
-              
-              <!-- Company and Role -->
+                <!-- Company and Role -->
               <div class="flex-1">
                 <h3 class="text-xl font-semibold experience-company"
                     [class.preview-title]="experience.previewMode">{{ experience.company }}</h3>
@@ -111,21 +109,24 @@
                 </div>
               </div>
               
-              <!-- Expand/Collapse Button -->
-              <button 
-                *ngIf="!scrollDrivenMode"
-                (click)="toggleExpand(i)" 
-                class="text-accent-color hover:text-white transition-colors duration-300 p-2 rounded-full bg-white/5 hover:bg-white/10">
-                <fa-icon [icon]="experience.isExpanded ? faChevronUp : faChevronDown"></fa-icon>
-              </button>
-              
-              <!-- Preview Toggle Button (only in manual mode) -->
-              <button 
-                *ngIf="!scrollDrivenMode"
-                (click)="togglePreview(i)" 
-                class="text-accent-color hover:text-white transition-colors duration-300 p-2 rounded-full bg-white/5 hover:bg-white/10 ml-2">
-                <fa-icon [icon]="faCode"></fa-icon>
-              </button>
+              <!-- Action Buttons Container for better alignment on mobile -->
+              <div class="flex items-center experience-action-buttons">
+                <!-- Expand/Collapse Button -->
+                <button 
+                  *ngIf="!scrollDrivenMode"
+                  (click)="toggleExpand(i)" 
+                  class="text-accent-color hover:text-white transition-colors duration-300 p-2 rounded-full bg-white/5 hover:bg-white/10">
+                  <fa-icon [icon]="experience.isExpanded ? faChevronUp : faChevronDown"></fa-icon>
+                </button>
+                
+                <!-- Preview Toggle Button (only in manual mode) -->
+                <button 
+                  *ngIf="!scrollDrivenMode"
+                  (click)="togglePreview(i)" 
+                  class="text-accent-color hover:text-white transition-colors duration-300 p-2 rounded-full bg-white/5 hover:bg-white/10 ml-2">
+                  <fa-icon [icon]="faCode"></fa-icon>
+                </button>
+              </div>
             </div>
               <!-- Description and Skills Container -->
             <div 
