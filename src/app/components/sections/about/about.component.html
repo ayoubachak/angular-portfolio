@@ -101,12 +101,10 @@
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Skills -->
-      <div class="space-y-10 w-full">
+      </div>        <!-- Skills -->
+      <div class="space-y-10 w-full px-4 md:px-0">
         <h3 
-          class="text-2xl font-bold mb-8"
+          class="text-2xl font-bold mb-8 pl-4 md:pl-0"
           appScrollAnimation
           animationClass="animate-fade-in-left">
           My Skills
@@ -114,13 +112,13 @@
         
         <!-- Skill Categories Tabs -->
         <div 
-          class="flex flex-wrap gap-3 mb-8"
+          class="flex flex-wrap gap-3 mb-8 pl-4 md:pl-0"
           appScrollAnimation
           animationClass="animate-fade-in-left">
           <!-- All Skills Button -->
           <button 
             (click)="filterByCategory('All')"
-            class="px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-300"
+            class="px-3 sm:px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-300"
             [ngClass]="activeCategory === 'All' ? 
               'bg-accent-color text-white shadow-lg shadow-accent-color/20' : 
               'bg-primary-color text-text-color border border-accent-color/30 hover:border-accent-color hover:bg-accent-color/10'">
@@ -132,7 +130,7 @@
           <button 
             *ngFor="let category of skillCategories"
             (click)="filterByCategory(category)"
-            class="px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-300"
+            class="px-3 sm:px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-300"
             [ngClass]="activeCategory === category ? 
               'bg-accent-color text-white shadow-lg shadow-accent-color/20' : 
               'bg-primary-color text-text-color border border-accent-color/30 hover:border-accent-color hover:bg-accent-color/10'">
@@ -140,12 +138,10 @@
             <span>{{ category }}</span>
           </button>
         </div>
-        
-        <!-- Skills List with Scroll Container -->
-        <div class="relative w-full">
-          <!-- Skills Container with Scrollbar -->          <div #skillsContainer class="skills-container w-full max-h-[500px] overflow-y-auto custom-scrollbar"
+          <!-- Skills List with Scroll Container -->
+        <div class="relative w-full">          <!-- Skills Container with Scrollbar -->          <div #skillsContainer class="skills-container w-full max-h-[500px] overflow-y-auto custom-scrollbar pl-4 pr-6 md:px-4"
                (scroll)="onSkillsScroll($event)">
-            <div class="space-y-16 overflow-visible px-4 mx-auto max-w-3xl">
+            <div class="space-y-16 overflow-visible mx-auto max-w-3xl">
               <ng-container *ngFor="let category of filteredSkillsByCategory | keyvalue; let i = index">                <div class="mb-16 pt-6" 
                   [id]="category.key.toLowerCase().replace(' & ', '-').replace(' ', '-')"
                   appScrollAnimation
@@ -189,9 +185,8 @@
               </ng-container>
             </div>
           </div>
-          
-          <!-- Scroll Indicator Dots (only shown when All is selected) -->
-          <div *ngIf="activeCategory === 'All'" class="absolute -right-8 top-1/2 transform -translate-y-1/2 flex flex-col space-y-3 z-10">
+            <!-- Scroll Indicator Dots (only shown when All is selected) -->
+          <div *ngIf="activeCategory === 'All'" class="hidden md:flex absolute -right-8 top-1/2 transform -translate-y-1/2 flex-col space-y-3 z-10">
             <div *ngFor="let category of skillCategories; let i = index" 
               class="group relative flex items-center"
               (click)="scrollToCategory(category)">

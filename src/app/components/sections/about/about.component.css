@@ -33,6 +33,14 @@
   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
+/* Mobile adjustments for skills section */
+@media (max-width: 768px) {
+  .skills-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
 /* Ensure grid items don't overflow */
 .skills-container .grid {
   width: 100%;
