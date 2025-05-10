@@ -1,8 +1,16 @@
 <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" [ngClass]="{'bg-primary-color/90 backdrop-blur-md shadow-lg': isScrolled, 'bg-transparent': !isScrolled}">
-  <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+  <nav class="container mx-auto px-6 py-3 flex justify-between items-center transition-all duration-300">
     <div class="flex items-center space-x-4">
+      <!-- Logo placeholder when profile is hidden -->
+      <div *ngIf="!isScrolled" class="text-accent-color flex items-center">
+        <div class="h-7 w-7 rounded-full bg-accent-color flex items-center justify-center text-white text-xs font-bold">
+          <span>&lt;/&gt;</span>
+        </div>
+      </div>
+      
       <!-- Avatar -->
-      <div class="relative overflow-hidden rounded-full h-12 w-12 border-2 border-accent-color shadow-md">
+      <div class="relative overflow-hidden rounded-full h-12 w-12 border-2 border-accent-color shadow-md transition-all duration-300"
+           [ngClass]="{'opacity-0 invisible scale-0 w-0': !isScrolled, 'opacity-100 visible scale-100 w-12': isScrolled}">
         <img [src]="avatar || 'assets/images/avatar.jpg'" 
              alt="{{ name }}" 
              class="object-cover h-full w-full"
@@ -12,7 +20,8 @@
       </div>
       
       <!-- Name with responsive display -->
-      <div class="text-text-color">
+      <div class="text-text-color transition-all duration-300"
+           [ngClass]="{'opacity-0 invisible scale-0 w-0': !isScrolled, 'opacity-100 visible scale-100': isScrolled}">
         <h1 class="text-lg font-bold">{{ name }}</h1>
         <div class="flex space-x-3 mt-1">
           <!-- Social Links -->
@@ -34,7 +43,8 @@
     </div>
     
     <!-- Navigation Links (only show on larger screens) -->
-    <div class="hidden md:flex space-x-8 items-center">
+    <div class="hidden md:flex space-x-8 items-center transition-all duration-300"
+         [ngClass]="{'ml-0': isScrolled, 'ml-4': !isScrolled}">
       <a href="#intro" class="text-text-color hover:text-accent-color transition-colors duration-300">Home</a>
       <a href="#about" class="text-text-color hover:text-accent-color transition-colors duration-300">About</a>
       <a href="#education" class="text-text-color hover:text-accent-color transition-colors duration-300">Education</a>

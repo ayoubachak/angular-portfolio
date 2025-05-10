@@ -1,0 +1,22 @@
+/* Add smooth transition to navbar elements */
+nav {
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.scale-0 {
+  transform: scale(0);
+}
+
+.scale-100 {
+  transform: scale(1);
+}
+
+/* Gradient text animation for logo */
+.text-transparent {
+  color: transparent;
+}
+
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}

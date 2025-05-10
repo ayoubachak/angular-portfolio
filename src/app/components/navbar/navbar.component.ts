@@ -46,8 +46,10 @@ export class NavbarComponent implements OnInit {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    // Add shadow and background when scrolled
-    this.isScrolled = window.scrollY > 20;
+    // Show navbar profile and background only after scrolling past intro section
+    const introSection = document.getElementById('intro');
+    const threshold = introSection ? introSection.offsetHeight : 0;
+    this.isScrolled = window.scrollY > threshold;
   }
 
   // Toggle mobile menu
@@ -72,10 +74,8 @@ export class NavbarComponent implements OnInit {
       event.target.src = 'avatar.jpg';
       
       // Final fallback to an external placeholder if all else fails
-      event.target.onerror = () => {
-        event.target.src = 'assets/images/placeholders/placeholder.jpg';
-        event.target.onerror = null; // Prevent infinite loop
-      };
+      event.target.src = 'assets/images/placeholders/placeholder.jpg';
+      event.target.onerror = null; // Prevent infinite loop
     };
   }
 
