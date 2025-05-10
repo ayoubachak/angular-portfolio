@@ -27,28 +27,29 @@
           
           <!-- Content Card -->
           <div [ngClass]="i % 2 === 0 ? 'ml-auto pl-8 text-right' : 'mr-auto pr-8'" class="w-full md:w-[48%]">
-            <div class="p-6 bg-secondary-color rounded-lg shadow-lg hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1 relative group">
-              <!-- Action Buttons - Hidden until hovered -->
-              <div class="absolute top-0 right-0 mt-4 mr-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                   [ngClass]="i % 2 === 0 ? 'justify-start left-0 ml-4' : 'justify-end right-0 mr-4'">
-                <a *ngIf="item.website" 
+            <div class="p-6 bg-secondary-color rounded-lg shadow-lg hover:shadow-accent-color/20 transition-all duration-300 transform hover:-translate-y-1 relative group">              <!-- Action Buttons - Hidden until hovered on desktop, always visible on mobile -->
+              <div class="absolute top-0 right-0 mt-4 mr-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 education-action-buttons"
+                   [ngClass]="i % 2 === 0 ? 'justify-start left-0 ml-4' : 'justify-end right-0 mr-4'">                <a *ngIf="item.website" 
                    [href]="item.website" 
                    target="_blank" 
                    class="w-8 h-8 rounded-full bg-primary-color flex items-center justify-center text-accent-color hover:bg-accent-color hover:text-white transition-all"
-                   title="Visit Website">
+                   title="Visit Website"
+                   style="--index: 0;">
                   <fa-icon [icon]="faGlobe"></fa-icon>
                 </a>
                 <a *ngIf="item.programPdf" 
                    [href]="item.programPdf" 
                    target="_blank" 
                    class="w-8 h-8 rounded-full bg-primary-color flex items-center justify-center text-accent-color hover:bg-accent-color hover:text-white transition-all"
-                   title="Download Program PDF">
+                   title="Download Program PDF"
+                   style="--index: 1;">
                   <fa-icon [icon]="faDownload"></fa-icon>
                 </a>
                 <button 
                   (click)="openDetails(item)" 
                   class="w-8 h-8 rounded-full bg-primary-color flex items-center justify-center text-accent-color hover:bg-accent-color hover:text-white transition-all"
-                  title="View Details">
+                  title="View Details"
+                  style="--index: 2;">
                   <fa-icon [icon]="faInfoCircle"></fa-icon>
                 </button>
               </div>
@@ -82,9 +83,8 @@
               
               <!-- Description -->
               <p class="text-text-secondary mt-4">{{ item.description }}</p>
-              
-              <!-- Visual indicator that more content is available on hover -->
-              <div class="mt-4 text-xs text-accent-color/80 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <!-- Visual indicator that more content is available on hover -->
+              <div class="mt-4 text-xs text-accent-color/80 opacity-0 group-hover:opacity-100 transition-all duration-300 education-info-text">
                 <span *ngIf="i % 2 === 0" class="flex items-center justify-start">
                   <span>Click icons for more information</span>
                   <fa-icon [icon]="faInfoCircle" class="ml-1"></fa-icon>
