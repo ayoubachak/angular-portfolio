@@ -49,29 +49,24 @@ export class EducationComponent implements OnInit, AfterViewInit {
    * Set up lazy loading for images
    */
   setupLazyLoading(): void {
-    const lazyImages = this.elementRef.nativeElement.querySelectorAll('img[loading="lazy"]');
-    
-    // Create intersection observer
-    const imageObserver = new IntersectionObserver((entries, observer) => {
+    const lazyImages = this.elementRef.nativeElement.querySelectorAll('img[data-src]');
+    const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target as HTMLImageElement;
-          
-          // Once the image is loaded, add the 'loaded' class for fade-in effect
-          img.onload = () => {
-            img.classList.add('loaded');
-          };
-          
-          // Stop observing once loaded
-          observer.unobserve(img);
+          const dataSrc = img.getAttribute('data-src');
+          if (dataSrc) {
+            img.src = dataSrc;
+          }
+          // Fade-in effect on load
+          img.onload = () => img.classList.add('loaded');
+          // Fallback on error
+          img.onerror = () => img.src = 'assets/images/placeholders/placeholder.jpg';
+          obs.unobserve(img);
         }
       });
-    });
-    
-    // Observe all lazy images
-    lazyImages.forEach((img: Element) => {
-      imageObserver.observe(img);
-    });
+    }, { rootMargin: '0px 0px 200px 0px' });
+    lazyImages.forEach((img: Element) => observer.observe(img));
   }
   
   // Open the details modal

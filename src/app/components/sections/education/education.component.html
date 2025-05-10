@@ -63,7 +63,7 @@
                 <!-- Logo - Rectangular with lazy loading -->
                 <div class="w-32 h-16 bg-white/5 rounded-md overflow-hidden flex items-center justify-center border border-accent-color/10">
                   <img 
-                    [src]="item.logo" 
+                    [attr.data-src]="item.logo" 
                     [alt]="item.institution" 
                     class="max-w-full max-h-full object-contain p-2 transition-opacity duration-300"
                     onerror="this.src='assets/images/placeholders/placeholder.jpg'"
