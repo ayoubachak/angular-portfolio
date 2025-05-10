@@ -733,13 +733,41 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
   .preview-title {
     font-size: 1.5rem;
   }
+    /* Mobile fixes for preview mode */
+  .experience-description.preview-description {
+    max-height: 180px; /* Smaller height on mobile to leave room for skills */
+    position: relative; /* For the fade indicator */
+  }
+  
+  .experience-skills.preview-skills {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  
+  /* Add a subtle indicator that content is scrollable */
+  .experience-description.preview-description:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to top, rgba(30, 30, 42, 0.9), rgba(30, 30, 42, 0));
+    pointer-events: none;
+    opacity: 0.8;
+    z-index: 3;
+  }
 }
 
 /* Add scrollbar styling for the experience descriptions */
 .experience-description.preview-description {
-  max-height: 60vh;
+  max-height: 250px; /* Limit height to make scrollable */
   overflow-y: auto;
   padding-right: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 15px;
 }
 
 .experience-description.preview-description::-webkit-scrollbar {
@@ -754,6 +782,15 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
 .experience-description.preview-description::-webkit-scrollbar-thumb {
   background-color: var(--accent-color);
   border-radius: 10px;
+}
+
+/* Make sure skills stay in view in preview mode */
+.experience-skills.preview-skills {
+  position: relative;
+  z-index: 2;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  background-color: inherit; /* Inherit from parent to maintain background */
 }
 
 /* Experience enter/exit animations */
