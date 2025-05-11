@@ -161,12 +161,13 @@ export class AboutComponent implements OnInit, AfterViewInit {
     this.activeCategory = 'All';
     this.filteredSkillsByCategory = { ...this.skillsByCategory };
   }
-  
   /**
    * Get a CSS variable styling for skill progress bar
    */
   getSkillBarStyle(level: number): string {
-    return `width: ${level}%`;
+    // Create a dynamic gradient based on the skill level
+    const gradientStop = Math.max(70, level - 10); // Ensures the gradient is visible even for high levels
+    return `width: ${level}%; background-image: linear-gradient(to right, var(--accent-color), var(--accent-color) ${gradientStop}%, rgba(var(--accent-color-rgb), 0.85))`;
   }
   
   /**

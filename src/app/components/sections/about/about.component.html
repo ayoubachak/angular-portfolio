@@ -90,8 +90,7 @@
                   <div class="text-right mt-2">
                     <span class="text-accent-color font-medium bg-accent-color/10 px-3 py-1 rounded-full text-sm">{{ language.level }}</span>
                   </div>
-                </div>
-                  <div class="mt-4 w-full bg-secondary-color rounded-full h-3 overflow-hidden shadow-inner">
+                </div>                  <div class="mt-4 w-full bg-secondary-color rounded-full h-3 overflow-hidden shadow-inner border border-accent-color/10">
                   <div 
                     class="bg-accent-color h-3 rounded-full transition-all duration-1000 language-progress-bar" 
                     [style]="getSkillBarStyle(language.proficiency)">
@@ -171,10 +170,9 @@
                             <span class="text-accent-color text-sm">{{ skill.level }}%</span>
                           </div>
                         </div>
-                        
-                        <div class="w-full bg-secondary-color rounded-full h-2 mt-2">
+                          <div class="w-full bg-secondary-color rounded-full h-2 mt-2 overflow-hidden shadow-inner border border-accent-color/10">
                           <div 
-                            class="bg-accent-color h-2 rounded-full transition-all duration-1000" 
+                            class="bg-accent-color h-2 rounded-full transition-all duration-1000 language-progress-bar" 
                             [style]="getSkillBarStyle(skill.level)">
                           </div>
                         </div>
