@@ -127,23 +127,28 @@
                 </button>
               </div>
             </div>
-              <!-- Description and Skills Container -->
-            <div 
-              class="mt-4 overflow-hidden transition-all duration-500" 
-              [ngClass]="{'max-h-0': !experience.isExpanded && !scrollDrivenMode && !experience.previewMode, 
-                         'max-h-[1000px]': experience.isExpanded || scrollDrivenMode || experience.previewMode}">
+              <!-- Card Content Structure -->
               
-              <!-- Description Section (Scrollable in preview mode) -->
-              <div class="experience-description"
-                   [class.preview-description]="experience.previewMode">
-                <p class="text-text-secondary mb-4 experience-text"
-                   [class.preview-text]="experience.previewMode">{{ experience.description }}</p>
+              <!-- Expanded Description (when expanded or in scroll/preview mode) -->
+              <div 
+                *ngIf="experience.isExpanded || scrollDrivenMode || experience.previewMode" 
+                class="mt-4">
+                <p class="text-text-secondary mb-4 full-description">{{ experience.description }}</p>
               </div>
               
-              <!-- Skills - Always visible, not scrollable -->
+              <!-- Collapsed Description with Read More (when collapsed and not in scroll/preview mode) -->
+              <div 
+                *ngIf="!experience.isExpanded && !scrollDrivenMode && !experience.previewMode"
+                class="mt-4">
+                <p class="text-text-secondary truncated-description">
+                  {{ (experience.description.length > 150) ? (experience.description | slice:0:150) + '...' : experience.description }}
+                  <span class="read-more-link" (click)="toggleExpand(i)">read more</span>
+                </p>
+              </div>
+              
+              <!-- Skills Section - ALWAYS visible regardless of expanded state -->
               <div *ngIf="experience.skills && experience.skills.length > 0" 
-                   class="mt-4 experience-skills"
-                   [class.preview-skills]="experience.previewMode">
+                   class="mt-4 experience-skills">
                 <h4 class="text-sm font-semibold uppercase text-accent-color/70 mb-2">Skills</h4>
                 <div class="flex flex-wrap gap-2">
                   <span 
@@ -159,14 +164,6 @@
                   </span>
                 </div>
               </div>
-            </div>
-            
-            <!-- Condensed Description (when collapsed and not in preview) -->
-            <p 
-              *ngIf="!experience.isExpanded && !scrollDrivenMode && !experience.previewMode" 
-              class="text-text-secondary mt-4 line-clamp-2 experience-summary">
-              {{ experience.description }}
-            </p>
               <!-- Tech Animations Layer -->
             <ng-container *ngIf="hasTechAnimation(experience)">
               <div 

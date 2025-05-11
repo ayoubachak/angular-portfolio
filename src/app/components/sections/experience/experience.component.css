@@ -78,13 +78,15 @@
   box-shadow: 0 0 20px var(--accent-color);
 }
 
-/* Experience content card */
+/* Experience content card - improve visibility */
 .experience-content-card {
   position: relative;
-  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1); /* Smoother, expo-like easing */
+  transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
   transform-origin: center;
-  will-change: transform, opacity, width; /* Performance optimization */
+  will-change: transform, opacity, width;
   z-index: 2; /* Ensure card is above animations by default */
+  background-color: var(--primary-color); /* Solid background color */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
 }
 
 .experience-preview-card {
@@ -361,7 +363,9 @@
 
 /* Active experience card */
 .active-card {
-  box-shadow: 0 0 15px rgba(var(--accent-color-rgb), 0.3);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25) !important; /* Stronger shadow */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  background-color: var(--primary-color) !important; /* Ensure solid background */
   transform: translateY(-5px);
 }
 
@@ -1204,8 +1208,8 @@ section:not(.scrollDrivenMode) .active-card .tech-animation.active:not(.preview-
   transform: translate(-50%, -50%) scale(0.8); /* Center behind card */
   left: 50% !important; /* Center horizontally */
   top: 50% !important; /* Center vertically */
-  opacity: 0.4; /* Reduced opacity for background effect */
-  filter: blur(1px); /* Slight blur for depth effect */
+  opacity: 0.15 !important; /* Significantly reduce opacity */
+  filter: blur(2px); /* More blur for less prominence */
   z-index: 0; /* Behind the card */
   width: 100%; /* Make it cover the entire card width */
   height: 100%; /* Make it cover the entire card height */
@@ -1219,4 +1223,57 @@ section:not(.scrollDrivenMode) .active-card .tech-animation.tech-left.active:not
 
 section:not(.scrollDrivenMode) .active-card .tech-animation.tech-right.active:not(.preview-mode) {
   transform: translate(-75%, -50%) scale(0.8); /* Offset slightly to the right */
+}
+
+/* "Read more" link styling - more subtle, text-like appearance */
+.read-more-link {
+  display: inline;
+  color: var(--accent-color);
+  font-weight: 400;
+  font-style: italic;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: all 0.2s ease;
+  background-color: transparent;
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent-color);
+  padding-bottom: 1px;
+}
+
+.read-more-link:hover {
+  background-color: transparent;
+  color: var(--accent-color);
+  border-bottom: 1px solid var(--accent-color);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Make sure description text is always visible and readable */
+.full-description,
+.truncated-description,
+.experience-text,
+p.text-text-secondary {
+  color: var(--text-color) !important;
+  opacity: 1 !important;
+  font-weight: normal;
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+  position: relative; /* Ensure text stays above background */
+  z-index: 3; /* Higher than card background */
+}
+
+/* Truncated description styling */
+.truncated-description {
+  position: relative;
+  max-height: 4.8em; /* ~3 lines */
+  overflow: hidden;
+  display: inline;
+}
+
+/* Skills section - ensure it's always visible and well-styled */
+.experience-skills {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 12px;
+  margin-top: 16px;
+  opacity: 1 !important;
 }
