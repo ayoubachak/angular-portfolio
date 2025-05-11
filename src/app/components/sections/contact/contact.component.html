@@ -89,11 +89,10 @@
               <span *ngIf="contactForm.get('message')?.errors?.['minlength']">Message must be at least 10 characters</span>
             </div>
           </div>
-          
-          <!-- Submit Button -->
+            <!-- Submit Button -->
           <button 
             type="submit" 
-            class="px-6 py-3 bg-accent-color text-white rounded-md hover:bg-accent-color/90 transition-colors flex items-center space-x-2">
+            class="px-6 py-3 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors flex items-center space-x-2">
             <span>Send Message</span>
             <fa-icon [icon]="faPaperPlane"></fa-icon>
           </button>
@@ -111,8 +110,7 @@
               <div class="w-12 h-12 rounded-full bg-accent-color/10 flex items-center justify-center text-accent-color">
                 <fa-icon [icon]="faEnvelope" size="lg"></fa-icon>
               </div>
-              <div>
-                <h4 class="text-lg font-semibold text-white">Email</h4>
+              <div>                <h4 class="text-lg font-semibold text-text-color">Email</h4>
                 <a [href]="'mailto:' + email" class="text-text-secondary hover:text-accent-color transition-colors">
                   {{ email }}
                 </a>
@@ -124,8 +122,7 @@
               <div class="w-12 h-12 rounded-full bg-accent-color/10 flex items-center justify-center text-accent-color">
                 <fa-icon [icon]="faMapMarkerAlt" size="lg"></fa-icon>
               </div>
-              <div>
-                <h4 class="text-lg font-semibold text-white">Location</h4>
+              <div>                <h4 class="text-lg font-semibold text-text-color">Location</h4>
                 <p class="text-text-secondary">{{ location }}</p>
               </div>
             </div>

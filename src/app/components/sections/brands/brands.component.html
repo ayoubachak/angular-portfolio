@@ -25,10 +25,9 @@
             class="h-full w-auto object-contain transition-transform duration-500 group-hover:scale-105"
             onerror="this.src='assets/images/placeholders/placeholder.jpg'">
         </div>
-        
-        <!-- Brand Info -->
+          <!-- Brand Info -->
         <div class="p-6 flex-1 flex flex-col">
-          <h3 class="text-2xl font-semibold text-white mb-3">{{ brand.name }}</h3>
+          <h3 class="text-2xl font-semibold text-text-color mb-3">{{ brand.name }}</h3>
           <p class="text-text-secondary flex-1">{{ brand.description }}</p>
           
           <!-- Social Links and Visit Link -->
@@ -37,8 +36,7 @@
               *ngIf="brand.url" 
               [href]="brand.url" 
               target="_blank" 
-              rel="noopener noreferrer" 
-              class="inline-flex items-center space-x-2 px-5 py-2 bg-accent-color text-white rounded-md hover:bg-accent-color/90 transition-colors duration-300">
+              rel="noopener noreferrer"              class="inline-flex items-center space-x-2 px-5 py-2 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors duration-300">
               <span>Visit Brand</span>
               <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
             </a>
@@ -47,8 +45,7 @@
               *ngIf="brand.github" 
               [href]="brand.github" 
               target="_blank" 
-              rel="noopener noreferrer" 
-              class="inline-flex items-center space-x-2 px-5 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-colors duration-300">
+              rel="noopener noreferrer"              class="inline-flex items-center space-x-2 px-5 py-2 bg-gray-700 text-button-text rounded-md hover:bg-gray-600 transition-colors duration-300">
               <fa-icon [icon]="faGithub"></fa-icon>
               <span>GitHub</span>
             </a>
@@ -57,8 +54,7 @@
               *ngIf="brand.linkedin" 
               [href]="brand.linkedin" 
               target="_blank" 
-              rel="noopener noreferrer" 
-              class="inline-flex items-center space-x-2 px-5 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition-colors duration-300">
+              rel="noopener noreferrer"              class="inline-flex items-center space-x-2 px-5 py-2 bg-blue-600 text-button-text rounded-md hover:bg-blue-500 transition-colors duration-300">
               <fa-icon [icon]="faLinkedin"></fa-icon>
               <span>LinkedIn</span>
             </a>
