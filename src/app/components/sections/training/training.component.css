@@ -1,0 +1,45 @@
+/* Training component styles */
+
+.training-title {
+  font-weight: 700;
+  color: var(--text-color);
+  text-shadow: 0 0 1px rgba(var(--accent-color-rgb), 0.1);
+}
+
+/* Improve title visibility in light mode */
+:root:not(.dark) .training-title {
+  color: var(--accent-color);
+  border-bottom: 1px solid rgba(var(--accent-color-rgb), 0.3);
+  padding-bottom: 0.25rem;
+}
+
+/* Add contrast to cards in light mode */
+:root:not(.dark) .training-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.25);
+  background-color: rgba(var(--accent-color-rgb), 0.02);
+}
+
+/* Enhanced volunteer badge in light mode */
+:root:not(.dark) .volunteer-badge {
+  border: 1px solid rgba(var(--accent-color-rgb), 0.3);
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
+/* Improve organization and period text visibility in light mode */
+:root:not(.dark) .organization-text {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+:root:not(.dark) .period-text {
+  color: var(--accent-color);
+  font-weight: 500;
+}
+
+:root:not(.dark) .description-text {
+  color: var(--text-color);
+  font-weight: 400;
+  line-height: 1.6;
+}

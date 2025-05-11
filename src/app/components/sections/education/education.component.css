@@ -4,25 +4,81 @@
   transition: transform 0.3s ease;
 }
 
-/* Modal backdrop animation */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* Light mode specific adjustments for the modal */
+:root {
+  --modal-backdrop-light: rgba(249, 250, 251, 0.85);
+  --modal-backdrop-dark: rgba(30, 30, 42, 0.85);
 }
 
-@keyframes slideIn {
-  from { 
-    opacity: 0;
-    transform: translateY(20px); 
-  }
-  to { 
-    opacity: 1;
-    transform: translateY(0); 
-  }
+/* Improved visibility for date labels in light mode */
+:root:not(.dark) .date-label {
+  border: 1px solid rgba(var(--accent-color-rgb), 0.4);
+  box-shadow: 0 1px 3px rgba(var(--accent-color-rgb), 0.2);
+  font-weight: 700;
+  color: var(--accent-color);
+  background-color: rgba(var(--accent-color-rgb), 0.08);
+}
+
+/* Dark Mode modal - force white text on section titles */
+.fixed.inset-0 h4 {
+  color: white;
+  font-weight: 600;
+}
+
+/* Ensure title visibility in light mode */
+:root:not(.dark) .education-card .institution-name {
+  color: var(--text-color);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
+  font-weight: 700;
+}
+
+/* Enhanced card styling in light mode */
+:root:not(.dark) .education-card {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.25);
+  background-color: rgba(var(--accent-color-rgb), 0.02);
+}
+
+/* Enhanced section titles in education component for better visibility */
+:root:not(.dark) .education-card h4 {
+  color: var(--accent-color);
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+:root:not(.dark) .education-card .degree-title {
+  color: var(--accent-color);
+  font-weight: 700;
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(var(--accent-color-rgb), 0.2);
+}
+
+/* Enhanced date label for better visibility */
+.education-card .timeline-date {
+  position: relative;
+  z-index: 5;
+}
+
+:root:not(.dark) .education-card .timeline-date {
+  box-shadow: 0 2px 4px rgba(var(--accent-color-rgb), 0.15);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.3);
+  background-color: rgba(var(--accent-color-rgb), 0.08);
+}
+
+:root:not(.dark) .education-description {
+  color: var(--text-color);
+  font-weight: 400;
+}
+
+.date-label {
+  border: 1px solid rgba(var(--accent-color-rgb), 0.4);
+  box-shadow: 0 2px 4px rgba(var(--accent-color-rgb), 0.1);
+  font-weight: 600;
 }
 
 .fixed.inset-0 {
   animation: fadeIn 0.3s ease forwards;
+  backdrop-filter: blur(5px);
 }
 
 .fixed.inset-0 > div {
@@ -32,6 +88,7 @@
 /* Skill badges subtle hover effect */
 .bg-primary-color.rounded-full {
   transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .bg-primary-color.rounded-full:hover {
@@ -112,4 +169,34 @@ img[loading="lazy"] {
 
 img[loading="lazy"].loaded {
   opacity: 1;
+}
+
+/* Make modal content more distinct in light mode */
+.bg-secondary-color {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Add borders to elements in light mode for better definition */
+.border-accent-color\/10,
+.border-accent-color\/20 {
+  border-width: 1px;
+}
+
+/* Ensure proper contrast for course and skill items */
+.bg-primary-color.rounded-lg {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Education modal styling to ensure all text is visible against dark backdrop */
+.education-modal-content {
+  color: white;
+}
+
+.education-modal-content h4 {
+  color: white !important;
+  font-weight: 600;
+}
+
+.education-modal-content .accent-icon {
+  color: var(--accent-color);
 }

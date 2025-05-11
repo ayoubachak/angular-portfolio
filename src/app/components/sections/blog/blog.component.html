@@ -24,7 +24,7 @@
     <div *ngIf="!isLoading && !error && blogPosts.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <article 
         *ngFor="let post of blogPosts; let i = index" 
-        class="bg-primary-color rounded-lg overflow-hidden shadow-lg hover:shadow-accent-color/20 transition-all duration-300 flex flex-col h-full group"
+        class="bg-primary-color rounded-lg overflow-hidden shadow-lg hover:shadow-accent-color/20 transition-all duration-300 flex flex-col h-full group border border-accent-color/20"
         appScrollAnimation
         [animationClass]="'animate-fade-in-up'">
         
