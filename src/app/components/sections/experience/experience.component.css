@@ -28,6 +28,7 @@
   position: relative;
   transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1); /* Smoother, expo-like easing */
   will-change: transform, margin, opacity;
+  padding-top: 10px; /* Add padding to create space between dot and content */
 }
 
 /* Enhance card appearance in scroll-driven mode */
@@ -728,9 +729,22 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
   
   .experience-preview-card {
     width: 95% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
-    .preview-title {
+    
+  .preview-title {
     font-size: 1.5rem;
+  }
+  
+  /* Better timeline positioning for mobile */
+  .timeline-dot {
+    top: 6px !important; /* Override the inline style */
+  }
+  
+  /* Improve spacing in experience cards on mobile */
+  .experience-card {
+    padding-top: 15px; /* More padding on mobile to separate from timeline dot */
   }
   /* Fix for action buttons alignment on mobile */
   .experience-action-buttons {
@@ -739,17 +753,24 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
     justify-content: flex-end;
     margin-top: 10px;
   }
-  
-  /* Top section overall adjustments for mobile layout */
+    /* Top section overall adjustments for mobile layout */
   .experience-card-header {
     width: 100%;
     flex-direction: row !important;
     align-items: center !important;
     flex-wrap: wrap;
+    margin-top: 10px; /* Additional space to prevent overlap with timeline dot */
+    padding-top: 5px;
   }
   
   .experience-card-header .experience-logo {
     margin-right: 12px;
+  }
+  
+  /* Ensure company name doesn't overlap with timeline dot */
+  .experience-company {
+    position: relative;
+    z-index: 5;
   }
   
   .experience-card-header .flex-1 {

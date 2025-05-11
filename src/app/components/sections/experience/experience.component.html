@@ -31,9 +31,8 @@
     </div>
     
     <!-- Timeline -->
-    <div class="relative max-w-4xl mx-auto" style="min-height: 300px;">
-      <!-- Central Timeline Line -->
-      <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-accent-color/30"></div>
+    <div class="relative max-w-4xl mx-auto" style="min-height: 300px;">      <!-- Central Timeline Line -->
+      <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-accent-color/30" style="top: 6px;"></div>
       
       <!-- Experience Cards -->
       <div class="space-y-12 md:space-y-20">
@@ -49,13 +48,11 @@
           [animationClass]="i % 2 === 0 ? 'animate-fade-in-right' : 'animate-fade-in-left'"
           (mouseenter)="setActiveExperience(i)"
           #experienceCard>
-          
-          <!-- Timeline Connector -->
-          <div class="absolute left-1/2 top-8 transform -translate-x-1/2 h-4 w-4 rounded-full bg-accent-color z-10 border-4 border-secondary-color timeline-dot"
+            <!-- Timeline Connector -->
+          <div class="absolute left-1/2 top-6 transform -translate-x-1/2 h-4 w-4 rounded-full bg-accent-color z-10 border-4 border-secondary-color timeline-dot"
                [class.timeline-dot-active]="experience.previewMode"></div>
-          
-          <!-- Parallel indicator (if applicable) -->
-          <div *ngIf="experience.hasParallel" class="absolute left-1/2 top-10 transform -translate-x-1/2 w-12 h-12 parallel-indicator"
+            <!-- Parallel indicator (if applicable) -->
+          <div *ngIf="experience.hasParallel" class="absolute left-1/2 top-8 transform -translate-x-1/2 w-12 h-12 parallel-indicator"
                [class.active]="experience.previewMode">
             <div class="w-1 h-12 bg-accent-color/50 absolute left-1/2 transform -translate-x-1/2"></div>
             <div class="w-12 h-1 bg-accent-color/50 absolute top-0 transform translate-y-6"></div>
@@ -83,7 +80,7 @@
             [class.active-card]="activeExperienceIndex === i"
             [style]="getPreviewModeStyle(experience)">
               <!-- Top Section with Logo, Company, and Role -->
-            <div class="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4 experience-card-header">
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-4 mb-4 mt-2 experience-card-header">
               <!-- Logo -->
               <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center overflow-hidden shrink-0 experience-logo"
                    [class.preview-logo]="experience.previewMode">
