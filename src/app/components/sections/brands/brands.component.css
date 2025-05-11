@@ -1,0 +1,50 @@
+/* Brand grid layout */
+.brand-grid {
+  margin-bottom: 2rem;
+}
+
+/* Card container to ensure proper spacing */
+.card-container {
+  margin-bottom: 2rem;
+}
+
+/* Brand card styling */
+.brand-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 450px; /* Increased minimum height for consistency */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2.5rem; /* Additional bottom margin to prevent overlap */
+  position: relative; /* Ensure proper stacking context */
+}
+
+/* Ensure description always has consistent height */
+.brand-description {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Fix for grid layout to ensure even spacing */
+.grid {
+  row-gap: 4rem !important; /* Override to force more vertical spacing */
+  margin-bottom: 3rem; /* Add bottom margin to grid container */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .brand-card {
+    min-height: 400px;
+    margin-bottom: 3rem; /* Larger margin on mobile */
+  }
+  
+  .card-container {
+    margin-bottom: 3rem;
+  }
+  
+  .brand-grid {
+    row-gap: 1rem !important;
+  }
+}
