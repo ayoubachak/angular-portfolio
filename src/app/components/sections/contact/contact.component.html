@@ -9,145 +9,183 @@
       </p>
     </div>
     
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-      <!-- Contact Form -->
-      <div 
-        class="bg-secondary-color rounded-lg p-8 shadow-lg" 
-        appScrollAnimation 
-        animationClass="animate-fade-in-right">
-        
-        <h3 class="text-2xl font-bold mb-6">Send Message</h3>
-        
-        <!-- Success Message -->
-        <div *ngIf="formSuccess" class="mb-6 p-4 bg-green-500/20 text-green-300 rounded-md">
-          Your message has been sent successfully! I'll get back to you soon.
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-x-24">
+      <!-- Contact Form Column -->
+      <div class="flex flex-col mx-auto w-full max-w-md lg:mx-0 lg:max-w-none">
+        <div 
+          class="bg-secondary-color rounded-lg p-8 shadow-lg flex-grow h-full flex flex-col" 
+          appScrollAnimation 
+          animationClass="animate-fade-in-right">
+          
+          <h3 class="text-2xl font-bold mb-6">Send Message</h3>
+          
+          <!-- Success Message -->
+          <div *ngIf="formSuccess" class="mb-6 p-4 bg-green-500/20 text-green-300 rounded-md">
+            Your message has been sent successfully! I'll get back to you soon.
+          </div>
+          
+          <!-- Error Message -->
+          <div *ngIf="formError" class="mb-6 p-4 bg-red-500/20 text-red-300 rounded-md">
+            There was an error sending your message. Please try again later.
+          </div>
+          
+          <!-- Contact Form -->
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6 flex-grow flex flex-col">
+            <!-- Name Input -->
+            <div>
+              <label for="name" class="block text-text-secondary mb-2">Name</label>
+              <input 
+                type="text" 
+                id="name" 
+                formControlName="name" 
+                class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
+                [ngClass]="{'border-red-500': formSubmitted && contactForm.get('name')?.invalid}">
+              <div *ngIf="formSubmitted && contactForm.get('name')?.errors" class="text-red-400 text-sm mt-1">
+                <span *ngIf="contactForm.get('name')?.errors?.['required']">Name is required</span>
+                <span *ngIf="contactForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+              </div>
+            </div>
+            
+            <!-- Email Input -->
+            <div>
+              <label for="email" class="block text-text-secondary mb-2">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email" 
+                class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
+                [ngClass]="{'border-red-500': formSubmitted && contactForm.get('email')?.invalid}">
+              <div *ngIf="formSubmitted && contactForm.get('email')?.errors" class="text-red-400 text-sm mt-1">
+                <span *ngIf="contactForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="contactForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+              </div>
+            </div>
+            
+            <!-- Subject Input -->
+            <div>
+              <label for="subject" class="block text-text-secondary mb-2">Subject</label>
+              <input 
+                type="text" 
+                id="subject" 
+                formControlName="subject" 
+                class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
+                [ngClass]="{'border-red-500': formSubmitted && contactForm.get('subject')?.invalid}">
+              <div *ngIf="formSubmitted && contactForm.get('subject')?.errors" class="text-red-400 text-sm mt-1">
+                <span *ngIf="contactForm.get('subject')?.errors?.['required']">Subject is required</span>
+                <span *ngIf="contactForm.get('subject')?.errors?.['minlength']">Subject must be at least 5 characters</span>
+              </div>
+            </div>
+            
+            <!-- Message Input -->
+            <div class="flex-grow mb-6">
+              <label for="message" class="block text-text-secondary mb-2">Message</label>
+              <textarea 
+                id="message" 
+                formControlName="message" 
+                rows="5" 
+                class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors resize-none h-full min-h-[120px]"
+                [ngClass]="{'border-red-500': formSubmitted && contactForm.get('message')?.invalid}"></textarea>
+              <div *ngIf="formSubmitted && contactForm.get('message')?.errors" class="text-red-400 text-sm mt-1">
+                <span *ngIf="contactForm.get('message')?.errors?.['required']">Message is required</span>
+                <span *ngIf="contactForm.get('message')?.errors?.['minlength']">Message must be at least 10 characters</span>
+              </div>
+            </div>
+              <!-- Submit Button -->
+            <button
+              type="submit" 
+              class="px-6 py-3 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors flex items-center space-x-2">
+              <span>Send Message</span>
+              <fa-icon [icon]="faPaperPlane"></fa-icon>
+            </button>
+          </form>
         </div>
-        
-        <!-- Error Message -->
-        <div *ngIf="formError" class="mb-6 p-4 bg-red-500/20 text-red-300 rounded-md">
-          There was an error sending your message. Please try again later.
-        </div>
-        
-        <!-- Contact Form -->
-        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="space-y-6">
-          <!-- Name Input -->
-          <div>
-            <label for="name" class="block text-text-secondary mb-2">Name</label>
-            <input 
-              type="text" 
-              id="name" 
-              formControlName="name" 
-              class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
-              [ngClass]="{'border-red-500': formSubmitted && contactForm.get('name')?.invalid}">
-            <div *ngIf="formSubmitted && contactForm.get('name')?.errors" class="text-red-400 text-sm mt-1">
-              <span *ngIf="contactForm.get('name')?.errors?.['required']">Name is required</span>
-              <span *ngIf="contactForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
-            </div>
-          </div>
-          
-          <!-- Email Input -->
-          <div>
-            <label for="email" class="block text-text-secondary mb-2">Email</label>
-            <input 
-              type="email" 
-              id="email" 
-              formControlName="email" 
-              class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
-              [ngClass]="{'border-red-500': formSubmitted && contactForm.get('email')?.invalid}">
-            <div *ngIf="formSubmitted && contactForm.get('email')?.errors" class="text-red-400 text-sm mt-1">
-              <span *ngIf="contactForm.get('email')?.errors?.['required']">Email is required</span>
-              <span *ngIf="contactForm.get('email')?.errors?.['email']">Please enter a valid email</span>
-            </div>
-          </div>
-          
-          <!-- Subject Input -->
-          <div>
-            <label for="subject" class="block text-text-secondary mb-2">Subject</label>
-            <input 
-              type="text" 
-              id="subject" 
-              formControlName="subject" 
-              class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
-              [ngClass]="{'border-red-500': formSubmitted && contactForm.get('subject')?.invalid}">
-            <div *ngIf="formSubmitted && contactForm.get('subject')?.errors" class="text-red-400 text-sm mt-1">
-              <span *ngIf="contactForm.get('subject')?.errors?.['required']">Subject is required</span>
-              <span *ngIf="contactForm.get('subject')?.errors?.['minlength']">Subject must be at least 5 characters</span>
-            </div>
-          </div>
-          
-          <!-- Message Input -->
-          <div>
-            <label for="message" class="block text-text-secondary mb-2">Message</label>
-            <textarea 
-              id="message" 
-              formControlName="message" 
-              rows="5" 
-              class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors resize-none"
-              [ngClass]="{'border-red-500': formSubmitted && contactForm.get('message')?.invalid}"></textarea>
-            <div *ngIf="formSubmitted && contactForm.get('message')?.errors" class="text-red-400 text-sm mt-1">
-              <span *ngIf="contactForm.get('message')?.errors?.['required']">Message is required</span>
-              <span *ngIf="contactForm.get('message')?.errors?.['minlength']">Message must be at least 10 characters</span>
-            </div>
-          </div>
-            <!-- Submit Button -->
-          <button 
-            type="submit" 
-            class="px-6 py-3 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors flex items-center space-x-2">
-            <span>Send Message</span>
-            <fa-icon [icon]="faPaperPlane"></fa-icon>
-          </button>
-        </form>
       </div>
       
-      <!-- Contact Information -->
-      <div class="flex flex-col justify-between space-y-8" appScrollAnimation animationClass="animate-fade-in-left">
-        <div class="space-y-8">
-          <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
-          
-          <div class="space-y-8 mb-12">
-            <!-- Email -->
-            <div class="flex items-start space-x-4">
-              <div class="w-12 h-12 rounded-full bg-accent-color/10 flex items-center justify-center text-accent-color">
-                <fa-icon [icon]="faEnvelope" size="lg"></fa-icon>
+      <!-- Contact Information Column -->
+      <div class="flex flex-col mx-auto w-full max-w-md lg:mx-0 lg:max-w-none" appScrollAnimation animationClass="animate-fade-in-left">
+        <!-- Information wrapper -->
+        <div class="bg-secondary-color rounded-lg p-8 shadow-lg flex flex-col h-full">
+          <div class="space-y-8 flex-grow">
+            <h3 class="text-2xl font-bold mb-6">Contact Information</h3>
+            
+            <div class="space-y-8 mb-12">
+              <!-- Email -->
+              <div class="flex items-start space-x-4">
+                <div class="w-12 h-12 rounded-full bg-accent-color/10 flex items-center justify-center text-accent-color">
+                  <fa-icon [icon]="faEnvelope" size="lg"></fa-icon>
+                </div>
+                <div>
+                  <h4 class="text-lg font-semibold text-text-color">Email</h4>
+                  <a [href]="'mailto:' + email" class="text-text-secondary hover:text-accent-color transition-colors">
+                    {{ email }}
+                  </a>
+                </div>
               </div>
-              <div>                <h4 class="text-lg font-semibold text-text-color">Email</h4>
-                <a [href]="'mailto:' + email" class="text-text-secondary hover:text-accent-color transition-colors">
-                  {{ email }}
+              
+              <!-- Location -->
+              <div class="flex items-start space-x-4">
+                <div class="w-12 h-12 rounded-full bg-accent-color/10 flex items-center justify-center text-accent-color">
+                  <fa-icon [icon]="faMapMarkerAlt" size="lg"></fa-icon>
+                </div>
+                <div>
+                  <h4 class="text-lg font-semibold text-text-color">Location</h4>
+                  <p class="text-text-secondary">{{ location }}</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Social Links -->
+            <div>
+              <h3 class="text-xl font-semibold mb-4">Connect With Me</h3>
+              <div class="flex space-x-4">
+                <a 
+                  *ngFor="let link of socialLinks" 
+                  [href]="link.url" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="w-12 h-12 rounded-full bg-primary-color flex items-center justify-center text-text-secondary hover:bg-accent-color hover:text-white transition-all duration-300 transform hover:-translate-y-1">
+                  <fa-icon [icon]="getIcon(link.platform)"></fa-icon>
                 </a>
               </div>
             </div>
             
-            <!-- Location -->
-            <div class="flex items-start space-x-4">
-              <div class="w-12 h-12 rounded-full bg-accent-color/10 flex items-center justify-center text-accent-color">
-                <fa-icon [icon]="faMapMarkerAlt" size="lg"></fa-icon>
+            <!-- Tic Tac Toe Game - Hidden on mobile -->
+            <div class="mt-8 p-3 bg-primary-color rounded-lg shadow-md hidden lg:block" appScrollAnimation animationClass="animate-fade-in-up">
+              <div class="flex justify-between items-center mb-2">
+                <h4 class="text-base font-semibold text-text-color">Tic Tac Toe</h4>
+                <button 
+                  (click)="toggleBot()" 
+                  class="text-xs py-1 px-2 rounded-md bg-accent-color/20 hover:bg-accent-color/30 text-accent-color transition-colors">
+                  {{ playingWithBot ? 'Bot: ON' : 'Bot: OFF' }}
+                </button>
               </div>
-              <div>                <h4 class="text-lg font-semibold text-text-color">Location</h4>
-                <p class="text-text-secondary">{{ location }}</p>
+              <div class="grid grid-cols-3 gap-1 max-w-[120px] mx-auto">
+                <ng-container *ngFor="let row of [0,1,2]; let r = index">
+                  <ng-container *ngFor="let col of [0,1,2]; let c = index">
+                    <button
+                      (click)="handleCellClick(r, c)"
+                      class="w-10 h-10 bg-secondary-color border border-text-color/50 rounded flex items-center justify-center text-lg text-accent-color hover:bg-accent-color/10 transition-colors"
+                      style="border-color: var(--text-color)">
+                      {{ board[r][c] }}
+                    </button>
+                  </ng-container>
+                </ng-container>
+              </div>
+              <div class="mt-2 text-center text-text-color text-xs">
+                <span *ngIf="gameStatus === 'playing'">
+                  <span *ngIf="botThinking" class="text-accent-color">Bot thinking...</span>
+                  <span *ngIf="!botThinking">Current: {{ currentPlayer }}</span>
+                </span>
+                <span *ngIf="gameStatus === 'won'">Winner: {{ winner }}</span>
+                <span *ngIf="gameStatus === 'draw'">It's a draw!</span>
+              </div>
+              <div class="mt-2 text-center">
+                <button *ngIf="gameStatus !== 'playing'"
+                  class="px-3 py-1 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors text-sm"
+                  (click)="resetGame()">Restart</button>
               </div>
             </div>
           </div>
-          
-          <!-- Social Links -->
-          <div>
-            <h3 class="text-xl font-semibold mb-4">Connect With Me</h3>
-            <div class="flex space-x-4">
-              <a 
-                *ngFor="let link of socialLinks" 
-                [href]="link.url" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                class="w-12 h-12 rounded-full bg-secondary-color flex items-center justify-center text-text-secondary hover:bg-accent-color hover:text-white transition-all duration-300 transform hover:-translate-y-1">
-                <fa-icon [icon]="getIcon(link.platform)"></fa-icon>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Map or Decorative Element -->
-        <div class="mt-8 h-64 rounded-lg overflow-hidden bg-secondary-color">
-          <!-- Replace with actual map or decorative element -->
-          <div class="w-full h-full bg-[url('assets/images/placeholders/placeholder.jpg')] bg-cover bg-center"></div>
         </div>
       </div>
     </div>
