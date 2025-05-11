@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 
 // Import all components
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -38,8 +38,21 @@ import { WebviewPreviewComponent } from './components/webview-preview/webview-pr
     WebviewPreviewComponent
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   title = 'portfolio';
+  @ViewChild('customCursor', { static: true }) customCursor!: ElementRef<HTMLDivElement>;
+
+  ngAfterViewInit(): void {
+    // Ensure custom cursor is visible
+    this.customCursor.nativeElement.style.display = 'block';
+  }
+
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent): void {
+    const cursorEl = this.customCursor.nativeElement;
+    cursorEl.style.left = `${event.clientX}px`;
+    cursorEl.style.top = `${event.clientY}px`;
+  }
 }

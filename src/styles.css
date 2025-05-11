@@ -44,9 +44,25 @@ html, body {
   opacity: 0.8;
 }
 
+/* Custom cursor and hover effects */
 * {
+  /* Keep default cursor visible; circle will follow alongside */
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-color) var(--primary-color);
+}
+
+/* Custom cursor dot */
+.custom-cursor {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  mix-blend-mode: difference; /* Invert underlying colors where the cursor overlaps */
+  transition: transform 0.1s ease-out;
 }
 
 body {
