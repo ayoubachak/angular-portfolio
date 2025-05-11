@@ -4,13 +4,14 @@ import { ContentService, SocialLink } from '../../services/content.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGithub, faLinkedin, faTwitter, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faLink } from '@fortawesome/free-solid-svg-icons';
+import { ThemeToggleComponent } from './theme-toggle.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, ThemeToggleComponent],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
   name: string = '';
@@ -29,7 +30,7 @@ export class NavbarComponent implements OnInit {
   faEnvelope = faEnvelope;
   faLink = faLink;
 
-  constructor(private contentService: ContentService) {}
+  constructor(private readonly contentService: ContentService) {}
 
   ngOnInit(): void {
     const portfolioContent = this.contentService.getPortfolioContent();
@@ -46,9 +47,8 @@ export class NavbarComponent implements OnInit {
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
-    // Show navbar profile and background only after scrolling past intro section
-    const introSection = document.getElementById('intro');
-    const threshold = introSection ? introSection.offsetHeight : 0;
+    // Show navbar profile after scrolling past intro
+    const threshold = document.getElementById('intro')?.offsetHeight ?? 0;
     this.isScrolled = window.scrollY > threshold;
   }
 
@@ -91,6 +91,6 @@ export class NavbarComponent implements OnInit {
       'Email': this.faEnvelope
     };
     
-    return iconMap[platform] || this.faLink;
+    return iconMap[platform] ?? this.faLink;
   }
 }

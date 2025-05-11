@@ -3,17 +3,28 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Global styles */
+/* Light theme (default) */
 :root {
-  --primary-color: #1e1e2a;
-  --secondary-color: #2c2c3a;
+  --primary-color: #f9fafb;
+  --secondary-color: #e5e7eb;
   --accent-color: #6d28d9;
   --accent-color-rgb: 109, 40, 217; /* RGB values for accent color */
-  --text-color: #f3f4f6;
-  --text-secondary: #d1d5db;
+  --text-color: #1e1e2a;
+  --text-secondary: #4b5563;
   --animation-duration: 0.8s;
   --animation-timing: cubic-bezier(0.16, 1, 0.3, 1);
   --scrollbar-color: #9ca3af; /* Neutral gray for scrollbar */
   --scrollbar-hover-color: #6b7280; /* Darker gray for scrollbar hover */
+}
+
+/* Dark theme overrides when html has .dark class */
+.dark {
+  --primary-color: #1e1e2a;
+  --secondary-color: #2c2c3a;
+  --accent-color: #6d28d9;
+  --accent-color-rgb: 109, 40, 217;
+  --text-color: #f3f4f6;
+  --text-secondary: #d1d5db;
 }
 
 /* Prevent horizontal overflow */

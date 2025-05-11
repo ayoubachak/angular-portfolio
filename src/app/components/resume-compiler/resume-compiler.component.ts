@@ -8,10 +8,9 @@ import { faFileAlt } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-resume-compiler',
   standalone: true,
   imports: [CommonModule, FontAwesomeModule],
-  template: `
-    <button 
+  template: `    <button 
       (click)="compileResume()" 
-      class="fixed left-5 bottom-5 z-50 flex items-center space-x-2 px-4 py-3 bg-accent-color text-white rounded-lg shadow-lg hover:bg-accent-color/90 transition-all duration-300 transform hover:-translate-y-1">
+      class="fixed left-5 bottom-5 z-50 flex items-center space-x-2 px-4 py-3 bg-accent-color text-button-text rounded-lg shadow-lg hover:bg-accent-color/90 transition-all duration-300 transform hover:-translate-y-1">
       <fa-icon [icon]="faFileAlt"></fa-icon>
       <span>Compile Resume</span>
     </button>
