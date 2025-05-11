@@ -70,9 +70,8 @@
                     onerror="this.src='assets/images/placeholders/placeholder.jpg'"
                     loading="lazy">
                 </div>
-                
-                <!-- Institution -->
-                <h3 class="text-xl font-semibold text-white">{{ item.institution }}</h3>
+                    <!-- Institution -->
+                <h3 class="text-xl font-semibold text-text-color">{{ item.institution }}</h3>
               </div>
               
               <!-- Degree -->
@@ -118,9 +117,8 @@
               [alt]="selectedEducation.institution" 
               class="max-w-full max-h-full object-contain p-2"
               onerror="this.src='assets/images/placeholders/placeholder.jpg'">
-          </div>
-          <div>
-            <h3 class="text-2xl font-bold text-white">{{ selectedEducation.institution }}</h3>
+          </div>          <div>
+            <h3 class="text-2xl font-bold text-text-color">{{ selectedEducation.institution }}</h3>
             <p class="text-accent-color">{{ selectedEducation.startDate }} - {{ selectedEducation.endDate }}</p>
           </div>
         </div>
@@ -139,8 +137,7 @@
             <fa-icon [icon]="faBook" class="mr-2"></fa-icon>
             Degree & Field
           </h4>
-          <div class="mt-2 bg-primary-color rounded-lg p-4">
-            <p class="text-lg font-medium text-white">{{ selectedEducation.degree }}</p>
+          <div class="mt-2 bg-primary-color rounded-lg p-4">            <p class="text-lg font-medium text-text-color">{{ selectedEducation.degree }}</p>
             <p class="text-text-secondary">{{ selectedEducation.field }}</p>
           </div>
         </div>

@@ -11,6 +11,7 @@
   --accent-color-rgb: 109, 40, 217; /* RGB values for accent color */
   --text-color: #1e1e2a;
   --text-secondary: #4b5563;
+  --button-text: white; /* Text color for buttons */
   --animation-duration: 0.8s;
   --animation-timing: cubic-bezier(0.16, 1, 0.3, 1);
   --scrollbar-color: #9ca3af; /* Neutral gray for scrollbar */
@@ -25,6 +26,7 @@
   --accent-color-rgb: 109, 40, 217;
   --text-color: #f3f4f6;
   --text-secondary: #d1d5db;
+  --button-text: white;
 }
 
 /* Prevent horizontal overflow */

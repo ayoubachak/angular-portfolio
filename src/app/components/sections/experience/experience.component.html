@@ -150,10 +150,9 @@
               <div *ngIf="experience.skills && experience.skills.length > 0" 
                    class="mt-4 experience-skills">
                 <h4 class="text-sm font-semibold uppercase text-accent-color/70 mb-2">Skills</h4>
-                <div class="flex flex-wrap gap-2">
-                  <span 
+                <div class="flex flex-wrap gap-2">                  <span 
                     *ngFor="let skill of experience.skills; let i = index" 
-                    class="px-3 py-1 text-xs rounded-full bg-white/5 text-text-secondary skill-badge"
+                    class="px-3 py-1 text-xs rounded-full bg-white/5 text-text-secondary skill-badge border border-accent-color/20"
                     [class.tech-skill]="getTechAnimation(skill)"
                     [class.preview-skill]="experience.previewMode"
                     [ngStyle]="{

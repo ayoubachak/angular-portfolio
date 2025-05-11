@@ -27,11 +27,10 @@
         class="bg-primary-color rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-accent-color/20 transform hover:-translate-y-1"
         appScrollAnimation
         [animationClass]="'animate-fade-in-up'">
-        
-        <!-- Repository Header -->
+          <!-- Repository Header -->
         <div class="p-6 border-b border-accent-color/10">
           <div class="flex justify-between items-center mb-3">
-            <h3 class="text-xl font-semibold text-white truncate">{{ repo.name }}</h3>
+            <h3 class="text-xl font-semibold text-text-color truncate">{{ repo.name }}</h3>
             <div class="flex items-center space-x-2">
               <a *ngIf="repo.homepage" 
                  [href]="repo.homepage" 
@@ -119,11 +118,10 @@
               <fa-icon [icon]="faGlobe" class="text-sm"></fa-icon>
               <span>Website</span>
             </a>
-            
-            <button 
+              <button 
               *ngIf="hasPreviewUrl(repo)" 
               (click)="openPreview(repo)" 
-              class="flex-1 px-4 py-2 bg-accent-color text-white rounded-md text-center hover:bg-accent-color/90 transition-colors duration-300 flex items-center justify-center space-x-1">
+              class="flex-1 px-4 py-2 bg-accent-color text-button-text rounded-md text-center hover:bg-accent-color/90 transition-colors duration-300 flex items-center justify-center space-x-1">
               <fa-icon [icon]="faExternalLinkAlt" class="text-sm"></fa-icon>
               <span>Preview</span>
             </button>
@@ -133,15 +131,14 @@
     </div>
     
     <!-- View More Buttons -->
-    <div class="text-center mt-12 space-x-4">
-      <button 
+    <div class="text-center mt-12 space-x-4">      <button 
         (click)="loadMoreRepos()" 
-        class="inline-block px-6 py-3 bg-accent-color text-white border border-accent-color rounded-md hover:bg-accent-color/90 transition-all duration-300 hover:-translate-y-1"
+        class="inline-block px-6 py-3 bg-accent-color text-button-text border border-accent-color rounded-md hover:bg-accent-color/90 transition-all duration-300 hover:-translate-y-1"
         [disabled]="isLoadingMore || allReposLoaded">
         <span class="flex items-center space-x-2">
           <span>{{ isLoadingMore ? 'Loading...' : allReposLoaded ? 'All Loaded' : 'Load More' }}</span>
           <fa-icon *ngIf="!isLoadingMore && !allReposLoaded" [icon]="faAngleDown"></fa-icon>
-          <span *ngIf="isLoadingMore" class="inline-block w-4 h-4 border-2 border-t-transparent border-white rounded-full animate-spin"></span>
+          <span *ngIf="isLoadingMore" class="inline-block w-4 h-4 border-2 border-t-transparent border-button-text rounded-full animate-spin"></span>
           <fa-icon *ngIf="allReposLoaded && !isLoadingMore" [icon]="faCheck"></fa-icon>
         </span>
       </button>
@@ -169,10 +166,9 @@
     <div class="absolute inset-0 bg-black/80" (click)="closePreview()"></div>
     
     <!-- Modal Content -->
-    <div class="relative bg-primary-color rounded-lg shadow-xl w-full max-w-6xl h-[90vh] sm:h-[85vh] flex flex-col overflow-hidden">
-      <!-- Modal Header -->
+    <div class="relative bg-primary-color rounded-lg shadow-xl w-full max-w-6xl h-[90vh] sm:h-[85vh] flex flex-col overflow-hidden">      <!-- Modal Header -->
       <div class="p-3 md:p-4 border-b border-accent-color/10 flex justify-between items-center">
-        <h3 class="text-lg md:text-xl font-semibold text-white truncate pr-2">{{ activeRepo?.name }} Preview</h3>
+        <h3 class="text-lg md:text-xl font-semibold text-text-color truncate pr-2">{{ activeRepo?.name }} Preview</h3>
         <div class="flex space-x-2 items-center">
           <button 
             (click)="toggleMobileView()" 
@@ -247,10 +243,9 @@
           class="px-3 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-md hover:bg-accent-color/10 transition-colors text-sm md:text-base">
           View on GitHub
         </a>
-        
-        <button 
+          <button 
           (click)="closePreview()" 
-          class="px-3 py-2 bg-accent-color text-white rounded-md hover:bg-accent-color/90 transition-colors text-sm md:text-base">
+          class="px-3 py-2 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors text-sm md:text-base">
           Close Preview
         </button>
       </div>
