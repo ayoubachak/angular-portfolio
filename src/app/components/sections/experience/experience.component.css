@@ -31,6 +31,25 @@
   padding-top: 10px; /* Add padding to create space between dot and content */
 }
 
+/* Logo styling */
+.experience-logo {
+  border-radius: 0.5rem !important; /* Square with rounded corners */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.experience-logo img {
+  object-fit: contain; /* Keep aspect ratio */
+  max-width: 100%;
+  max-height: 100%;
+  padding: 0.25rem;
+}
+
 /* Enhance card appearance in scroll-driven mode */
 .scrollDrivenMode .experience-card {
   transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
@@ -73,6 +92,8 @@
   min-height: 300px; /* Minimum height when in preview mode */
   z-index: 10;
   transition: all 1.5s cubic-bezier(0.19, 1, 0.22, 1); /* Slightly slower for more elegance */
+  position: relative; /* Ensure proper positioning for badges */
+  padding-top: 1rem; /* Add space for floating badge */
 }
 
 /* Preview mode animations */
@@ -91,12 +112,14 @@
 .preview-logo {
   width: 5rem;
   height: 5rem;
+  border-radius: 0.75rem; /* Slightly more rounded corners in preview mode */
   transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .preview-logo img {
   width: 3.5rem;
   height: 3.5rem;
+  object-fit: contain; /* Maintain aspect ratio */
   transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -343,12 +366,46 @@
 
 /* Part-time experiences */
 .part-time-experience {
-  opacity: 0.85;
-  transition: opacity 0.3s ease;
+  opacity: 0;
+  max-height: 0;
+  margin: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.part-time-experience:hover {
+.part-time-experience.visible {
+  opacity: 0.9;
+  max-height: 1000px;
+  margin: 1.5rem 0 !important;
+  margin-top: 3rem !important;
+  pointer-events: all;
+  overflow: visible;
+}
+
+.part-time-experience.visible:hover {
   opacity: 1;
+}
+
+/* Animated badge for part-time experiences */
+.part-time-badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.8));
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  z-index: 5;
+  transform: translateY(0);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
 }
 
 /* Technology skill badges */
@@ -518,17 +575,22 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
   top: 50px;
 }
 
-/* Preview mode tech positions - alternating based on even/odd index */
+/* Square logo in preview mode transitions */
+.experience-card.preview-active .preview-logo {
+  border-radius: 0.75rem;
+}
+
+/* Preview mode tech positions - opposite side of the card to avoid crowding */
 .experience-card:nth-child(odd) .tech-animation.preview-mode:not(.scrollDrivenMode .tech-animation.preview-mode) {
-  left: -30%;
-  right: auto;
+  right: -30%;
+  left: auto;
   top: 20%;
   transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .experience-card:nth-child(even) .tech-animation.preview-mode:not(.scrollDrivenMode .tech-animation.preview-mode) {
-  right: -30%;
-  left: auto;
+  left: -30%;
+  right: auto;
   top: 20%;
   transition: all 1.8s cubic-bezier(0.19, 1, 0.22, 1);
 }
@@ -762,9 +824,9 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
     margin-top: 10px; /* Additional space to prevent overlap with timeline dot */
     padding-top: 5px;
   }
-  
-  .experience-card-header .experience-logo {
+    .experience-card-header .experience-logo {
     margin-right: 12px;
+    border-radius: 0.5rem; /* Consistent with rounded-lg in Tailwind */
   }
   
   /* Ensure company name doesn't overlap with timeline dot */
@@ -851,4 +913,76 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
 
 .experience-card:not(.in-view) {
   opacity: 0.5;
+}
+
+/* Timeline Mode Selector and Controls */
+.experience-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timeline-mode-selector button {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-mode-selector button.active {
+  background-color: var(--accent-color);
+  color: white;
+  box-shadow: 0 3px 10px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.timeline-mode-selector button:hover:not(.active) {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.timeline-mode-selector button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-color);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.timeline-mode-selector button:hover::after:not(.active) {
+  width: 80%;
+}
+
+/* Part-time experience controls */
+.part-time-indicator button {
+  position: relative;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+}
+
+.part-time-indicator .w-3 {
+  background-color: rgba(var(--accent-color-rgb), 0.5);
+  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.part-time-indicator button.active-parttime {
+  background-color: rgba(var(--accent-color-rgb), 0.25);
+  box-shadow: 0 0 15px rgba(var(--accent-color-rgb), 0.15);
+}
+
+.part-time-indicator button.active-parttime .w-3 {
+  background-color: var(--accent-color);
+}
+
+.pulse-dot {
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.7; }
 }

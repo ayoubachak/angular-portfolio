@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ContentService, Experience } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBriefcase, faCalendar, faChevronDown, faChevronUp, faCode, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faCalendar, faChevronDown, faChevronUp, faCode, faToggleOn, faToggleOff, faHandPointer, faScroll } from '@fortawesome/free-solid-svg-icons';
 
 interface ExperienceWithState extends Experience {
   isExpanded: boolean;
@@ -180,6 +180,8 @@ print(f"Accuracy: {accuracy:.2f}")`,
   faCode = faCode;
   faToggleOn = faToggleOn;
   faToggleOff = faToggleOff;
+  faHand = faHandPointer;
+  faScroll = faScroll;
 
   constructor(
     private contentService: ContentService,
@@ -294,12 +296,22 @@ print(f"Accuracy: {accuracy:.2f}")`,
     
     // Additional scroll handling if needed
   }
-
   // Toggle between scroll-driven mode and regular mode
   toggleScrollMode(): void {
     this.scrollDrivenMode = !this.scrollDrivenMode;
-    
-    // Reset all experience states when toggling modes
+    this.resetExperienceStates();
+  }
+  
+  // Explicitly set the scroll mode
+  setScrollMode(isScrollMode: boolean): void {
+    if (this.scrollDrivenMode !== isScrollMode) {
+      this.scrollDrivenMode = isScrollMode;
+      this.resetExperienceStates();
+    }
+  }
+  
+  // Reset all experience states when changing modes
+  private resetExperienceStates(): void {
     this.experiences.forEach(exp => {
       exp.previewMode = false;
       exp.scrollProgress = 0;
@@ -458,9 +470,18 @@ print(f"Accuracy: {accuracy:.2f}")`,
   slugify(text: string): string {
     return text.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   }
-
   togglePartTime(): void {
     this.showPartTime = !this.showPartTime;
+    
+    // Find all part-time experiences and set their visibility
+    this.experiences.forEach(exp => {
+      if (exp.company === 'Alignerr' || exp.company === 'Micro1') {
+        // Apply animation delay for smoother transitions
+        setTimeout(() => {
+          // Add or remove visible class through the Angular binding in template
+        }, this.showPartTime ? 100 : 0);
+      }
+    });
   }
 
   // Helper method to convert month names to numbers (0-based)
