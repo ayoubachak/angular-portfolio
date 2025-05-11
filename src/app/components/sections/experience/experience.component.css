@@ -986,3 +986,197 @@ section:not(.scrollDrivenMode) .tech-animation.preview-mode {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.5); opacity: 0.7; }
 }
+
+/* New Part-Time Diagram Visualization Styles */
+.diagram-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: rgba(var(--primary-color-rgb), 0.4);
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.4s ease;
+  backdrop-filter: blur(4px);
+  margin: 0 auto;
+}
+
+.diagram-container:hover {
+  box-shadow: 0 8px 20px rgba(var(--accent-color-rgb), 0.2);
+  transform: translateY(-2px);
+}
+
+.diagram-container svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Diagram node animations */
+.diagram-node {
+  transition: all 0.3s ease;
+}
+
+.diagram-container:hover .node-circle {
+  filter: drop-shadow(0 0 3px rgba(var(--accent-color-rgb), 0.5));
+}
+
+.node-circle {
+  transition: all 0.5s ease;
+}
+
+.node-circle.node-part-time {
+  animation: pulse-glow 3s infinite alternate;
+}
+
+.node-circle.node-skill {
+  animation: float-node 5s infinite alternate;
+  animation-delay: calc(var(--skill-index, 0) * 0.5s);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.3));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(var(--accent-color-rgb), 0.5));
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float-node {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(calc(var(--float-x, 3) * 1px), 
+                         calc(var(--float-y, -3) * 1px));
+  }
+}
+
+/* Experience Mode Indicator */
+.experience-mode-indicator {
+  opacity: 0.65;
+  transition: opacity 0.3s ease;
+}
+
+.experience-mode-indicator:hover {
+  opacity: 1;
+}
+
+/* Auto preview active indicator */
+.auto-preview-indicator {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  background-color: rgba(var(--accent-color-rgb), 0.15);
+  color: var(--accent-color);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced Part-time experience styling */
+.part-time-experience {
+  position: relative;
+  z-index: 2;
+  opacity: 0.95 !important;
+  max-height: unset !important;
+  margin: 1.5rem 0 !important;
+  margin-top: 3rem !important;
+  pointer-events: all !important;
+  overflow: visible !important;
+  /* Part-time connection line */
+  --connection-color: rgba(var(--accent-color-rgb), 0.3);
+}
+
+/* Connection line between parallel experiences */
+.part-time-experience::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  height: 20px;
+  width: 2px;
+  background: linear-gradient(to top, 
+    var(--connection-color) 50%, 
+    transparent);
+  z-index: 1;
+  opacity: 0.7;
+}
+
+/* Enhanced part-time badge style */
+.part-time-badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.8));
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+  z-index: 5;
+  transform: translateY(0);
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Auto-carousel styles */
+.experience-card.auto-carousel-active {
+  transition-duration: 0.8s !important;
+}
+
+/* Tech Particles Background */
+.tech-particles-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tech-particle {
+  position: absolute;
+  width: var(--size, 30px);
+  height: var(--size, 30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--size, 30px) * 0.8);
+  left: var(--x-pos, 10%);
+  opacity: 0.1;
+  animation: float-particle var(--speed, 30s) infinite ease-in-out;
+  animation-delay: var(--delay, 0s);
+  will-change: transform, opacity;
+  transform: translateY(100vh);
+}
+
+@keyframes float-particle {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0.05;
+  }
+  20% {
+    opacity: 0.2;
+  }
+  80% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0.05;
+  }
+}
+
+/* Section positioning */
+#experience {
+  position: relative;
+}
+
+#experience .container {
+  position: relative;
+  z-index: 1;
+}

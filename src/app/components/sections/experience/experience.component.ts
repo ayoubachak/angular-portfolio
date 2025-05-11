@@ -1,9 +1,9 @@
-import { Component, OnInit, AfterViewInit, HostListener, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, ElementRef, ViewChildren, QueryList, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentService, Experience } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBriefcase, faCalendar, faChevronDown, faChevronUp, faCode, faToggleOn, faToggleOff, faHandPointer, faScroll } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faCalendar, faChevronDown, faChevronUp, faCode, faToggleOn, faToggleOff, faHandPointer, faScroll, faLaptopCode, faNetworkWired, faDiagramProject } from '@fortawesome/free-solid-svg-icons';
 
 interface ExperienceWithState extends Experience {
   isExpanded: boolean;
@@ -24,6 +24,24 @@ interface TechAnimation {
   position?: 'left' | 'right' | 'top' | 'bottom';
 }
 
+// Add diagram visualization interfaces for part-time jobs
+interface DiagramNode {
+  id: string;
+  label: string;
+  type: 'main' | 'part-time' | 'skill';
+  color?: string;
+  size?: number;
+  x?: number;
+  y?: number;
+}
+
+interface DiagramConnection {
+  source: string;
+  target: string;
+  strength?: number;
+  color?: string;
+}
+
 @Component({
   selector: 'app-experience',
   standalone: true,
@@ -33,9 +51,36 @@ interface TechAnimation {
 })
 export class ExperienceComponent implements OnInit, AfterViewInit {
   experiences: ExperienceWithState[] = [];
-  showPartTime: boolean = false;
+  showPartTime: boolean = true; // Default to always showing part-time jobs
   activeExperienceIndex: number = -1;
   scrollDrivenMode: boolean = true; // Default to scroll-driven animations
+  // Auto-mode detection variables
+  private _userInteracted: boolean = false;
+  private _lastInteractionTime: number = Date.now();
+  private autoModeInterval: any = null;
+  private inactivityTimeout: number = 10000; // 10 seconds of inactivity before auto mode
+  private isMobileDevice: boolean = false;
+  private isTabletDevice: boolean = false;
+  private _autoCarouselActive: boolean = false; // Private backing field
+  
+  // Public getter for template access
+  get autoCarouselActive(): boolean {
+    return this._autoCarouselActive;
+  }
+  
+  // Public setter for template access
+  set autoCarouselActive(value: boolean) {
+    this._autoCarouselActive = value;
+  }
+  
+  // Getter for lastInteractionTime
+  get lastInteractionTime(): number {
+    return this._lastInteractionTime;
+  }
+  
+  // Diagram visualization data
+  diagramNodes: DiagramNode[] = [];
+  diagramConnections: DiagramConnection[] = [];
   
   @ViewChildren('experienceCard') experienceCards!: QueryList<ElementRef>;
 
@@ -164,7 +209,7 @@ model = RandomForestClassifier(n_estimators=100)
 model.fit(X_train, y_train)
 
 # Evaluate
-accuracy = model.score(X_test, y_test)
+accuracy = model.score(X_test, y_test);
 print(f"Accuracy: {accuracy:.2f}")`,
       color: '#3776ab',
       backgroundPattern: 'url("data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%233776ab\' fill-opacity=\'0.1\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E")',
@@ -182,6 +227,9 @@ print(f"Accuracy: {accuracy:.2f}")`,
   faToggleOff = faToggleOff;
   faHand = faHandPointer;
   faScroll = faScroll;
+  faLaptopCode = faLaptopCode;
+  faNetworkWired = faNetworkWired;
+  faDiagramProject = faDiagramProject;
 
   constructor(
     private contentService: ContentService,
@@ -198,7 +246,12 @@ print(f"Accuracy: {accuracy:.2f}")`,
 
   ngAfterViewInit(): void {
     // Set up scroll observer for each experience card
-    setTimeout(() => this.setupScrollObservers(), 500);
+    setTimeout(() => {
+      this.setupScrollObservers();
+      this.detectBestExperienceMode();
+      this.setupAutoModeDetection();
+      this.createPartTimeDiagramData();
+    }, 500);
   }
 
   // Setup intersection observers to track scroll position for each experience card
@@ -705,5 +758,253 @@ print(f"Accuracy: {accuracy:.2f}")`,
   onImageError(experience: ExperienceWithState): void {
     console.log(`Failed to load image for ${experience.company}`);
     experience.logo = undefined;
+  }
+
+  // New methods for automatic mode detection and part-time job diagram visualization
+
+  // Detect the best experience mode based on device capabilities
+  private detectBestExperienceMode(): void {
+    // Detect if mobile
+    this.isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    // Detect if tablet (larger touch device)
+    this.isTabletDevice = /iPad|Android/.test(navigator.userAgent) && !/Mobile/.test(navigator.userAgent);
+    
+    // Check if touch-enabled
+    const touchEnabled = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      // Always use scroll mode on mobile/tablet (better performance and touch UX)
+    if (this.isMobileDevice || this.isTabletDevice) {
+      this.scrollDrivenMode = true;
+    } else {
+      // Always use click mode on desktop devices for better control
+      this.scrollDrivenMode = false;
+    }
+    
+    // Always show part-time experiences
+    this.showPartTime = true;
+  }
+    // Set up auto mode detection and switching based on user interaction
+  private setupAutoModeDetection(): void {
+    // Set up a periodic check for inactivity
+    this.autoModeInterval = setInterval(() => this.checkForInactivity(), 2000);
+  }
+  
+  // Monitor user interactions to determine when to enable auto mode
+  @HostListener('window:mousemove')
+  @HostListener('window:click')
+  @HostListener('window:keydown')
+  @HostListener('window:scroll')
+  @HostListener('touchstart')
+  @HostListener('touchmove')  onUserInteraction(): void {
+    this._userInteracted = true;
+    this._lastInteractionTime = Date.now();
+    
+    // If auto carousel was active, disable it on user interaction
+    if (this._autoCarouselActive) {
+      this.stopAutoCarousel();
+    }
+  }
+    // Check for user inactivity to start auto mode
+  private checkForInactivity(): void {
+    if (Date.now() - this._lastInteractionTime > this.inactivityTimeout && !this._autoCarouselActive) {
+      this.startAutoCarousel();
+    }
+  }
+    // Start auto carousel mode for experiences
+  private startAutoCarousel(): void {
+    // Don't start if already active
+    if (this._autoCarouselActive) return;
+    
+    this._autoCarouselActive = true;
+    
+    // Keep the current mode (don't force scroll mode)
+    // This respects the user's preferred interaction style
+    
+    // Highlight each experience in sequence
+    let currentIndex = 0;
+    
+    const highlightNext = () => {
+      if (!this._autoCarouselActive) return;
+      
+      // Reset all experiences
+      this.experiences.forEach(exp => {
+        exp.previewMode = false;
+        exp.scrollProgress = 0;
+      });
+      
+      // Set current experience to preview mode
+      if (this.experiences[currentIndex]) {
+        this.experiences[currentIndex].previewMode = true;
+        this.experiences[currentIndex].scrollProgress = 1; // Full preview
+        this.activeExperienceIndex = currentIndex;
+      }
+      
+      // Move to next experience
+      currentIndex = (currentIndex + 1) % this.experiences.length;
+      
+      // Continue carousel after delay
+      setTimeout(highlightNext, 4000); // 4 seconds per experience
+    };
+    
+    // Start the carousel
+    highlightNext();
+  }
+  
+  // Stop auto carousel mode
+  private stopAutoCarousel(): void {
+    this._autoCarouselActive = false;
+    
+    // Reset all experiences to non-preview mode
+    this.experiences.forEach(exp => {
+      exp.previewMode = false;
+      exp.scrollProgress = 0;
+    });
+  }
+
+  // Create network diagram data for part-time job visualization
+  private createPartTimeDiagramData(): void {
+    this.diagramNodes = [];
+    this.diagramConnections = [];
+    
+    // Add main nodes for part-time experiences
+    const partTimeExperiences = this.experiences.filter(exp => 
+      exp.company === 'Alignerr' || exp.company === 'Micro1'
+    );
+    
+    partTimeExperiences.forEach((exp, index) => {
+      // Add company node
+      this.diagramNodes.push({
+        id: `company-${exp.company}`,
+        label: exp.company,
+        type: 'part-time',
+        color: index === 0 ? '#f59e0b' : '#10b981', // Different colors for each company
+        size: 60
+      });
+      
+      // Add skills as nodes
+      if (exp.skills) {
+        exp.skills.forEach(skill => {
+          // Check if this skill node already exists
+          if (!this.diagramNodes.find(node => node.id === `skill-${skill}`)) {
+            this.diagramNodes.push({
+              id: `skill-${skill}`,
+              label: skill,
+              type: 'skill',
+              color: '#6366f1',
+              size: 40
+            });
+          }
+          
+          // Connect company to skill
+          this.diagramConnections.push({
+            source: `company-${exp.company}`,
+            target: `skill-${skill}`,
+            strength: 2,
+            color: index === 0 ? '#f59e0b80' : '#10b98180'
+          });
+        });
+      }
+    });
+    
+    // Connect common skills between companies
+    const alignerrSkills = new Set(
+      this.experiences.find(exp => exp.company === 'Alignerr')?.skills || []
+    );
+    
+    const micro1Skills = new Set(
+      this.experiences.find(exp => exp.company === 'Micro1')?.skills || []
+    );
+    
+    // Find common skills
+    const commonSkills = [...alignerrSkills].filter(skill => micro1Skills.has(skill));
+    
+    // Connect the two companies through common skills
+    commonSkills.forEach(skill => {
+      this.diagramConnections.push({
+        source: `company-Alignerr`,
+        target: `company-Micro1`,
+        strength: 1,
+        color: '#6366f180'
+      });
+    });
+  }
+
+  // Calculate positions for diagram visualization
+  calculateDiagramPositions(): void {
+    // Simple force-directed layout algorithm
+    // Position nodes in a circular layout initially
+    const centerX = 200;
+    const centerY = 150;
+    const radius = 100;
+    
+    this.diagramNodes.forEach((node, i) => {
+      const angle = (2 * Math.PI * i) / this.diagramNodes.length;
+      
+      if (node.type === 'part-time') {
+        // Place part-time jobs in the center
+        node.x = centerX + Math.cos(angle) * (radius / 2);
+        node.y = centerY + Math.sin(angle) * (radius / 2);
+      } else {
+        // Place skills around in a circle
+        node.x = centerX + Math.cos(angle) * radius;
+        node.y = centerY + Math.sin(angle) * radius;
+      }
+    });
+  }
+
+  // Render the network diagram visualization for part-time experiences
+  getDiagramSvg(): string {
+    this.calculateDiagramPositions();
+    
+    let svg = `<svg width="400" height="300" viewBox="0 0 400 300">`;
+    
+    // Add connections first (so they're behind nodes)
+    this.diagramConnections.forEach(conn => {
+      const source = this.diagramNodes.find(n => n.id === conn.source);
+      const target = this.diagramNodes.find(n => n.id === conn.target);
+      
+      if (source && target && source.x !== undefined && target.x !== undefined) {
+        svg += `<line 
+          x1="${source.x}" 
+          y1="${source.y}" 
+          x2="${target.x}" 
+          y2="${target.y}" 
+          stroke="${conn.color || '#6366f180'}" 
+          stroke-width="${conn.strength || 1}"
+          stroke-dasharray="${conn.source.includes('skill') ? '2,2' : ''}"
+        />`;
+      }
+    });
+    
+    // Add nodes
+    this.diagramNodes.forEach(node => {
+      if (node.x === undefined) return;
+      
+      const size = node.size || 40;
+      
+      svg += `<g class="diagram-node" data-type="${node.type}">
+        <circle 
+          cx="${node.x}" 
+          cy="${node.y}" 
+          r="${size / 2}"
+          fill="${node.color || '#6366f1'}"
+          stroke="${node.type === 'part-time' ? 'white' : 'rgba(255,255,255,0.2)'}"
+          stroke-width="${node.type === 'part-time' ? 2 : 1}"
+          class="node-circle node-${node.type}"
+        />
+        <text 
+          x="${node.x}" 
+          y="${node.y}" 
+          text-anchor="middle" 
+          dominant-baseline="middle"
+          fill="white"
+          font-size="${node.type === 'part-time' ? 14 : 10}"
+          font-weight="${node.type === 'part-time' ? 'bold' : 'normal'}"
+        >${node.label}</text>
+      </g>`;
+    });
+    
+    svg += `</svg>`;
+    return svg;
   }
 }
