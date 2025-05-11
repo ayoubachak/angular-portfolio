@@ -392,31 +392,45 @@ print(f"Accuracy: {accuracy:.2f}")`,
   getTechAnimationClass(animation: TechAnimation, experience: ExperienceWithState, index: number): string {
     // Find the index of this experience in the array
     const expIndex = this.experiences.findIndex(exp => exp === experience);
-    const isEvenExperience = expIndex % 2 === 0;
+    const isEvenExperience = expIndex % 2 === 0; // True if card is on the right side of the timeline (or notionally right for preview)
     
-    // Determine position based on various factors for nice alternating pattern
     let position;
     
     if (experience.previewMode) {
       // In preview mode, create an alternating pattern based on experience index and animation index
       if (this.scrollDrivenMode) {
         // For scroll-driven mode, position doesn't matter as much (fullscreen background)
+        // Keep original logic or simplify as position class here is less critical due to CSS full background
         position = isEvenExperience ? 'left' : 'right';
       } else {
-        // For manual preview mode, alternate positions based on both indices
+        // For manual preview mode (card is centered)
+        // Snippets on opposite sides of the centered card, then top/bottom.
+        const firstSnippetSide = isEvenExperience ? 'left' : 'right'; // If card notionally on right, first snippet on left.
+
         if (index === 0) {
-          position = isEvenExperience ? 'left' : 'right';
+          position = firstSnippetSide;
         } else if (index === 1) {
-          position = isEvenExperience ? 'right' : 'left';
-        } else if (index % 2 === 0) {
+          // Second snippet on the other side relative to the first
+          position = (firstSnippetSide === 'left') ? 'right' : 'left';
+        } else if (index % 2 === 0) { // For 3rd (index 2), 5th...
           position = 'top';
-        } else {
+        } else { // For 4th (index 3), 6th...
           position = 'bottom';
         }
       }
     } else {
-      // In regular mode, use the specified position or default to alternating sides
-      position = animation.position || (index % 2 === 0 ? 'right' : 'left');
+      // In regular mode (NOT experience.previewMode)
+      // Snippets should be on the opposite side of the card's timeline position.
+      // If card is on the right (isEvenExperience), snippets start on the 'left' and alternate.
+      // If card is on the left (!isEvenExperience), snippets start on the 'right' and alternate.
+      const firstSnippetSide = isEvenExperience ? 'left' : 'right';
+
+      if (index % 2 === 0) { // 0th, 2nd, 4th... snippet
+        position = firstSnippetSide;
+      } else { // 1st, 3rd, 5th... snippet
+        // Alternate from the first snippet's side
+        position = (firstSnippetSide === 'left') ? 'right' : 'left';
+      }
     }
     
     return `tech-animation tech-${this.slugify(animation.tech)} tech-${position}${
