@@ -108,10 +108,10 @@ export class ContactComponent implements OnInit {
     }
     
     // Switch players
-    this.currentPlayer = 'O';
+    this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
     
     // Bot move
-    if (this.playingWithBot && this.gameStatus === 'playing') {
+    if (this.playingWithBot && this.currentPlayer === 'O' && this.gameStatus === 'playing') {
       this.botThinking = true;
       // Add slight delay to make it feel more natural
       setTimeout(() => {
