@@ -9,9 +9,8 @@ import { ThemeToggleComponent } from './theme-toggle.component';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, ThemeToggleComponent],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  imports: [CommonModule, FontAwesomeModule, ThemeToggleComponent],  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
   name: string = '';

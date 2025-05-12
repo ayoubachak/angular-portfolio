@@ -36,9 +36,8 @@ import { WebviewPreviewComponent } from './components/webview-preview/webview-pr
     FooterComponent,
     ResumeCompilerComponent,
     WebviewPreviewComponent
-  ],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  ],  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
 })
 export class AppComponent implements AfterViewInit {
   title = 'portfolio';

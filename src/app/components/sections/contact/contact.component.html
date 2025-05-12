@@ -133,8 +133,7 @@
                 </div>
               </div>
             </div>
-            
-            <!-- Social Links -->
+              <!-- Social Links -->
             <div>
               <h3 class="text-xl font-semibold mb-4">Connect With Me</h3>
               <div class="flex space-x-4">
@@ -148,17 +147,24 @@
                 </a>
               </div>
             </div>
-            
-            <!-- Tic Tac Toe Game - Hidden on mobile -->
+
+            <!-- Q-Learning Tic Tac Toe Game - Hidden on mobile -->
             <div class="mt-8 p-3 bg-primary-color rounded-lg shadow-md hidden lg:block" appScrollAnimation animationClass="animate-fade-in-up">
               <div class="flex justify-between items-center mb-2">
-                <h4 class="text-base font-semibold text-text-color">Tic Tac Toe</h4>
-                <button 
-                  (click)="toggleBot()" 
-                  class="text-xs py-1 px-2 rounded-md bg-accent-color/20 hover:bg-accent-color/30 text-accent-color transition-colors">
-                  {{ playingWithBot ? 'Bot: ON' : 'Bot: OFF' }}
-                </button>
+                <h4 class="text-base font-semibold text-text-color">Tic Tac Toe AI</h4>
+                <div class="flex space-x-2">
+                  <button 
+                    (click)="toggleLearning()" 
+                    class="text-xs py-1 px-2 rounded-md bg-accent-color/20 hover:bg-accent-color/30 text-accent-color transition-colors flex items-center"
+                    [class.bg-accent-color]="showLearningStats"
+                    [class.text-white]="showLearningStats">
+                    <fa-icon [icon]="faRobot" class="mr-1"></fa-icon>
+                    <span>{{ showLearningStats ? 'Learning: ON' : 'Learning: OFF' }}</span>
+                  </button>
+                </div>
               </div>
+              
+              <!-- Game Grid -->
               <div class="grid grid-cols-3 gap-1 max-w-[120px] mx-auto">
                 <ng-container *ngFor="let row of [0,1,2]; let r = index">
                   <ng-container *ngFor="let col of [0,1,2]; let c = index">
@@ -166,23 +172,54 @@
                       (click)="handleCellClick(r, c)"
                       class="w-10 h-10 bg-secondary-color border border-text-color/50 rounded flex items-center justify-center text-lg text-accent-color hover:bg-accent-color/10 transition-colors"
                       style="border-color: var(--text-color)">
-                      {{ board[r][c] }}
+                      {{ gameService.gameState.board[r][c] }}
                     </button>
                   </ng-container>
                 </ng-container>
               </div>
+              
+              <!-- Game Status -->
               <div class="mt-2 text-center text-text-color text-xs">
-                <span *ngIf="gameStatus === 'playing'">
-                  <span *ngIf="botThinking" class="text-accent-color">Bot thinking...</span>
-                  <span *ngIf="!botThinking">Current: {{ currentPlayer }}</span>
+                <span *ngIf="gameService.gameState.status === 'playing'">
+                  <span *ngIf="botThinking" class="text-accent-color">AI thinking...</span>
+                  <span *ngIf="!botThinking">Current: {{ gameService.gameState.currentPlayer }}</span>
                 </span>
-                <span *ngIf="gameStatus === 'won'">Winner: {{ winner }}</span>
-                <span *ngIf="gameStatus === 'draw'">It's a draw!</span>
+                <span *ngIf="gameService.gameState.status === 'won'" class="text-accent-color">
+                  Winner: {{ gameService.gameState.winner }}
+                </span>
+                <span *ngIf="gameService.gameState.status === 'draw'" class="text-accent-color">
+                  It's a draw!
+                </span>
               </div>
+              
+              <!-- Learning Stats (conditionally shown) -->
+              <div *ngIf="showLearningStats" class="mt-3 bg-secondary-color/50 rounded p-2 text-xs">
+                <div class="flex justify-between items-center mb-1">
+                  <span class="flex items-center">
+                    <fa-icon [icon]="faChartLine" class="mr-1 text-accent-color"></fa-icon>
+                    Learning Stats
+                  </span>
+                  <button 
+                    (click)="resetLearning()" 
+                    class="text-xs py-0.5 px-1.5 rounded bg-accent-color/20 hover:bg-accent-color/40 text-accent-color transition-colors">
+                    Reset
+                  </button>
+                </div>
+                <div class="grid grid-cols-2 gap-x-2 gap-y-1">
+                  <div>Games: {{ gameService.stats.gamesPlayed }}</div>
+                  <div>States: {{ gameService.stats.qTableSize }}</div>
+                  <div>AI Wins: {{ gameService.stats.botWins }}</div>
+                  <div>Player Wins: {{ gameService.stats.playerWins }}</div>
+                  <div>Draws: {{ gameService.stats.draws }}</div>
+                  <div>Exploration: {{ (gameService.stats.explorationRate * 100).toFixed(0) }}%</div>
+                </div>
+              </div>
+              
+              <!-- Game Controls -->
               <div class="mt-2 text-center">
-                <button *ngIf="gameStatus !== 'playing'"
+                <button *ngIf="gameService.gameState.status !== 'playing'"
                   class="px-3 py-1 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors text-sm"
-                  (click)="resetGame()">Restart</button>
+                  (click)="resetGame()">New Game</button>
               </div>
             </div>
           </div>
