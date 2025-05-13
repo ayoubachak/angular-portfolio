@@ -45,17 +45,15 @@
         </div>
       </div>
     </div>
-    
-    <!-- Navigation Links and Theme Toggle (only show on larger screens) -->
+      <!-- Navigation Links and Theme Toggle (only show on larger screens) -->
     <div class="hidden md:flex items-center transition-all duration-300"
-         [ngClass]="{'ml-0': isScrolled, 'ml-4': !isScrolled}">
-      <div class="flex space-x-8 items-center">
-        <a href="#intro" class="text-text-color hover:text-accent-color transition-colors duration-300">Home</a>
-        <a href="#about" class="text-text-color hover:text-accent-color transition-colors duration-300">About</a>
-        <a href="#education" class="text-text-color hover:text-accent-color transition-colors duration-300">Education</a>
-        <a href="#github" class="text-text-color hover:text-accent-color transition-colors duration-300">Projects</a>
-        <a href="#blog" class="text-text-color hover:text-accent-color transition-colors duration-300">Blog</a>
-        <a href="#contact" class="px-4 py-2 bg-accent-color text-button-text rounded-md hover:bg-opacity-80 transition-all duration-300">Contact</a>
+         [ngClass]="{'ml-0': isScrolled, 'ml-4': !isScrolled}">      <div class="flex space-x-8 items-center">
+        <a href="#intro" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('intro')">Home</a>
+        <a href="#about" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('about')">About</a>
+        <a href="#education" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('education')">Education</a>
+        <a href="#github" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('github')">Projects</a>
+        <a href="#blog" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('blog')">Blog</a>
+        <a href="#contact" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('contact')">Contact</a>
       </div>
       <!-- Theme toggle button with margin -->
       <div class="ml-8">
@@ -104,14 +102,13 @@
           </div>
         </div>
       </div>
-    </div><!-- Navigation links with blurred background and padding bottom to avoid overlap with fixed elements -->
-    <div class="flex flex-col space-y-4 p-6 rounded-lg mb-16">
-      <a href="#intro" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium">Home</a>
-      <a href="#about" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium">About</a>
-      <a href="#education" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium">Education</a>
-      <a href="#github" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium">Projects</a>
-      <a href="#blog" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium">Blog</a>
-      <a href="#contact" (click)="closeMobileMenu()" class="px-5 py-2 bg-accent-color text-button-text rounded-md hover:bg-opacity-80 transition-all duration-300 inline-block mt-2 font-medium">Contact</a>
+    </div>    <!-- Navigation links with blurred background and padding bottom to avoid overlap with fixed elements -->    <div class="flex flex-col space-y-4 p-6 rounded-lg mb-16">
+      <a href="#intro" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('intro')">Home</a>
+      <a href="#about" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('about')">About</a>
+      <a href="#education" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('education')">Education</a>
+      <a href="#github" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('github')">Projects</a>
+      <a href="#blog" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('blog')">Blog</a>
+      <a href="#contact" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('contact')">Contact</a>
     </div>
   </div>
 </header>

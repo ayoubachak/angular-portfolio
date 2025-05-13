@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit {
   email: string = '';
   isScrolled: boolean = false;
   mobileMenuOpen: boolean = false;
+  activeSection: string = 'intro';
+  sections: string[] = ['intro', 'about', 'education', 'github', 'blog', 'contact'];
   
   // Icons
   faGithub = faGithub;
@@ -48,7 +50,39 @@ export class NavbarComponent implements OnInit {
     // Show navbar profile after scrolling past intro
     const threshold = document.getElementById('intro')?.offsetHeight ?? 0;
     this.isScrolled = window.scrollY > threshold;
+    
+    // Update active section based on scroll position
+    this.updateActiveSection();
   }
+  
+  /**
+   * Determines which section is currently in view based on scroll position
+   */
+  updateActiveSection(): void {
+    let currentSection = this.activeSection;
+    
+    // Check each section's position and determine which is most visible
+    for (const section of this.sections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        // If element is in viewport and at least 30% visible, consider it active
+        if (rect.top < window.innerHeight * 0.5 && rect.bottom >= 0) {
+          currentSection = section;
+        }
+      }
+    }
+    
+    this.activeSection = currentSection;
+  }
+  
+  /**
+   * Checks if a specific section is active
+   */
+  isActive(section: string): boolean {
+    return this.activeSection === section;
+  }
+  
     // Toggle mobile menu
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;

@@ -31,3 +31,53 @@ nav {
   background: rgba(var(--primary-color-rgb), 0.85);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
+
+/* Underline animation for navigation links */
+.nav-link {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-link:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin-top: 2px;
+  left: 0;
+  background: var(--accent-color);
+  transition: width 0.3s ease;
+  box-shadow: 0 0 2px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.nav-link:hover:after {
+  width: 100%;
+}
+
+/* Active link indicator */
+.nav-link.active:after {
+  width: 100%;
+  background: var(--accent-color);
+  opacity: 0.8;
+}
+
+/* Slight scale effect on hover */
+.nav-link:hover {
+  transform: translateY(-1px);
+}
+
+/* Mobile specific styling */
+@media (max-width: 768px) {
+  .nav-link:after {
+    height: 1.5px;
+    margin-top: 0;
+    bottom: 2px;
+  }
+  
+  /* Make the contact link stand out just a bit */
+  a[href="#contact"].nav-link {
+    font-weight: 500;
+  }
+}
