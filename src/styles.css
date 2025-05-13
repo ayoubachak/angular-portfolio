@@ -6,6 +6,7 @@
 /* Light theme (default) */
 :root {
   --primary-color: #f9fafb;
+  --primary-color-rgb: 249, 250, 251; /* RGB values for primary color */
   --secondary-color: #e5e7eb;
   --accent-color: #6d28d9;
   --accent-color-rgb: 109, 40, 217; /* RGB values for accent color */
@@ -21,6 +22,7 @@
 /* Dark theme overrides when html has .dark class */
 .dark {
   --primary-color: #1e1e2a;
+  --primary-color-rgb: 30, 30, 42; /* RGB values for primary color in dark mode */
   --secondary-color: #2c2c3a;
   --accent-color: #6d28d9;
   --accent-color-rgb: 109, 40, 217;
