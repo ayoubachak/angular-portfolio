@@ -43,15 +43,13 @@ export class NavbarComponent implements OnInit {
     
     console.log('Avatar URL set to:', this.avatar);
   }
-
   @HostListener('window:scroll', [])
   onWindowScroll() {
     // Show navbar profile after scrolling past intro
     const threshold = document.getElementById('intro')?.offsetHeight ?? 0;
     this.isScrolled = window.scrollY > threshold;
   }
-
-  // Toggle mobile menu
+    // Toggle mobile menu
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }

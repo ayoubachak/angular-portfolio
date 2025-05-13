@@ -1,14 +1,19 @@
 <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" [ngClass]="{'bg-primary-color/90 backdrop-blur-md shadow-lg': isScrolled, 'bg-transparent': !isScrolled}">  <nav class="container mx-auto px-6 py-3 flex justify-between items-center transition-all duration-300">
-    <div class="flex items-center space-x-4">
-      <!-- Logo placeholder when profile is hidden -->
-      <div *ngIf="!isScrolled" class="text-accent-color flex items-center">
+    <div class="flex items-center space-x-4">      <!-- Logo placeholder when profile is hidden - show on desktop when not scrolled, hide on mobile -->
+      <div *ngIf="!isScrolled" class="text-accent-color flex items-center md:flex hidden">
         <div class="h-7 w-7 rounded-full bg-accent-color flex items-center justify-center text-white text-xs font-bold">
           <span>&lt;/&gt;</span>
         </div>
       </div>
       
-      <!-- Avatar -->
-      <div class="relative overflow-hidden rounded-full h-12 w-12 border-2 border-accent-color shadow-md transition-all duration-300"
+      <!-- Logo for mobile navigation - always shown when menu is closed -->
+      <div *ngIf="!mobileMenuOpen" class="text-accent-color flex items-center md:hidden">
+        <div class="h-7 w-7 rounded-full bg-accent-color flex items-center justify-center text-white text-xs font-bold">
+          <span>&lt;/&gt;</span>
+        </div>
+      </div>
+        <!-- Avatar - only show on desktop when scrolled -->
+      <div class="relative overflow-hidden rounded-full h-12 w-12 border-2 border-accent-color shadow-md transition-all duration-300 md:block hidden"
            [ngClass]="{'opacity-0 invisible scale-0 w-0': !isScrolled, 'opacity-100 visible scale-100 w-12': isScrolled}">
         <img [src]="avatar || 'assets/images/avatar.jpg'" 
              alt="{{ name }}" 
@@ -18,8 +23,8 @@
         <div class="hidden">Avatar URL: {{avatar}}</div>
       </div>
       
-      <!-- Name with responsive display -->
-      <div class="text-text-color transition-all duration-300"
+      <!-- Name with responsive display - only show on desktop when scrolled -->
+      <div class="text-text-color transition-all duration-300 md:block hidden"
            [ngClass]="{'opacity-0 invisible scale-0 w-0': !isScrolled, 'opacity-100 visible scale-100': isScrolled}">
         <h1 class="text-lg font-bold">{{ name }}</h1>
         <div class="flex space-x-3 mt-1">
@@ -66,8 +71,7 @@
       </svg>
     </button>
   </nav>
-    <!-- Mobile Menu (shown when mobileMenuOpen is true) -->
-  <div 
+    <!-- Mobile Menu (shown when mobileMenuOpen is true) -->  <div 
     *ngIf="mobileMenuOpen" 
     class="md:hidden bg-primary-color/95 backdrop-blur-md shadow-lg py-4 px-6 absolute top-full left-0 right-0 border-t border-accent-color/20 transition-all duration-300">    <!-- Profile info in mobile menu with theme toggle on the right -->
     <div class="flex items-center justify-between mb-4 pb-4 border-b border-accent-color/20">
