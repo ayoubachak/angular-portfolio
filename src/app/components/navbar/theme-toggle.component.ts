@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { EasterEggService } from '../../services/easter-egg.service';
 
 @Component({
   selector: 'app-theme-toggle',
@@ -18,6 +19,8 @@ export class ThemeToggleComponent implements OnInit {
   faSun = faSun;
   faMoon = faMoon;
   isDark = false;
+  
+  private easterEggService = inject(EasterEggService);
 
   ngOnInit(): void {
     // Check for saved preference
@@ -30,11 +33,16 @@ export class ThemeToggleComponent implements OnInit {
     }
     this.applyTheme();
   }
-
   toggleTheme(): void {
+    const wasInDarkMode = this.isDark;
     this.isDark = !this.isDark;
     localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
     this.applyTheme();
+    
+    // Trigger Easter egg animation when switching to light mode from dark mode
+    if (wasInDarkMode && !this.isDark) {
+      this.easterEggService.triggerLightModeAnimation();
+    }
   }
 
   private applyTheme(): void {

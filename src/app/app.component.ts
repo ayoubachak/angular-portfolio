@@ -16,11 +16,11 @@ import { ContactComponent } from './components/sections/contact/contact.componen
 import { FooterComponent } from './components/footer/footer.component';
 import { ResumeCompilerComponent } from './components/resume-compiler/resume-compiler.component';
 import { WebviewPreviewComponent } from './components/webview-preview/webview-preview.component';
+import { LightModeEasterEggComponent } from './components/easter-eggs/light-mode-easter-egg.component';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [
+  standalone: true,  imports: [
     NavbarComponent,
     IntroComponent,
     AboutComponent,
@@ -35,8 +35,9 @@ import { WebviewPreviewComponent } from './components/webview-preview/webview-pr
     ContactComponent,
     FooterComponent,
     ResumeCompilerComponent,
-    WebviewPreviewComponent
-  ],  templateUrl: './app.component.html',
+    WebviewPreviewComponent,
+    LightModeEasterEggComponent
+  ],templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements AfterViewInit {
