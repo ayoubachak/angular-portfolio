@@ -1,5 +1,4 @@
-<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" [ngClass]="{'bg-primary-color/90 backdrop-blur-md shadow-lg': isScrolled, 'bg-transparent': !isScrolled}">
-  <nav class="container mx-auto px-6 py-3 flex justify-between items-center transition-all duration-300">
+<header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" [ngClass]="{'bg-primary-color/90 backdrop-blur-md shadow-lg': isScrolled, 'bg-transparent': !isScrolled}">  <nav class="container mx-auto px-6 py-3 flex justify-between items-center transition-all duration-300">
     <div class="flex items-center space-x-4">
       <!-- Logo placeholder when profile is hidden -->
       <div *ngIf="!isScrolled" class="text-accent-color flex items-center">
@@ -42,17 +41,21 @@
       </div>
     </div>
     
-    <!-- Navigation Links (only show on larger screens) -->
-    <div class="hidden md:flex space-x-8 items-center transition-all duration-300"
+    <!-- Navigation Links and Theme Toggle (only show on larger screens) -->
+    <div class="hidden md:flex items-center transition-all duration-300"
          [ngClass]="{'ml-0': isScrolled, 'ml-4': !isScrolled}">
-      <a href="#intro" class="text-text-color hover:text-accent-color transition-colors duration-300">Home</a>
-      <a href="#about" class="text-text-color hover:text-accent-color transition-colors duration-300">About</a>
-      <a href="#education" class="text-text-color hover:text-accent-color transition-colors duration-300">Education</a>
-      <a href="#github" class="text-text-color hover:text-accent-color transition-colors duration-300">Projects</a>
-      <a href="#blog" class="text-text-color hover:text-accent-color transition-colors duration-300">Blog</a>
-      <a href="#contact" class="px-4 py-2 bg-accent-color text-button-text rounded-md hover:bg-opacity-80 transition-all duration-300">Contact</a>
-      <!-- Theme toggle button -->
-      <app-theme-toggle></app-theme-toggle>
+      <div class="flex space-x-8 items-center">
+        <a href="#intro" class="text-text-color hover:text-accent-color transition-colors duration-300">Home</a>
+        <a href="#about" class="text-text-color hover:text-accent-color transition-colors duration-300">About</a>
+        <a href="#education" class="text-text-color hover:text-accent-color transition-colors duration-300">Education</a>
+        <a href="#github" class="text-text-color hover:text-accent-color transition-colors duration-300">Projects</a>
+        <a href="#blog" class="text-text-color hover:text-accent-color transition-colors duration-300">Blog</a>
+        <a href="#contact" class="px-4 py-2 bg-accent-color text-button-text rounded-md hover:bg-opacity-80 transition-all duration-300">Contact</a>
+      </div>
+      <!-- Theme toggle button with margin -->
+      <div class="ml-8">
+        <app-theme-toggle></app-theme-toggle>
+      </div>
     </div>
     
     <!-- Mobile Menu Button -->
@@ -63,11 +66,44 @@
       </svg>
     </button>
   </nav>
-  
-  <!-- Mobile Menu (shown when mobileMenuOpen is true) -->
+    <!-- Mobile Menu (shown when mobileMenuOpen is true) -->
   <div 
     *ngIf="mobileMenuOpen" 
-    class="md:hidden bg-primary-color/95 backdrop-blur-md shadow-lg py-4 px-6 absolute top-full left-0 right-0 border-t border-accent-color/20 transition-all duration-300">
+    class="md:hidden bg-primary-color/95 backdrop-blur-md shadow-lg py-4 px-6 absolute top-full left-0 right-0 border-t border-accent-color/20 transition-all duration-300">    <!-- Profile info in mobile menu with theme toggle on the right -->
+    <div class="flex items-center justify-between mb-4 pb-4 border-b border-accent-color/20">
+      <div class="flex items-center space-x-4">
+        <div class="relative overflow-hidden rounded-full h-12 w-12 border-2 border-accent-color shadow-md">
+          <img [src]="avatar || 'assets/images/avatar.jpg'" 
+               alt="{{ name }}" 
+               class="object-cover h-full w-full"
+               (error)="handleImageError($event)">
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-text-color">{{ name }}</h1>
+          <div class="flex space-x-3 mt-1">
+            <!-- Social Links -->
+            <a *ngFor="let link of socialLinks.slice(0, 3)" 
+              [href]="link.url" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-text-secondary hover:text-accent-color transition-colors duration-300 text-sm">
+              <fa-icon [icon]="getIcon(link.platform)"></fa-icon>
+            </a>
+            
+            <!-- Email -->
+            <a [href]="'mailto:' + email" 
+              class="text-text-secondary hover:text-accent-color transition-colors duration-300 text-sm">
+              <fa-icon [icon]="faEnvelope"></fa-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Theme toggle next to profile -->
+      <app-theme-toggle></app-theme-toggle>
+    </div>
+    
+    <!-- Navigation links -->
     <div class="flex flex-col space-y-4">
       <a href="#intro" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2">Home</a>
       <a href="#about" (click)="closeMobileMenu()" class="text-text-color hover:text-accent-color transition-colors duration-300 py-2">About</a>
