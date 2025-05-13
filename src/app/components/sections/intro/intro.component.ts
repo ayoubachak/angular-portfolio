@@ -5,11 +5,19 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
+import { EasterEggHintComponent } from '../../../components/easter-eggs/easter-egg-hint.component';
+import { GenZEasterEggTriggerDirective } from '../../../directives/gen-z-easter-egg-trigger.directive';
 
 @Component({
   selector: 'app-intro',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, ScrollAnimationDirective],
+  imports: [
+    CommonModule, 
+    FontAwesomeModule, 
+    ScrollAnimationDirective, 
+    EasterEggHintComponent,
+    GenZEasterEggTriggerDirective
+  ],
   templateUrl: './intro.component.html',
   styleUrl: './intro.component.css'
 })

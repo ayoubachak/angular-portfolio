@@ -17,6 +17,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ResumeCompilerComponent } from './components/resume-compiler/resume-compiler.component';
 import { WebviewPreviewComponent } from './components/webview-preview/webview-preview.component';
 import { LightModeEasterEggComponent } from './components/easter-eggs/light-mode-easter-egg.component';
+import { GenZPhoneComponent } from './components/easter-eggs/gen-z-phone.component';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +37,8 @@ import { LightModeEasterEggComponent } from './components/easter-eggs/light-mode
     FooterComponent,
     ResumeCompilerComponent,
     WebviewPreviewComponent,
-    LightModeEasterEggComponent
+    LightModeEasterEggComponent,
+    GenZPhoneComponent
   ],templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
