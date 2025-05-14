@@ -1,7 +1,7 @@
 import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faTimes, faMinusCircle, faArrowsUpDown, faCheck, faX, faLock, faLockOpen, faExpand } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faMinusCircle, faCheck, faX, faLock, faLockOpen, faExpand } from '@fortawesome/free-solid-svg-icons';
 import { GenZEasterEggService } from '../../services/gen-z-easter-egg.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
@@ -13,9 +13,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
   imports: [CommonModule, FontAwesomeModule],
   template: `    <div 
       *ngIf="isVisible" 
-      class="phone-container"
-      [class.minimized]="isMinimized"
-      [class.full-screen]="isFullScreen"
+      class="phone-container"      [class.minimized]="isMinimized"
       [class.embedded]="isEmbedded"
       [class.locked]="isLocked"
       [style.top.px]="!isEmbedded ? position.y : 0"
@@ -45,8 +43,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
         <div class="phone-header">
           <div class="phone-notch"></div>
         </div>        <!-- Control buttons -->
-        <div class="phone-controls">
-          <button (click)="toggleLock($event)" class="control-btn lock-btn" title="{{isLocked ? 'Unlock' : 'Lock'}} position">
+        <div class="phone-controls">          <button (click)="toggleLock($event)" class="control-btn lock-btn" title="{{isLocked ? 'Unlock' : 'Lock'}} position">
             <fa-icon [icon]="isLocked ? faLock : faLockOpen"></fa-icon>
           </button>
           <button (click)="toggleMinimize($event)" class="control-btn minimize-btn" title="Minimize">
@@ -54,9 +51,6 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
           </button>
           <button (click)="toggleEmbedded($event)" class="control-btn embed-btn" title="{{isEmbedded ? 'Float' : 'Embed'}}">
             <fa-icon [icon]="faExpand"></fa-icon>
-          </button>
-          <button (click)="toggleFullScreen($event)" class="control-btn fullscreen-btn" title="Fullscreen">
-            <fa-icon [icon]="faArrowsUpDown"></fa-icon>
           </button>
           <button (click)="closePhone($event)" class="control-btn close-btn" title="Close">
             <fa-icon [icon]="faTimes"></fa-icon>
@@ -109,7 +103,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
   `,
   styles: [`    .phone-container {
       position: fixed;
-      z-index: 999;
+      z-index: 1010; /* Higher than navbar's 1000 */
       width: 350px;
       height: 650px;
       background-color: #111;
@@ -133,23 +127,12 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
       border-radius: 20px;
       right: 10px;
       bottom: 10px;
-    }
-    
-    .phone-container.full-screen {
-      width: 100%;
-      height: 100%;
-      top: 0 !important;
-      left: 0 !important;
-      border-radius: 0;
-      border-width: 0;
-    }
-    
-    .phone-container.embedded {
+    }    .phone-container.embedded {
       position: fixed;
-      top: 0 !important;
+      top: 60px !important; /* Add space for the navbar */
       right: 0 !important;
       left: auto !important;
-      height: 100vh;
+      height: calc(100vh - 60px); /* Subtract navbar height */
       width: 34%;
       border-radius: 0;
       border-left-width: 2px;
@@ -157,6 +140,7 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
       border-top-width: 0;
       border-bottom-width: 0;
       cursor: default;
+      z-index: 990; /* Lower than navbar when embedded */
     }
     
     .phone-header {
@@ -421,16 +405,13 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
 export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome icons
   faTimes = faTimes;
   faMinusCircle = faMinusCircle;
-  faArrowsUpDown = faArrowsUpDown;
   faCheck = faCheck;
   faX = faX;
   faLock = faLock;
   faLockOpen = faLockOpen;
-  faExpand = faExpand;
-  // Component state
+  faExpand = faExpand;  // Component state
   isVisible = false;
   isMinimized = false;
-  isFullScreen = false;
   isGenZ: boolean | null = null;
   isEmbedded = false;
   isLocked = false; // Whether phone is locked in place (not draggable)
@@ -459,17 +440,11 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
       'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0&controls=1&fs=0&modestbranding=1&rel=0&showinfo=0'
     );
   }
-    ngOnInit(): void {
-    this.subscription = this.genZService.state$.subscribe(state => {
+    ngOnInit(): void {    this.subscription = this.genZService.state$.subscribe(state => {
       this.isVisible = state.isActive;
       this.isGenZ = state.isGenZ;
       this.isMinimized = state.isMinimized;
       this.isEmbedded = state.isEmbedded;
-      
-      // When embedded, reset fullscreen
-      if (state.isEmbedded) {
-        this.isFullScreen = false;
-      }
       
       // Position phone in center of screen when it first appears
       if (state.isActive && !this.isDragging && !state.isEmbedded) {
@@ -510,13 +485,9 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
     this.genZService.toggleMinimize();
   }
   
-  toggleFullScreen(event: MouseEvent): void {
-    event.stopPropagation();
-    this.isFullScreen = !this.isFullScreen;
-  }
     startDrag(event: MouseEvent): void {
-    // Don't allow dragging in fullscreen mode, embedded mode or when locked
-    if (this.isFullScreen || this.isEmbedded || this.isLocked) return;
+    // Don't allow dragging in embedded mode or when locked
+    if (this.isEmbedded || this.isLocked) return;
     
     this.isDragging = true;
     this.dragOffset = {
@@ -540,7 +511,7 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
   
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    if (this.isDragging && !this.isFullScreen) {
+    if (this.isDragging && !this.isEmbedded) {
       this.position = {
         x: event.clientX - this.dragOffset.x,
         y: event.clientY - this.dragOffset.y

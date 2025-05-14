@@ -24,4 +24,15 @@
   position: fixed;
   top: 0;
   right: 0;
+  z-index: 950; /* Below navbar but above content */
+}
+
+/* Make the navbar span the entire width regardless of embedded state */
+app-navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  pointer-events: auto; /* Ensure clicks are registered */
 }
