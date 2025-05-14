@@ -1,7 +1,8 @@
 <div class="app-container" [class.gen-z-active]="isGenZEmbedded">
-  <div class="main-content" [class.split-view]="isGenZEmbedded">
-  <!-- Navbar -->
+  <!-- Navbar outside the main content div so it can be independently styled -->
   <app-navbar></app-navbar>
+  
+  <div class="main-content" [class.split-view]="isGenZEmbedded">
 
   <!-- Intro Section -->
   <app-intro></app-intro>

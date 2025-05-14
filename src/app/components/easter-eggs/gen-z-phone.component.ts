@@ -13,12 +13,15 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
   imports: [CommonModule, FontAwesomeModule],
   template: `    <div 
       *ngIf="isVisible" 
-      class="phone-container"      [class.minimized]="isMinimized"
+      class="phone-container"      
+      [class.minimized]="isMinimized"
       [class.embedded]="isEmbedded"
       [class.locked]="isLocked"
+      [class.mobile]="isMobile"
       [style.top.px]="!isEmbedded ? position.y : 0"
       [style.left.px]="!isEmbedded ? position.x : 0"
       (mousedown)="startDrag($event)"
+      (touchstart)="startTouchDrag($event)"
       [@phoneAnimation]="animationState">
 
       <!-- If user hasn't answered if they're Gen Z yet -->
@@ -42,8 +45,11 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
         <!-- Phone header with notch -->
         <div class="phone-header">
           <div class="phone-notch"></div>
-        </div>        <!-- Control buttons -->
-        <div class="phone-controls">          <button (click)="toggleLock($event)" class="control-btn lock-btn" title="{{isLocked ? 'Unlock' : 'Lock'}} position">
+        </div>
+        
+        <!-- Control buttons -->
+        <div class="phone-controls">
+          <button (click)="toggleLock($event)" class="control-btn lock-btn" title="{{isLocked ? 'Unlock' : 'Lock'}} position">
             <fa-icon [icon]="isLocked ? faLock : faLockOpen"></fa-icon>
           </button>
           <button (click)="toggleMinimize($event)" class="control-btn minimize-btn" title="Minimize">
@@ -55,7 +61,10 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
           <button (click)="closePhone($event)" class="control-btn close-btn" title="Close">
             <fa-icon [icon]="faTimes"></fa-icon>
           </button>
-        </div><!-- Phone screen (Minecraft video) -->        <div class="phone-screen">
+        </div>
+        
+        <!-- Phone screen (Minecraft video) -->
+        <div class="phone-screen">
           <div *ngIf="isGenZ === true" class="video-container">
             <div class="loading-animation" *ngIf="isLoading">
               <div class="loading-spinner"></div>
@@ -64,7 +73,8 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
             <video 
               #videoPlayer
               class="minecraft-video" 
-              [class.loaded]="!isLoading"              autoplay 
+              [class.loaded]="!isLoading"
+              autoplay 
               loop 
               muted
               playsinline
@@ -84,7 +94,8 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
             <video 
               #rickVideo
               class="rick-video" 
-              [class.loaded]="!isLoading"              autoplay 
+              [class.loaded]="!isLoading"
+              autoplay 
               loop 
               controls
               playsinline
@@ -101,7 +112,12 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
       </div>
     </div>
   `,
-  styles: [`    .phone-container {
+  styles: [`
+    :host {
+      --navbar-height: 60px;
+    }
+    
+    .phone-container {
       position: fixed;
       z-index: 1010; /* Higher than navbar's 1000 */
       width: 350px;
@@ -127,12 +143,14 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
       border-radius: 20px;
       right: 10px;
       bottom: 10px;
-    }    .phone-container.embedded {
+    }
+    
+    .phone-container.embedded {
       position: fixed;
-      top: 60px !important; /* Add space for the navbar */
+      top: var(--navbar-height) !important; /* Add space for the navbar */
       right: 0 !important;
       left: auto !important;
-      height: calc(100vh - 60px); /* Subtract navbar height */
+      height: calc(100vh - var(--navbar-height)); /* Subtract navbar height */
       width: 34%;
       border-radius: 0;
       border-left-width: 2px;
@@ -194,14 +212,18 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
     
     .close-btn:hover {
       background: rgba(255, 0, 0, 0.8);
-    }    .phone-screen {
+    }
+    
+    .phone-screen {
       flex: 1;
       background-color: #000;
       overflow: hidden;
       position: relative;
       display: flex;
       flex-direction: column;
-    }    .video-container {
+    }
+    
+    .video-container {
       position: relative;
       width: 100%;
       height: 100%;
@@ -299,7 +321,9 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
     .no-btn:hover {
       background-color: #eaeaea;
       transform: scale(1.05);
-    }    .non-gen-z-content {
+    }
+    
+    .non-gen-z-content {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -369,7 +393,44 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
     .phone-container.embedded .video-container,
     .phone-container.embedded video {
       height: 100%;
-      max-height: 100vh;
+      max-height: calc(100vh - var(--navbar-height));
+    }
+    
+    /* Mobile responsive styles */
+    @media (max-width: 768px) {
+      .phone-container {
+        width: 300px;
+        height: 550px;
+      }
+      
+      .phone-container.embedded {
+        position: fixed;
+        top: auto !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100%;
+        height: 50vh;
+        border-top-width: 2px;
+        border-left-width: 0;
+        border-radius: 0;
+      }
+      
+      .phone-controls {
+        top: 5px;
+        right: 5px;
+        gap: 5px;
+        padding: 3px 5px;
+      }
+      
+      .control-btn {
+        width: 30px;
+        height: 30px;
+      }
+      
+      .phone-container.embedded .video-container {
+        height: 100%;
+      }
     }
     
     .lock-btn {
@@ -416,6 +477,7 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
   isEmbedded = false;
   isLocked = false; // Whether phone is locked in place (not draggable)
   animationState = 'appear';
+  isMobile = false; // Track if we're on mobile
   
   // Dragging state
   private isDragging = false;
@@ -439,8 +501,25 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
     this.alternativeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0&controls=1&fs=0&modestbranding=1&rel=0&showinfo=0'
     );
+    
+    // Check initial screen size
+    this.checkScreenSize();
   }
-    ngOnInit(): void {    this.subscription = this.genZService.state$.subscribe(state => {
+  
+  /**
+   * Check if the screen is mobile sized
+   */
+  private checkScreenSize(): void {
+    this.isMobile = window.innerWidth <= 768;
+  }
+  
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkScreenSize();
+  }
+  
+  ngOnInit(): void {
+    this.subscription = this.genZService.state$.subscribe(state => {
       this.isVisible = state.isActive;
       this.isGenZ = state.isGenZ;
       this.isMinimized = state.isMinimized;
@@ -457,7 +536,7 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
       }
       
       // Position phone on the right side when embedded
-      if (state.isEmbedded) {
+      if (state.isEmbedded && !this.isMobile) {
         const screenHeight = window.innerHeight;
         this.position = {
           x: window.innerWidth * 0.66, // Position at the 66% mark
@@ -499,6 +578,24 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
     event.preventDefault();
   }
   
+  /**
+   * Handle touch start event for mobile dragging
+   */
+  startTouchDrag(event: TouchEvent): void {
+    // Don't allow dragging in embedded mode or when locked
+    if (this.isEmbedded || this.isLocked) return;
+    
+    this.isDragging = true;
+    const touch = event.touches[0];
+    this.dragOffset = {
+      x: touch.clientX - this.position.x,
+      y: touch.clientY - this.position.y
+    };
+    
+    // Prevent default to avoid scrolling while dragging
+    event.preventDefault();
+  }
+  
   toggleLock(event: MouseEvent): void {
     event.stopPropagation();
     this.isLocked = !this.isLocked;
@@ -518,8 +615,8 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
       };
       
       // Keep phone within viewport bounds
-      const phoneWidth = 350;
-      const phoneHeight = 650;
+      const phoneWidth = this.isMobile ? 300 : 350;
+      const phoneHeight = this.isMobile ? 550 : 650;
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
       
@@ -534,7 +631,42 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
     }
   }
   
-  @HostListener('document:mouseup')  onMouseUp(): void {
+  @HostListener('document:touchmove', ['$event'])
+  onTouchMove(event: TouchEvent): void {
+    if (this.isDragging && !this.isEmbedded) {
+      const touch = event.touches[0];
+      this.position = {
+        x: touch.clientX - this.dragOffset.x,
+        y: touch.clientY - this.dragOffset.y
+      };
+      
+      // Keep phone within viewport bounds
+      const phoneWidth = this.isMobile ? 300 : 350;
+      const phoneHeight = this.isMobile ? 550 : 650;
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      
+      if (this.position.x < 0) this.position.x = 0;
+      if (this.position.y < 0) this.position.y = 0;
+      if (this.position.x + phoneWidth > screenWidth) {
+        this.position.x = screenWidth - phoneWidth;
+      }
+      if (this.position.y + phoneHeight > screenHeight) {
+        this.position.y = screenHeight - phoneHeight;
+      }
+      
+      // Prevent default to avoid scrolling while dragging
+      event.preventDefault();
+    }
+  }
+  
+  @HostListener('document:mouseup')  
+  onMouseUp(): void {
+    this.isDragging = false;
+  }
+  
+  @HostListener('document:touchend')
+  onTouchEnd(): void {
     this.isDragging = false;
   }
   

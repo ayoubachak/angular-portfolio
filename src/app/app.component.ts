@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild, HostListener, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { GenZEasterEggService } from './services/gen-z-easter-egg.service';
 
@@ -24,6 +25,7 @@ import { GenZPhoneComponent } from './components/easter-eggs/gen-z-phone.compone
 @Component({
   selector: 'app-root',
   standalone: true,  imports: [
+    CommonModule,
     NavbarComponent,
     IntroComponent,
     AboutComponent,
@@ -51,7 +53,7 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   isGenZEmbedded = false;
   private genZSubscription!: Subscription;
   
-  constructor(private genZService: GenZEasterEggService) { }
+  constructor(private readonly genZService: GenZEasterEggService) { }
   
   ngOnInit(): void {
     this.genZSubscription = this.genZService.state$.subscribe(state => {

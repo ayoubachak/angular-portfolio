@@ -1,0 +1,56 @@
+/* 
+ * Special fixes for the About component when Gen Z is active
+ * This file is used to fix layout issues when the Gen Z phone component is embedded
+ */
+
+/* Make the skills container responsive in split view */
+:host-context(.gen-z-active) section#about .skills-container {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding-right: 10px !important;
+  display: block !important;
+  visibility: visible !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  max-height: 500px !important; /* Ensure consistent height */
+  opacity: 1 !important;
+}
+
+/* Ensure the skills container displays fully in split view when phone is embedded */
+:host-context(.gen-z-active) section#about .skills-container {
+  max-height: none !important;
+  height: auto !important;
+  overflow-y: visible !important;
+}
+
+/* Ensure skill items are visible in split view */
+.gen-z-active .skills-container .skill-item,
+.gen-z-active .skills-container > div,
+.gen-z-active .skills-container > div > div {
+  width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  visibility: visible !important;
+  display: block !important;
+}
+
+/* Make the skill categories wrap properly in split view */
+.gen-z-active .flex.flex-wrap.gap-3.mb-8 {
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+  display: flex !important;
+}
+
+/* Ensure grids display properly */
+.gen-z-active .skills-container .grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+}
+
+/* Responsive adjustments for mobile in split view */
+@media (max-width: 768px) {
+  .gen-z-active .skills-container {
+    max-height: 350px !important; /* Smaller height for mobile split view */
+    padding-right: 5px !important;
+  }
+}

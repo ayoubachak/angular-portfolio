@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentService, Skill } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
@@ -11,6 +11,7 @@ import {
   faCube, faCode, faDatabase, faBrain, faServer, faLaptopCode,
   faLanguage, faGlobe, faCheckCircle, faChevronRight
 } from '@fortawesome/free-solid-svg-icons';
+import { GenZEasterEggService } from '../../../services/gen-z-easter-egg.service';
 
 interface Language {
   name: string;
@@ -24,7 +25,7 @@ interface Language {
   standalone: true,
   imports: [CommonModule, ScrollAnimationDirective, FontAwesomeModule],
   templateUrl: './about.component.html',
-  styleUrl: './about.component.css'
+  styleUrls: ['./about.component.css', './gen-z-fix.css']
 })
 export class AboutComponent implements OnInit, AfterViewInit {
   @ViewChild('skillsContainer') skillsContainerRef!: ElementRef<HTMLElement>;
@@ -35,6 +36,11 @@ export class AboutComponent implements OnInit, AfterViewInit {
   filteredSkillsByCategory: Record<string, Skill[]> = {};
   activeCategory: string = 'All';
   activeScrollCategory: string = '';
+  isGenZEmbedded = false; // track if phone is embedded
+  // Detect non-desktop
+  private readonly mobileThreshold = 1024;
+
+  private genZService = inject(GenZEasterEggService);
     // Language proficiency
   languages: Language[] = [
     { name: 'English', level: 'Fluent', proficiency: 95, flagIcon: '🇬🇧' },
@@ -75,6 +81,19 @@ export class AboutComponent implements OnInit, AfterViewInit {
     if (this.skillsByCategory[webDevopsCategory] && !this.filteredSkillsByCategory[webDevopsCategory]) {
       this.filteredSkillsByCategory[webDevopsCategory] = this.skillsByCategory[webDevopsCategory];
     }
+
+    // On non-desktop view, default to Machine Learning category
+    if (window.innerWidth < this.mobileThreshold) {
+      this.activeCategory = 'ML & AI';
+      this.filterByCategory(this.activeCategory);
+    } else {
+      this.activeCategory = 'All';
+      this.filterByCategory(this.activeCategory);
+    }
+    
+    this.genZService.state$.subscribe(state => {
+      this.isGenZEmbedded = state.isEmbedded;
+    });
   }
     ngAfterViewInit(): void {
     // Set initial active scroll category and force animations to be evaluated

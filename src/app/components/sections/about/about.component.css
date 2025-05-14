@@ -244,3 +244,33 @@
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+
+/* Light mode fix for 'All' filter button */
+:root:not(.dark) .flex.flex-wrap.gap-3.mb-8 > button:nth-child(1) {
+  background-color: rgba(var(--accent-color-rgb), 0.1) !important;
+  color: var(--accent-color) !important;
+  border: 1px solid var(--accent-color) !important;
+}
+:root:not(.dark) .flex.flex-wrap.gap-3.mb-8 > button:nth-child(1):hover {
+  background-color: rgba(var(--accent-color-rgb), 0.2) !important;
+}
+
+/* Light mode styling for 'All' filter button */
+:root:not(.dark) #about .flex.flex-wrap.gap-3.mb-8 > button:first-child {
+  background-color: var(--accent-color) !important;
+  color: #fff !important;
+  border: 1px solid var(--accent-color) !important;
+}
+:root:not(.dark) #about .flex.flex-wrap.gap-3.mb-8 > button:first-child:hover {
+  background-color: rgba(var(--accent-color-rgb), 0.8) !important;
+}
+
+/* Light mode override for 'All' filter button */
+:root:not(.dark) #about .flex.flex-wrap.gap-3.mb-8 > button:nth-child(1) {
+  background-color: var(--accent-color) !important;
+  color: #fff !important;
+  border: 1px solid var(--accent-color) !important;
+}
+:root:not(.dark) #about .flex.flex-wrap.gap-3.mb-8 > button:nth-child(1):hover {
+  background-color: rgba(var(--accent-color-rgb), 0.8) !important;
+}

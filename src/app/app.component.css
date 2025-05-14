@@ -4,11 +4,12 @@
   overflow-x: hidden;
   position: relative;
   display: flex;
+  flex-direction: column;
 }
 
 .main-content {
   width: 100%;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, padding-right 0.3s ease;
 }
 
 .gen-z-active .main-content.split-view {
@@ -16,6 +17,13 @@
   max-width: 66%;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-right: 5px; /* Add padding to prevent content from sticking to the edge */
+}
+
+/* Fix for about section and skills when split view is active */
+.gen-z-active .skills-container {
+  width: 100%;
+  max-width: 100%;
 }
 
 .embedded-phone-container {
@@ -27,7 +35,25 @@
   z-index: 950; /* Below navbar but above content */
 }
 
-/* Make the navbar span the entire width regardless of embedded state */
+/* Mobile responsive layout */
+@media (max-width: 768px) {
+  .gen-z-active .main-content.split-view {
+    width: 100%;
+    max-width: 100%;
+    height: 50vh;
+  }
+  
+  .embedded-phone-container {
+    width: 100%;
+    height: 50vh;
+    position: fixed;
+    top: 50vh; /* Position at bottom half */
+    right: 0;
+    bottom: 0;
+  }
+}
+
+/* Navbar styles */
 app-navbar {
   position: sticky;
   top: 0;
@@ -35,4 +61,61 @@ app-navbar {
   width: 100%;
   z-index: 1000;
   pointer-events: auto; /* Ensure clicks are registered */
+  transition: width 0.3s ease;
+  display: block;
+}
+
+/* When GenZ is active, adjust navbar width */
+.gen-z-active app-navbar {
+  width: 66%;
+  max-width: 66%;
+}
+
+/* Mobile responsive navbar */
+@media (max-width: 768px) {
+  .gen-z-active app-navbar {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Custom cursor styles */
+.custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: width 0.2s, height 0.2s;
+  display: none; /* Initially hidden until JS loads */
+  mix-blend-mode: difference;
+}
+
+/* Disable custom cursor on mobile devices */
+@media (max-width: 768px) {
+  .custom-cursor {
+    display: none !important; /* Force hide on mobile */
+  }
+  
+  .gen-z-active .main-content.split-view {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 50vh !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .gen-z-active app-navbar {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Adjust easter egg position for mobile */
+  .gen-z-active .easter-egg-hint {
+    top: 10px !important;
+    left: 10px !important;
+  }
 }
