@@ -1,4 +1,6 @@
-import { Component, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, HostListener, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { GenZEasterEggService } from './services/gen-z-easter-egg.service';
 
 // Import all components
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -42,9 +44,26 @@ import { GenZPhoneComponent } from './components/easter-eggs/gen-z-phone.compone
   ],templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
   title = 'portfolio';
   @ViewChild('customCursor', { static: true }) customCursor!: ElementRef<HTMLDivElement>;
+  
+  isGenZEmbedded = false;
+  private genZSubscription!: Subscription;
+  
+  constructor(private genZService: GenZEasterEggService) { }
+  
+  ngOnInit(): void {
+    this.genZSubscription = this.genZService.state$.subscribe(state => {
+      this.isGenZEmbedded = state.isEmbedded;
+    });
+  }
+  
+  ngOnDestroy(): void {
+    if (this.genZSubscription) {
+      this.genZSubscription.unsubscribe();
+    }
+  }
 
   ngAfterViewInit(): void {
     // Ensure custom cursor is visible

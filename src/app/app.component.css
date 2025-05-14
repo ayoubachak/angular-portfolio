@@ -3,4 +3,25 @@
   max-width: 100%;
   overflow-x: hidden;
   position: relative;
+  display: flex;
+}
+
+.main-content {
+  width: 100%;
+  transition: width 0.3s ease;
+}
+
+.gen-z-active .main-content.split-view {
+  width: 66%;
+  max-width: 66%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.embedded-phone-container {
+  width: 34%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
 }

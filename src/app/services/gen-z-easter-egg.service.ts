@@ -5,16 +5,17 @@ export interface GenZEasterEggState {
   isActive: boolean;
   isGenZ: boolean | null; // null means not yet answered
   isMinimized: boolean;
+  isEmbedded: boolean;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class GenZEasterEggService {
-  private defaultState: GenZEasterEggState = {
+export class GenZEasterEggService {  private defaultState: GenZEasterEggState = {
     isActive: false,
     isGenZ: null,
-    isMinimized: false
+    isMinimized: false,
+    isEmbedded: false
   };
   
   private stateSubject = new BehaviorSubject<GenZEasterEggState>(this.defaultState);
@@ -72,13 +73,27 @@ export class GenZEasterEggService {
       isMinimized: !current.isMinimized
     });
   }
-  
-  closeEasterEgg(): void {
+    closeEasterEgg(): void {
     const current = this.stateSubject.value;
     this.stateSubject.next({
       ...current,
       isActive: false,
-      isMinimized: false
+      isMinimized: false,
+      isEmbedded: false
     });
+  }
+
+  toggleEmbedded(): void {
+    const current = this.stateSubject.value;
+    this.stateSubject.next({
+      ...current,
+      isEmbedded: !current.isEmbedded,
+      isMinimized: false,
+      isActive: true // Ensure the phone is active when embedded
+    });
+  }
+
+  isEmbedded(): boolean {
+    return this.stateSubject.value.isEmbedded;
   }
 }
