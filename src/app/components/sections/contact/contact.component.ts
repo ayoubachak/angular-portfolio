@@ -7,6 +7,7 @@ import { faEnvelope, faMapMarkerAlt, faPaperPlane, faRobot, faBook, faChartLine 
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TicTacToeService } from '../../../services/tic-tac-toe.service';
+import emailjs from '@emailjs/browser';
 
 @Component({
   selector: 'app-contact',
@@ -42,6 +43,10 @@ export class ContactComponent implements OnInit {
   faBook = faBook;
   faChartLine = faChartLine;
 
+  private readonly emailJSServiceID = 'service_g8qfrx6';
+  private readonly emailJSTemplateID = 'template_h4y8kel';
+  private readonly emailJSUserID = 'h7cWAchZDqLkQWk1U';
+
   constructor(
     private readonly contentService: ContentService,
     public readonly gameService: TicTacToeService
@@ -63,21 +68,22 @@ export class ContactComponent implements OnInit {
   
   onSubmit(): void {
     this.formSubmitted = true;
-    
     if (this.contactForm.valid) {
-      // In a real-world scenario, you would send this data to a backend service
-      console.log('Form submitted:', this.contactForm.value);
-      
-      // Simulate successful submission
-      this.formSuccess = true;
-      this.formError = false;
-      this.contactForm.reset();
-      this.formSubmitted = false;
-      
-      // Reset success message after some time
-      setTimeout(() => {
-        this.formSuccess = false;
-      }, 5000);
+      const { name, email, subject, message } = this.contactForm.value;
+      const templateParams = { from_name: name, from_email: email, subject, message };
+      emailjs.send(this.emailJSServiceID, this.emailJSTemplateID, templateParams, this.emailJSUserID)
+        .then(() => {
+          this.formSuccess = true;
+          this.formError = false;
+          this.contactForm.reset();
+          this.formSubmitted = false;
+          setTimeout(() => { this.formSuccess = false; }, 5000);
+        })
+        .catch((err) => {
+          console.error('EmailJS error:', err);
+          this.formError = true;
+          this.formSuccess = false;
+        });
     }
   }
   
