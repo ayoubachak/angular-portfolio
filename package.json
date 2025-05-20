@@ -1,5 +1,5 @@
 {
-  "name": "portfolio",
+  "name": "angular-portfolio",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "predeploy": "ng build --configuration production --base-href=/angular-portfolio/",
-    "deploy": "gh-pages -d dist/portfolio"
+    "deploy": "gh-pages -d dist/angular-portfolio/browser"
   },
   "private": true,
   "dependencies": {
