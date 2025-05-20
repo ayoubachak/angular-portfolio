@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit {
     this.name = portfolioContent.name;
     
     // Force the avatar URL to use the direct path
-    this.avatar = '/assets/images/avatar.jpg';
+    this.avatar = 'assets/images/avatar.jpg';
     
     this.socialLinks = portfolioContent.socialLinks;
     this.email = portfolioContent.email;
