@@ -1,8 +1,7 @@
 <!-- Resume Compiler Button -->
 <button 
   (click)="compileResume()" 
-  class="fixed left-5 bottom-5 z-40 flex items-center space-x-2 px-4 py-3 text-button-text rounded-lg shadow-lg hover:opacity-90 transition-all duration-300 transform hover:-translate-y-1"
-  style="background-color: var(--secondary-color);">
+  class="fixed left-5 bottom-5 z-40 flex items-center space-x-2 px-4 py-3 bg-secondary-color text-text-color rounded-lg shadow-lg hover:opacity-90 transition-all duration-300 transform hover:-translate-y-1">
   <fa-icon [icon]="faFileAlt"></fa-icon>
   <span>Compile Resume</span>
 </button>
@@ -10,32 +9,26 @@
 <!-- Resume Type Selection Modal -->
 <div *ngIf="showModal" class="fixed inset-0 z-50 overflow-y-auto">
   <!-- Backdrop -->
-  <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+  <div class="fixed inset-0 bg-[var(--primary-color)] dark:bg-black/70 backdrop-blur-md transition-all duration-300" 
        (click)="closeModal()" 
        (keydown.escape)="closeModal()"
        role="button"
        tabindex="0"
        aria-label="Close modal"></div>
-  
   <!-- Modal Content -->
-  <div class="flex min-h-full items-center justify-center p-4">
-    <div class="relative bg-secondary-color rounded-lg shadow-xl max-w-md w-full mx-auto animate-modal-appear">
-      <!-- Modal Header -->
-      <div class="flex items-center justify-between p-6 border-b border-accent-color/20">
+  <div class="flex min-h-full items-center justify-center p-4">    <div class="relative bg-[var(--secondary-color)] border border-accent-color/20 rounded-lg shadow-xl max-w-md w-full mx-auto animate-modal-appear">      <!-- Modal Header -->      <div class="flex items-center justify-between p-6 border-b border-accent-color/20">
         <h3 class="text-xl font-semibold text-text-color">Choose Resume Type</h3>
         <button (click)="closeModal()" class="text-text-secondary hover:text-text-color transition-colors">
           <fa-icon [icon]="faTimes" class="text-xl"></fa-icon>
         </button>
-      </div>
-      
-      <!-- Modal Body -->
+      </div>        <!-- Modal Body -->
       <div class="p-6 space-y-4">
         <p class="text-text-secondary mb-6">Select the type of resume you want to generate:</p>
         
         <!-- AI Engineering Option -->
         <button
           (click)="selectResumeType('ai-engineering')"
-          class="w-full p-4 border border-accent-color/30 rounded-lg hover:border-accent-color transition-all duration-300 hover:bg-accent-color/5 group">
+          class="w-full p-4 border border-accent-color/30 rounded-lg hover:border-accent-color transition-all duration-300 hover:bg-accent-color/20 group">
           <div class="text-left">
             <h4 class="text-lg font-semibold text-text-color group-hover:text-accent-color transition-colors">
               AI Engineering
@@ -49,7 +42,7 @@
         <!-- Software Engineering Option -->
         <button
           (click)="selectResumeType('software-engineering')"
-          class="w-full p-4 border border-accent-color/30 rounded-lg hover:border-accent-color transition-all duration-300 hover:bg-accent-color/5 group">
+          class="w-full p-4 border border-accent-color/30 rounded-lg hover:border-accent-color transition-all duration-300 hover:bg-accent-color/20 group">
           <div class="text-left">
             <h4 class="text-lg font-semibold text-text-color group-hover:text-accent-color transition-colors">
               Software Engineering
@@ -64,10 +57,26 @@
   </div>
 </div>
 
+<!-- Resume Configuration Modal -->
+<div *ngIf="showConfig" class="fixed inset-0 z-50 overflow-y-auto">
+  <!-- Backdrop -->
+  <div class="fixed inset-0 bg-secondary-color dark:bg-black/70 backdrop-blur-md transition-all duration-300"></div>
+  
+  <!-- Modal Content -->
+  <div class="flex min-h-full items-center justify-center p-4">
+    <app-resume-config
+      class="bg-secondary-color rounded-lg shadow-xl"
+      [resumeType]="currentConfig?.type || 'software-engineering'"
+      (configApplied)="onConfigApplied($event)"
+      (cancelled)="onConfigCancelled()">
+    </app-resume-config>
+  </div>
+</div>
+
 <!-- Resume Preview Modal -->
 <div *ngIf="showPreview" class="fixed inset-0 z-50 overflow-y-auto">
   <!-- Backdrop -->
-  <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" 
+  <div class="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-md transition-all duration-300" 
        (click)="closePreview()" 
        (keydown.escape)="closePreview()"
        role="button"
@@ -76,33 +85,30 @@
   
   <!-- Modal Content -->
   <div class="flex min-h-full items-center justify-center p-4">
-    <div class="relative bg-white rounded-lg shadow-xl max-w-4xl w-full mx-auto max-h-[90vh] overflow-hidden animate-modal-appear">
+    <div class="relative bg-secondary-color border border-accent-color/20 rounded-lg shadow-xl max-w-4xl w-full mx-auto max-h-[90vh] overflow-hidden animate-modal-appear">
       <!-- Modal Header -->
-      <div class="flex items-center justify-between p-4 border-b bg-gray-50">
+      <div class="flex items-center justify-between p-4 border-b border-accent-color/20 bg-primary-color">
         <div class="flex items-center space-x-3">
-          <fa-icon [icon]="faEye" class="text-blue-600"></fa-icon>
-          <h3 class="text-lg font-semibold text-gray-900">{{ getResumeTypeDisplayName() }} Resume</h3>
+          <fa-icon [icon]="faEye" class="text-accent-color"></fa-icon>
+          <h3 class="text-lg font-semibold text-text-color">{{ getResumeTypeDisplayName() }} Resume</h3>
         </div>
         <div class="flex items-center space-x-3">
           <button
             (click)="downloadPdf()"
             [disabled]="isGeneratingPdf"
-            class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            class="flex items-center space-x-2 px-4 py-2 bg-accent-color hover:bg-accent-color/80 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
             <fa-icon [icon]="faDownload"></fa-icon>
             <span>{{ isGeneratingPdf ? 'Generating...' : 'Download PDF' }}</span>
           </button>
-          <button (click)="closePreview()" class="text-gray-500 hover:text-gray-700 transition-colors">
+          <button (click)="closePreview()" class="text-text-secondary hover:text-text-color transition-colors">
             <fa-icon [icon]="faTimes" class="text-xl"></fa-icon>
           </button>
         </div>
-      </div>
-      
+      </div>      
       <!-- Resume Content -->
       <div class="overflow-y-auto max-h-[calc(90vh-120px)]">
-        <div #resumePreview class="resume-container">
-          <!-- Resume Header -->
+        <div #resumePreview class="resume-container"><!-- Resume Header -->
           <div class="resume-header">
-            <div class="gradient-bg"></div>
             <div class="header-content">
               <h1 class="name">{{ getPortfolioContent().name }}</h1>
               <h2 class="title">{{ getResumeTypeDisplayName() }} Professional</h2>
