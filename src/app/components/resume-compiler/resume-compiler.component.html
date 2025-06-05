@@ -7,7 +7,7 @@
 </button>
 
 <!-- Resume Type Selection Modal -->
-<div *ngIf="showModal" class="fixed inset-0 z-50 overflow-y-auto">
+<div *ngIf="showModal" class="fixed inset-0 z-[9999] overflow-y-auto">
   <!-- Backdrop -->
   <div class="fixed inset-0 bg-[var(--primary-color)] dark:bg-black/70 backdrop-blur-md transition-all duration-300" 
        (click)="closeModal()" 
@@ -58,7 +58,7 @@
 </div>
 
 <!-- Resume Configuration Modal -->
-<div *ngIf="showConfig" class="fixed inset-0 z-50 overflow-y-auto">
+<div *ngIf="showConfig" class="fixed inset-0 z-[9999] overflow-y-auto">
   <!-- Backdrop -->
   <div class="fixed inset-0 bg-secondary-color dark:bg-black/70 backdrop-blur-md transition-all duration-300"></div>
   
@@ -74,7 +74,7 @@
 </div>
 
 <!-- Resume Preview Modal -->
-<div *ngIf="showPreview" class="fixed inset-0 z-50 overflow-y-auto">
+<div *ngIf="showPreview" class="fixed inset-0 z-[9999] overflow-y-auto">
   <!-- Backdrop -->
   <div class="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-md transition-all duration-300" 
        (click)="closePreview()" 

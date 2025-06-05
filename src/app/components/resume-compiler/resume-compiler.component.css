@@ -378,6 +378,27 @@
   }
 }
 
+/* Print-specific isolation for resume */
+@page { margin: 0; }
+@media print {
+  /* Hide all elements */
+  body * {
+    visibility: hidden;
+  }
+  /* Only show resume container */
+  .resume-container, .resume-container * {
+    visibility: visible;
+  }
+  /* Position resume at top-left */
+  .resume-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+  }
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .resume-body {
