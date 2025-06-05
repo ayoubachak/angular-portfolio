@@ -113,12 +113,23 @@
               <h1 class="name">{{ getPortfolioContent().name }}</h1>
               <h2 class="title">{{ getResumeTypeDisplayName() }} Professional</h2>
               <div class="contact-info">
-                <div class="contact-item">
+                <!-- Email -->
+                <a class="contact-item flex items-center space-x-1" [href]="'mailto:' + getPortfolioContent().email">
+                  <fa-icon [icon]="faEnvelope"></fa-icon>
                   <span>{{ getPortfolioContent().email }}</span>
-                </div>
-                <div class="contact-item">
+                </a>
+                <!-- Location -->
+                <a class="contact-item flex items-center space-x-1" [href]="'https://maps.google.com/?q=' + getPortfolioContent().location" target="_blank" rel="noopener">
+                  <fa-icon [icon]="faMapMarkerAlt"></fa-icon>
                   <span>{{ getPortfolioContent().location }}</span>
-                </div>
+                </a>
+                <!-- Social Links -->
+                <ng-container *ngFor="let link of getPortfolioContent().socialLinks">
+                  <a class="contact-item flex items-center space-x-1" [href]="link.url" target="_blank" rel="noopener">
+                    <fa-icon [icon]="getSocialIcon(link.icon)"></fa-icon>
+                    <span>{{ link.platform }}</span>
+                  </a>
+                </ng-container>
               </div>
             </div>
           </div>

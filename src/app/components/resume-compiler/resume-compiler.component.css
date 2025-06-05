@@ -35,8 +35,8 @@
 .resume-header {
   position: relative;
   padding: 40px;
-  background: var(--accent-color);
-  color: white;
+  background: var(--secondary-color);
+  color: var(--text-color);
   overflow: hidden;
 }
 

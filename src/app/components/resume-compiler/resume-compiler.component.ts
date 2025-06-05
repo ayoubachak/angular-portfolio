@@ -5,6 +5,8 @@ import { ResumeConfigService, ResumeConfiguration } from '../../services/resume-
 import { ResumeConfigComponent } from './resume-config.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFileAlt, faTimes, faDownload, faEye, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faMapMarkerAlt, faGlobe } from '@fortawesome/free-solid-svg-icons';
+import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -26,6 +28,12 @@ export class ResumeCompilerComponent implements OnInit, OnDestroy {
   faDownload = faDownload;
   faEye = faEye;
   faCog = faCog;
+  // Contact Icons
+  faEnvelope = faEnvelope;
+  faMapMarkerAlt = faMapMarkerAlt;
+  faGithub = faGithub;
+  faLinkedin = faLinkedin;
+  faGlobe = faGlobe;
 
   // Modal state
   showModal = false;
@@ -99,8 +107,25 @@ export class ResumeCompilerComponent implements OnInit, OnDestroy {
     const filtered = this.resumeConfigService.getFilteredContent(this.currentConfig);
     this.filteredExperience = filtered.experiences;
     this.filteredProjects = filtered.projects;
-    this.relevantSkills = filtered.skills;
-  }  async downloadPdf(): Promise<void> {
+    // For AI Engineering, prioritize ML/AI, Languages, and Databases
+    if (this.currentConfig.type === 'ai-engineering') {
+      const allSkills = this.contentService.getPortfolioContent().skills;
+      this.relevantSkills = allSkills.filter(s => ['ML & AI', 'Languages', 'Databases'].includes(s.category));
+    } else {
+      this.relevantSkills = filtered.skills;
+    }
+  }  
+  /** Map social link icon strings to FontAwesome icons */
+  getSocialIcon(name: string) {
+    switch (name.toLowerCase()) {
+      case 'github': return this.faGithub;
+      case 'linkedin': return this.faLinkedin;
+      case 'globe': return this.faGlobe;
+      default: return this.faGlobe;
+    }
+  }
+
+  async downloadPdf(): Promise<void> {
     if (!this.resumePreview) return;
     
     this.isGeneratingPdf = true;
@@ -230,64 +255,16 @@ export class ResumeCompilerComponent implements OnInit, OnDestroy {
     }
     return 'Software Engineering';
   }  getSkillsByCategory(): { name: string; skills: Skill[] }[] {
-    if (!this.currentConfig) {
-      // Fallback to old method if no config
-      const content = this.contentService.getPortfolioContent();
-      
-      if (this.selectedResumeType === 'ai-engineering') {        const aiSkillCategories = content.skills
-          .filter(skill => 
-            skill.category === 'AI/ML' || 
-            skill.category === 'Programming' || 
-            skill.category === 'Data Science'
-          )
-          .reduce((acc, skill) => {
-            if (!acc[skill.category]) {
-              acc[skill.category] = [];
-            }
-            acc[skill.category].push(skill);
-            return acc;
-          }, {} as Record<string, Skill[]>);
-
-        return Object.keys(aiSkillCategories).map(category => ({
-          name: category,
-          skills: aiSkillCategories[category]
-        }));
-      } else {
-        const softwareSkillCategories = content.skills
-          .filter(skill => 
-            skill.category === 'Frontend' || 
-            skill.category === 'Backend' ||
-            skill.category === 'Programming' ||
-            skill.category === 'Tools'
-          )
-          .reduce((acc, skill) => {
-            if (!acc[skill.category]) {
-              acc[skill.category] = [];
-            }
-            acc[skill.category].push(skill);
-            return acc;
-          }, {} as Record<string, Skill[]>);
-
-        return Object.keys(softwareSkillCategories).map(category => ({
-          name: category,
-          skills: softwareSkillCategories[category]
-        }));
-      }
-    }
-
-    // Use configuration-based filtering
-    const skillCategories = this.relevantSkills.reduce((acc, skill) => {
-      if (!acc[skill.category]) {
-        acc[skill.category] = [];
-      }
+    // For AI Engineering resumes, show all ML, Language & Database skills
+    const skills = this.currentConfig?.type === 'ai-engineering'
+      ? this.contentService.getPortfolioContent().skills.filter(s => ['ML & AI', 'Languages', 'Databases'].includes(s.category))
+      : this.relevantSkills;
+    const grouped = skills.reduce((acc, skill) => {
+      acc[skill.category] = acc[skill.category] || [];
       acc[skill.category].push(skill);
       return acc;
     }, {} as Record<string, Skill[]>);
-
-    return Object.keys(skillCategories).map(category => ({
-      name: category,
-      skills: skillCategories[category]
-    }));
+    return Object.entries(grouped).map(([name, skills]) => ({ name, skills }));
   }
 
   getProfessionalSummary(): string {
