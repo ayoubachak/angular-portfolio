@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ContentService, Experience } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBriefcase, faCalendar, faChevronDown, faChevronUp, faCode, faToggleOn, faToggleOff, faHandPointer, faScroll, faLaptopCode, faNetworkWired, faDiagramProject } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faCalendar, faChevronDown, faChevronUp, faCode, faToggleOn, faToggleOff, faHandPointer, faScroll, faLaptopCode, faNetworkWired, faDiagramProject, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 interface ExperienceWithState extends Experience {
   isExpanded: boolean;
@@ -14,6 +14,7 @@ interface ExperienceWithState extends Experience {
   inView: boolean;
   previewMode: boolean;
   scrollProgress: number;
+  certificate?: string;
 }
 
 interface TechAnimation {
@@ -230,6 +231,23 @@ print(f"Accuracy: {accuracy:.2f}")`,
   faLaptopCode = faLaptopCode;
   faNetworkWired = faNetworkWired;
   faDiagramProject = faDiagramProject;
+  faTimes = faTimes; // close icon for modals
+
+  // Certificate modal state
+  showCertificateModal: boolean = false;
+  modalCertificatePath: string = '';
+
+  // Open certificate modal
+  openCertificate(path: string): void {
+    this.modalCertificatePath = path;
+    this.showCertificateModal = true;
+  }
+
+  // Close certificate modal
+  closeCertificateModal(): void {
+    this.showCertificateModal = false;
+    this.modalCertificatePath = '';
+  }
 
   constructor(
     private contentService: ContentService,
@@ -429,7 +447,7 @@ print(f"Accuracy: {accuracy:.2f}")`,
         position = firstSnippetSide;
       } else { // 1st, 3rd, 5th... snippet
         // Alternate from the first snippet's side
-        position = (firstSnippetSide === 'left') ? 'right' : 'left';
+        position = (firstSnippetSide === 'left' ? 'right' : 'left');
       }
     }
     

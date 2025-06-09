@@ -1292,3 +1292,20 @@ p.text-text-secondary {
   margin-top: 16px;
   opacity: 1 !important;
 }
+
+/* Certificate ribbon styling */
+.certificate-ribbon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  transform: translate(25%, -25%) rotate(15deg);
+  z-index: 20;
+  pointer-events: auto;
+}
+.certificate-ribbon img {
+  width: 100%;
+  display: block;
+  border-radius: 0.25rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
