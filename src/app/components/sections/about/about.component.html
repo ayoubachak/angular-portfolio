@@ -122,27 +122,25 @@
           class="flex flex-wrap gap-3 mb-8 pl-4 md:pl-0"
           appScrollAnimation
           scrollContainer=".main-content"
-          animationClass="animate-fade-in-left">
-          <!-- All Skills Button -->
+          animationClass="animate-fade-in-left">          <!-- All Skills Button -->
           <button 
             (click)="filterByCategory('All')"
             class="px-3 sm:px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-300"
             [ngClass]="activeCategory === 'All' ? 
-              'bg-accent-color text-white shadow-lg shadow-accent-color/20' : 
+              'bg-accent-color text-button-text shadow-lg shadow-accent-color/20' : 
               'bg-primary-color text-text-color border border-accent-color/30 hover:border-accent-color hover:bg-accent-color/10'">
-            <fa-icon [icon]="faCode" class="text-white"></fa-icon>
+            <fa-icon [icon]="faCode" [ngClass]="activeCategory === 'All' ? 'text-button-text' : 'text-accent-color'"></fa-icon>
             <span>All</span>
           </button>
-          
-          <!-- Category Filter Buttons -->
+            <!-- Category Filter Buttons -->
           <button 
             *ngFor="let category of skillCategories"
             (click)="filterByCategory(category)"
             class="px-3 sm:px-4 py-2 rounded-full flex items-center space-x-2 transition-all duration-300"
             [ngClass]="activeCategory === category ? 
-              'bg-accent-color text-white shadow-lg shadow-accent-color/20' : 
+              'bg-accent-color text-button-text shadow-lg shadow-accent-color/20' : 
               'bg-primary-color text-text-color border border-accent-color/30 hover:border-accent-color hover:bg-accent-color/10'">
-            <fa-icon [icon]="getCategoryIcon(category)" [ngClass]="activeCategory === category ? 'text-white' : 'text-accent-color'"></fa-icon>
+            <fa-icon [icon]="getCategoryIcon(category)" [ngClass]="activeCategory === category ? 'text-button-text' : 'text-accent-color'"></fa-icon>
             <span>{{ category }}</span>
           </button>
         </div>
