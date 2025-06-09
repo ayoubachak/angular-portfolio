@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit, HostListener, ViewChild, ElementRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentService, Skill } from '../../../services/content.service';
+import { GithubService } from '../../../services/github.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { 
@@ -28,6 +29,8 @@ interface Language {
   styleUrls: ['./about.component.css', './gen-z-fix.css']
 })
 export class AboutComponent implements OnInit, AfterViewInit {
+  // Dynamic GitHub repository count
+  repoCount: number = 0;
   @ViewChild('skillsContainer') skillsContainerRef!: ElementRef<HTMLElement>;
   
   about: string = '';
@@ -64,7 +67,7 @@ export class AboutComponent implements OnInit, AfterViewInit {
   faCheckCircle = faCheckCircle;
   faChevronRight = faChevronRight;
 
-  constructor(private contentService: ContentService) {}
+  constructor(private contentService: ContentService, private githubService: GithubService) {}
   ngOnInit(): void {
     const portfolioContent = this.contentService.getPortfolioContent();
     this.about = portfolioContent.about;
@@ -81,6 +84,11 @@ export class AboutComponent implements OnInit, AfterViewInit {
     if (this.skillsByCategory[webDevopsCategory] && !this.filteredSkillsByCategory[webDevopsCategory]) {
       this.filteredSkillsByCategory[webDevopsCategory] = this.skillsByCategory[webDevopsCategory];
     }
+
+    // Dynamic GitHub repo count
+    this.githubService.getRepositories(100).subscribe(repos => {
+      this.repoCount = repos.length;
+    });
 
     // On non-desktop view, default to Machine Learning category
     if (window.innerWidth < this.mobileThreshold) {

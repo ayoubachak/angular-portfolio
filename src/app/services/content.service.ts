@@ -156,7 +156,8 @@ export class ContentService {
         description: 'Dual Engineer\'s Degree Program',
         logo: 'assets/images/schools/enib-logo.png',
         website: 'https://www.enib.fr/',
-        programPdf: 'assets/documents/enib-program.pdf',
+        // programPdf: 'assets/documents/enib-program.pdf',
+        programPdf: 'https://web.enib.fr/programmepeda/',
         detailedDescription: 'The National School of Engineering in Brest (ENIB) is a public engineering school that specializes in multidisciplinary engineering with a focus on software, electronics, and mechatronics. The program emphasizes practical engineering skills through project-based learning and industry collaborations.',
         skills: ['Software Architecture', 'System Design', 'Embedded Systems', 'Real-time Programming', 'Applied Mathematics'],
         courses: ['Advanced Software Engineering', 'Distributed Systems', 'Computer Networks', 'Digital Signal Processing', 'Machine Learning']

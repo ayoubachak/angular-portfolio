@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ContentService, SocialLink } from '../../../services/content.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faGithub, faLinkedin, faTwitter } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faArrowDown, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { EasterEggHintComponent } from '../../../components/easter-eggs/easter-egg-hint.component';
 import { GenZEasterEggTriggerDirective } from '../../../directives/gen-z-easter-egg-trigger.directive';
@@ -34,6 +34,7 @@ export class IntroComponent implements OnInit {
   faTwitter = faTwitter;
   faEnvelope = faEnvelope;
   faArrowDown = faArrowDown;
+  faGlobe = faGlobe;
 
   constructor(private contentService: ContentService) {}
 
@@ -52,7 +53,8 @@ export class IntroComponent implements OnInit {
       'GitHub': this.faGithub,
       'LinkedIn': this.faLinkedin,
       'Twitter': this.faTwitter,
-      'Email': this.faEnvelope
+      'Email': this.faEnvelope,
+      'Website': this.faGlobe
     };
     
     return iconMap[platform] || this.faEnvelope;
