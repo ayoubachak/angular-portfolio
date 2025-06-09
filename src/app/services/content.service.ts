@@ -186,7 +186,7 @@ export class ContentService {
         endDate: 'Sep 2025',
         description: 'Working on a No-Code UI Builder solution to allow Ansys clients to easily get solutions running in minutes instead of days by providing them with a robust Drag-n-Drop UI. Users then can export their solutions from canvas to Python Dash code. Working on integrating an AI agent with the UI-Builder so that creating solutions would be done using natural language to abstract potentially complex components to users with no expertise.',
         logo: 'assets/images/companies/ansys-logo.png',
-        skills: ['Python', 'AI Agents', 'UI Builder', 'Dash', 'No-Code']
+        skills: ['Python', 'UI Builder', 'Dash', 'No-Code', 'AI Agents']
       },
       {
         company: 'ALTEN',
@@ -204,7 +204,7 @@ export class ContentService {
         endDate: 'Sep 2023',
         description: 'Designed and deployed an automation device using Raspberry Pi Zero W to monitor and update Cisco network devices remotely, reducing manual intervention in remote locations and costs by thousands of $. Developed a log analysis system with Flask backend and React (TypeScript) frontend that utilized an NLP model to classify and prioritize critical infrastructure issues, pruned the NLP TFLite model for optimal performance on Raspberry Pi.',
         logo: 'assets/images/companies/cbi-logo.jpg',
-        skills: ['Raspberry Pi', 'Flask', 'React', 'TypeScript', 'NLP', 'TFLite']
+        skills: ['Flask', 'React', 'TypeScript', 'NLP', 'TFLite', 'Raspberry Pi']
       },
       {
         company: 'Kezakoo',
@@ -213,7 +213,7 @@ export class ContentService {
         endDate: 'Jan 2023',
         description: 'Implemented a gamification system to increase user engagement with features including achievement badges, leaderboards, and progress tracking. Deployed the solution on AWS EC2 using Docker and Kubernetes for scalability and seamless updates. Enhanced content discoverability by integrating an ML-powered real-time search feature, utilizing Pinecone with BERT and HNSW indexing for efficient vector similarity search. Deployed via AWS Lambda and integrated through a REST API.',
         logo: 'assets/images/companies/kezakoo-logo.webp',
-        skills: ['AWS EC2', 'Docker', 'Kubernetes', 'ML', 'Pinecone', 'BERT', 'AWS Lambda', 'REST API']
+        skills: ['AWS EC2', 'Docker', 'Kubernetes', 'ML', 'Pinecone', 'BERT', 'AWS Lambda', 'REST API', 'WordPress'],
       },
       {
         company: 'Miratti Bags',
