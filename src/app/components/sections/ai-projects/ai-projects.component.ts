@@ -21,6 +21,10 @@ import { WebviewService } from '../../../services/webview.service';
 })
 export class AiProjectsComponent implements OnInit {
   aiProjects: Project[] = [];
+  // Display control for initial and full list
+  displayedAiProjects: Project[] = [];
+  showDisplayMore: boolean = false;
+  private initialDisplayCount = 4;
   
   // Icons
   faExternalLinkAlt = faExternalLinkAlt;
@@ -33,6 +37,9 @@ export class AiProjectsComponent implements OnInit {
 
   ngOnInit(): void {
     this.aiProjects = this.contentService.getAiProjects();
+    // Set up initial slice and display control
+    this.displayedAiProjects = this.aiProjects.slice(0, this.initialDisplayCount);
+    this.showDisplayMore = this.aiProjects.length > this.initialDisplayCount;
   }
   
   /**
@@ -40,5 +47,13 @@ export class AiProjectsComponent implements OnInit {
    */
   hasLinksInDescription(description: string): boolean {
     return this.webviewService.extractUrls(description).length > 0;
+  }
+
+  /**
+   * Display all AI projects when user clicks "Display More"
+   */
+  displayMore(): void {
+    this.displayedAiProjects = this.aiProjects;
+    this.showDisplayMore = false;
   }
 }

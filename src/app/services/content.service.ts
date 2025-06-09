@@ -238,7 +238,8 @@ export class ContentService {
         description: 'Built an interpreted language in Java featuring Python/JavaScript-like syntax, JSON objects, multiple inheritance, list comprehension, and anonymous functions. Achieved Python speed.',
         imageUrl: 'assets/images/projects/jlang.jpg',
         repoUrl: 'https://github.com/Low-Level-Code/jlang.git',
-        tags: ['Java', 'Interpreters', 'Programming Languages', 'Compilers']
+        tags: ['Java', 'Interpreters', 'Programming Languages', 'Compilers'],
+        isAiProject: true
       },
       {
         title: 'Leetlang Programming Language',

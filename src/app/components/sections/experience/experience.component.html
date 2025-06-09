@@ -50,10 +50,6 @@
           
           <!-- Certificate Ribbon Link -->
           <ng-container *ngIf="experience.certificate">
-            <!-- Certificate Hint -->
-            <div class="absolute top-0 right-0 m-2 text-xs bg-accent-color/80 text-white rounded px-2 py-1 z-10">
-              Certificate
-            </div>
             <!-- Ribbon triggers modal -->
             <button class="certificate-ribbon" (click)="openCertificate(experience.certificate)">
               <img [src]="experience.certificate" alt="Certificate Thumbnail" />

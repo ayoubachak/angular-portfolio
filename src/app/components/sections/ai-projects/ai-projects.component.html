@@ -26,13 +26,13 @@
     <!-- AI Projects List -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
       <div 
-        *ngFor="let project of aiProjects; let i = index" 
-        class="group"
+        *ngFor="let project of displayedAiProjects; let i = index" 
+        class="group flex justify-center px-4"
         appScrollAnimation
         [animationClass]="i % 2 === 0 ? 'animate-fade-in-right' : 'animate-fade-in-left'">
         
         <!-- Project Card -->
-        <div class="bg-secondary-color rounded-lg overflow-hidden shadow-lg hover:shadow-accent-color/20 transition-all duration-500 h-full flex flex-col border border-accent-color/20">
+        <div class="bg-secondary-color rounded-lg max-w-md w-full mx-auto overflow-hidden shadow-lg hover:shadow-accent-color/20 transition-all duration-500 h-full flex flex-col border border-accent-color/20">
           <!-- Project Image -->
           <div class="relative overflow-hidden h-52">
             <img 
@@ -92,8 +92,17 @@
       </div>
     </div>
     
-    <!-- No Projects Message -->
-    <div *ngIf="aiProjects.length === 0" class="text-center py-12">
+    <!-- Display More Button -->
+    <div class="text-center mt-8" *ngIf="showDisplayMore">
+      <button 
+        (click)="displayMore()"
+        class="px-6 py-2 rounded-full border border-button-text text-button-text hover:bg-button-bg-hover transition">
+        Display More
+      </button>
+    </div>
+     
+     <!-- No Projects Message -->
+     <div *ngIf="aiProjects.length === 0" class="text-center py-12">
       <p class="text-text-secondary">No AI projects available at the moment.</p>
     </div>
   </div>
