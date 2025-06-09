@@ -92,12 +92,12 @@
                 animationClass="animate-fade-in-up">                <div class="mb-2">
                   <div class="flex items-center">
                     <span class="text-2xl mr-3">{{ language.flagIcon }}</span>
-                    <h4 class="text-lg font-medium text-white">{{ language.name }}</h4>
+                    <h4 class="text-lg font-medium text-text-color">{{ language.name }}</h4>
                   </div>
                   <div class="text-right mt-2">
                     <span class="text-accent-color font-medium bg-accent-color/10 px-3 py-1 rounded-full text-sm">{{ language.level }}</span>
                   </div>
-                </div>                  <div class="mt-4 w-full bg-secondary-color rounded-full h-3 overflow-hidden shadow-inner border border-accent-color/10">
+                </div><div class="mt-4 w-full bg-secondary-color rounded-full h-3 overflow-hidden shadow-inner border border-accent-color/10">
                   <div 
                     class="bg-accent-color h-3 rounded-full transition-all duration-1000 language-progress-bar" 
                     [style]="getSkillBarStyle(language.proficiency)">
