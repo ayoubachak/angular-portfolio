@@ -171,7 +171,8 @@ export class ContentService {
         description: 'Dual Engineer\'s Degree Program',
         logo: 'assets/images/schools/ensam-logo.png',
         website: 'https://ensam-casa.ma/',
-        programPdf: 'assets/documents/ensam-program.pdf',
+        // programPdf: 'assets/documents/ensam-program.pdf',
+        programPdf: 'https://ensam-casa.ma/filieres/details?id=19',
         detailedDescription: 'The National Higher School of Arts and Crafts (ENSAM) in Casablanca is one of Morocco\'s premier engineering institutions. The program focuses on developing expertise in software engineering with specialization in artificial intelligence and machine learning. The curriculum includes both theoretical foundations and practical applications through industry partnerships.',
         skills: ['Machine Learning', 'Deep Learning', 'Natural Language Processing', 'Computer Vision', 'Software Development', 'Data Engineering'],
         courses: ['Statistical Learning', 'Neural Networks', 'Big Data Processing', 'Cloud Computing', 'Software Engineering Methodologies', 'AI Ethics']
