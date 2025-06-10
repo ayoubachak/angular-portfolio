@@ -229,39 +229,45 @@ export class ContentService {
       {
         title: 'SQL Query Generation',
         description: 'Implemented AI models in Python to generate SQL queries from text prompts. Initially developed a Seq2Seq model but observed low performance. Subsequently, fine-tuned a GPT-2 model on company-specific data to enhance accuracy. Leveraged vector stores and semantic search techniques to further improve query relevance and precision. This resulted in a 35% increase in query accuracy and a significant reduction in manual query generation time.',
-        imageUrl: 'assets/images/projects/sql-gen.jpg',
+        imageUrl: 'assets/images/aiprojects/sqlquerygenerator.png',
+        tags: ['Python', 'NLP', 'GPT-2', 'Vector Stores', 'Semantic Search'],
+        isAiProject: true
+      },
+      {
+        title: 'Chess',
+        description: 'Build a chess game ',
+        imageUrl: 'assets/images/aiprojects/sqlquerygenerator.png',
         tags: ['Python', 'NLP', 'GPT-2', 'Vector Stores', 'Semantic Search'],
         isAiProject: true
       },
       {
         title: 'JLang Programming Language',
         description: 'Built an interpreted language in Java featuring Python/JavaScript-like syntax, JSON objects, multiple inheritance, list comprehension, and anonymous functions. Achieved Python speed.',
-        imageUrl: 'assets/images/projects/jlang.jpg',
+        imageUrl: '/assets/images/ai-projects/jlang.jpg',
         repoUrl: 'https://github.com/Low-Level-Code/jlang.git',
         tags: ['Java', 'Interpreters', 'Programming Languages', 'Compilers'],
-        isAiProject: true
       },
       {
         title: 'Leetlang Programming Language',
         description: 'Developed a bytecode virtual machine compiled language in C with functions, classes, inheritance, modules, loops, and scope management.',
-        imageUrl: 'assets/images/projects/leetlang.jpg',
+        imageUrl: '/assets/images/ai-projects/leetlang.jpg',
         repoUrl: 'https://github.com/ayoubachak/leetlang.git',
         tags: ['C', 'Bytecode VM', 'Programming Languages', 'Compilers']
       },
       {
         title: 'Project CM33',
         description: 'Enhanced C programming language for LPC55S69 board with Power Quad optimizations and new accelerometer functions.',
-        imageUrl: 'assets/images/projects/cm33.jpg',
+        imageUrl: '/assets/images/ai-projects/cm33.jpg',
         repoUrl: 'https://github.com/ayoubachak/projet_cm33.git',
         tags: ['C', 'Embedded Systems', 'LPC55S69', 'Accelerometer']
       },
       {
         title: 'Real-time OS',
         description: 'Developed a real-time OS with efficient task management and semaphore patterns for LPC55S69 board.',
-        imageUrl: 'assets/images/projects/rtos.jpg',
+        imageUrl: '/assets/images/ai-projects/rtos.jpg',
         repoUrl: 'https://github.com/ayoubachak/LPC55S69-OS.git',
         tags: ['C', 'RTOS', 'Embedded Systems', 'LPC55S69']
-      }
+      },
     ],
     brands: [
       {

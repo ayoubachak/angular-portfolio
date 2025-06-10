@@ -6,6 +6,7 @@ import { LinkHoverWebviewDirective } from '../../../directives/link-hover-webvie
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faExternalLinkAlt, faCode } from '@fortawesome/free-solid-svg-icons';
 import { WebviewService } from '../../../services/webview.service';
+import { WebviewPreviewComponent } from '../../webview-preview/webview-preview.component';
 
 @Component({
   selector: 'app-ai-projects',
@@ -14,7 +15,8 @@ import { WebviewService } from '../../../services/webview.service';
     CommonModule, 
     ScrollAnimationDirective, 
     LinkHoverWebviewDirective,
-    FontAwesomeModule
+    FontAwesomeModule,
+    WebviewPreviewComponent
   ],
   templateUrl: './ai-projects.component.html',
   styleUrl: './ai-projects.component.css'
@@ -55,5 +57,27 @@ export class AiProjectsComponent implements OnInit {
   displayMore(): void {
     this.displayedAiProjects = this.aiProjects;
     this.showDisplayMore = false;
+  }
+
+  /**
+   * Handle hover on project image to load preview
+   */
+  onImageHover(url: string): void {
+    this.webviewService.loadUrl(url);
+  }
+
+  /**
+   * Handle mouse leave on project image to reset preview
+   */
+  onImageLeave(): void {
+    this.webviewService.resetWebview();
+  }
+
+  /**
+   * Open repository preview in fullscreen modal
+   */
+  openPreview(url: string): void {
+    this.webviewService.loadUrl(url);
+    this.webviewService.toggleFullscreen();
   }
 }
