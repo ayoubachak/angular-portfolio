@@ -49,7 +49,7 @@
           #experienceCard>
           
           <!-- Certificate Ribbon Link -->
-          <ng-container *ngIf="experience.certificate">
+          <ng-container *ngIf="experience.certificate && experience.certificate.trim().length > 0">
             <!-- Ribbon triggers modal -->
             <button class="certificate-ribbon" (click)="openCertificate(experience.certificate)">
               <img [src]="experience.certificate" alt="Certificate Thumbnail" />

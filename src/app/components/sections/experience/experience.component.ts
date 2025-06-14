@@ -14,7 +14,6 @@ interface ExperienceWithState extends Experience {
   inView: boolean;
   previewMode: boolean;
   scrollProgress: number;
-  certificate?: string;
 }
 
 interface TechAnimation {

@@ -1,5 +1,48 @@
-<section id="brands" class="py-24 bg-secondary-color">
-  <div class="container mx-auto px-6">
+<section id="brands" class="py-24 bg-secondary-color relative overflow-hidden">
+  <!-- Creative Background -->
+  <div class="brands-background">
+    <!-- Geometric Pattern Background -->
+    <div class="geometric-pattern"></div>
+    
+    <!-- Floating Brand Elements -->
+    <div class="brand-element logo-shape" style="top: 10%; left: 5%;"></div>
+    <div class="brand-element business-card" style="top: 20%; right: 8%;"></div>
+    <div class="brand-element creative-circle" style="top: 35%; left: 12%;"></div>
+    <div class="brand-element brand-diamond" style="top: 15%; left: 25%;"></div>
+    <div class="brand-element creative-line" style="top: 45%; right: 15%;"></div>
+    <div class="brand-element logo-shape" style="top: 60%; right: 25%;"></div>
+    <div class="brand-element business-card" style="top: 75%; left: 8%;"></div>
+    <div class="brand-element creative-circle" style="top: 80%; right: 5%;"></div>
+    <div class="brand-element brand-diamond" style="top: 25%; right: 35%;"></div>
+    <div class="brand-element creative-line" style="top: 55%; left: 30%;"></div>
+    <div class="brand-element logo-shape" style="top: 40%; right: 45%;"></div>
+    <div class="brand-element business-card" style="top: 85%; left: 35%;"></div>
+    <div class="brand-element creative-circle" style="top: 5%; right: 20%;"></div>
+    <div class="brand-element brand-diamond" style="top: 70%; left: 45%;"></div>
+    <div class="brand-element creative-line" style="top: 30%; left: 50%;"></div>
+    
+    <!-- Brand Icon Elements -->
+    <div class="brand-icon-element" style="top: 18%; left: 15%;">
+      <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
+    </div>
+    <div class="brand-icon-element" style="top: 42%; right: 20%;">
+      <fa-icon [icon]="faGithub"></fa-icon>
+    </div>
+    <div class="brand-icon-element" style="top: 65%; left: 20%;">
+      <fa-icon [icon]="faLinkedin"></fa-icon>
+    </div>
+    <div class="brand-icon-element" style="top: 28%; right: 10%;">
+      <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
+    </div>
+    <div class="brand-icon-element" style="top: 78%; right: 30%;">
+      <fa-icon [icon]="faGithub"></fa-icon>
+    </div>
+    <div class="brand-icon-element" style="top: 52%; left: 5%;">
+      <fa-icon [icon]="faLinkedin"></fa-icon>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-6 relative z-10">
     <!-- Section Header -->
     <div class="text-center mb-16" appScrollAnimation animationClass="animate-fade-in-up">
       <h2 class="text-4xl font-bold mb-4">My <span class="text-accent-color">Brands</span></h2>
@@ -10,16 +53,16 @@
     </div>
     
     <!-- Brands Grid -->
-    <div class="brand-grid grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div class="brand-grid grid grid-cols-1 md:grid-cols-2 gap-8">
       <div 
         *ngFor="let brand of brands; let i = index" 
-        class="card-container py-6" 
+        class="card-container" 
         appScrollAnimation
         [animationClass]="i % 2 === 0 ? 'animate-fade-in-right' : 'animate-fade-in-left'">
         
         <div class="brand-card bg-primary-color rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-accent-color/20 group">
           <!-- Brand Logo/Banner -->
-          <div class="bg-white/5 p-8 flex justify-center items-center h-48">
+          <div class="brand-logo-container">
             <img 
               [src]="brand.logo" 
               [alt]="brand.name" 
@@ -28,29 +71,29 @@
           </div>
           
           <!-- Brand Info -->
-          <div class="p-6 brand-description">
-            <h3 class="text-2xl font-semibold text-text-color mb-3">{{ brand.name }}</h3>
-            <p class="text-text-secondary flex-1">{{ brand.description }}</p>
+          <div class="brand-description">
+            <h3 class="brand-title">{{ brand.name }}</h3>
+            <p class="brand-description-text">{{ brand.description }}</p>
             
             <!-- Social Links and Visit Link -->
-            <div class="mt-6 flex flex-wrap items-center gap-4">
+            <div class="brand-social-links">
               <a 
                 *ngIf="brand.url" 
                 [href]="brand.url" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                class="inline-flex items-center space-x-2 px-5 py-2 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 transition-colors duration-300">
+                class="visit-brand-btn">
                 <span>Visit Brand</span>
                 <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
               </a>
               
-              <div class="flex items-center gap-3 ml-auto">
+              <div class="social-icons-group">
                 <a 
                   *ngIf="brand.github" 
                   [href]="brand.github" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-700 text-button-text hover:bg-gray-600 transition-colors duration-300" 
+                  class="social-icon-btn github-icon" 
                   title="GitHub Repository">
                   <fa-icon [icon]="faGithub"></fa-icon>
                 </a>
@@ -60,7 +103,7 @@
                   [href]="brand.linkedin" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  class="w-10 h-10 flex items-center justify-center rounded-full bg-blue-600 text-button-text hover:bg-blue-500 transition-colors duration-300" 
+                  class="social-icon-btn linkedin-icon" 
                   title="LinkedIn Page">
                   <fa-icon [icon]="faLinkedin"></fa-icon>
                 </a>

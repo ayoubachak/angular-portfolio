@@ -1,11 +1,250 @@
+/* Creative Background Animation */
+.brands-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Floating Brand Elements */
+.brand-element {
+  position: absolute;
+  opacity: 0.1;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  will-change: transform, opacity;
+}
+
+/* Different types of brand elements */
+.brand-element.logo-shape {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  animation: floatLogo 15s infinite;
+}
+
+.brand-element.business-card {
+  width: 60px;
+  height: 35px;
+  background: linear-gradient(45deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.6));
+  border-radius: 4px;
+  animation: floatCard 18s infinite;
+}
+
+.brand-element.creative-circle {
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--accent-color);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spinFloat 20s infinite;
+}
+
+.brand-element.brand-diamond {
+  width: 25px;
+  height: 25px;
+  background: var(--accent-color);
+  transform: rotate(45deg);
+  animation: floatDiamond 22s infinite;
+}
+
+.brand-element.creative-line {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  animation: floatLine 25s infinite;
+}
+
+/* Geometric Pattern Background */
+.geometric-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(var(--accent-color-rgb), 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(var(--accent-color-rgb), 0.03) 0%, transparent 50%),
+    linear-gradient(45deg, transparent 40%, rgba(var(--accent-color-rgb), 0.02) 50%, transparent 60%);
+  animation: patternShift 30s ease-in-out infinite;
+}
+
+/* Brand Icons Floating */
+.brand-icon-element {
+  position: absolute;
+  font-size: 24px;
+  color: var(--accent-color);
+  opacity: 0.08;
+  animation: iconFloat 16s infinite ease-in-out;
+}
+
+/* Animation Keyframes */
+@keyframes floatLogo {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.1; 
+  }
+  25% { 
+    transform: translateY(-20px) rotate(90deg); 
+    opacity: 0.15; 
+  }
+  50% { 
+    transform: translateY(-10px) rotate(180deg); 
+    opacity: 0.12; 
+  }
+  75% { 
+    transform: translateY(-30px) rotate(270deg); 
+    opacity: 0.18; 
+  }
+}
+
+@keyframes floatCard {
+  0%, 100% { 
+    transform: translateX(0px) translateY(0px) rotateY(0deg); 
+    opacity: 0.08; 
+  }
+  33% { 
+    transform: translateX(15px) translateY(-15px) rotateY(180deg); 
+    opacity: 0.12; 
+  }
+  66% { 
+    transform: translateX(-10px) translateY(-25px) rotateY(360deg); 
+    opacity: 0.15; 
+  }
+}
+
+@keyframes spinFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.1; 
+  }
+  50% { 
+    transform: translateY(-40px) rotate(180deg); 
+    opacity: 0.2; 
+  }
+}
+
+@keyframes floatDiamond {
+  0%, 100% { 
+    transform: translateY(0px) rotate(45deg) scale(1); 
+    opacity: 0.1; 
+  }
+  25% { 
+    transform: translateY(-15px) rotate(135deg) scale(1.2); 
+    opacity: 0.15; 
+  }
+  50% { 
+    transform: translateY(-30px) rotate(225deg) scale(0.8); 
+    opacity: 0.12; 
+  }
+  75% { 
+    transform: translateY(-20px) rotate(315deg) scale(1.1); 
+    opacity: 0.18; 
+  }
+}
+
+@keyframes floatLine {
+  0%, 100% { 
+    transform: translateX(0px) translateY(0px) rotate(0deg); 
+    opacity: 0.06; 
+  }
+  33% { 
+    transform: translateX(20px) translateY(-10px) rotate(15deg); 
+    opacity: 0.12; 
+  }
+  66% { 
+    transform: translateX(-15px) translateY(-20px) rotate(-10deg); 
+    opacity: 0.09; 
+  }
+}
+
+@keyframes iconFloat {
+  0%, 100% { 
+    transform: translateY(0px) scale(1); 
+    opacity: 0.08; 
+  }
+  50% { 
+    transform: translateY(-25px) scale(1.1); 
+    opacity: 0.15; 
+  }
+}
+
+@keyframes patternShift {
+  0%, 100% { 
+    transform: translateX(0px) translateY(0px); 
+  }
+  25% { 
+    transform: translateX(10px) translateY(-5px); 
+  }
+  50% { 
+    transform: translateX(-5px) translateY(10px); 
+  }
+  75% { 
+    transform: translateX(5px) translateY(-10px); 
+  }
+}
+
+/* Responsive background adjustments */
+@media (max-width: 768px) {
+  .brand-element {
+    opacity: 0.06; /* Reduce opacity on mobile for better readability */
+  }
+  
+  .brand-element.logo-shape {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .brand-element.business-card {
+    width: 45px;
+    height: 26px;
+  }
+  
+  .brand-element.creative-circle {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .brand-element.brand-diamond {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .brand-element.creative-line {
+    width: 60px;
+  }
+  
+  .brand-icon-element {
+    font-size: 18px;
+    opacity: 0.05;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .brand-element,
+  .brand-icon-element,
+  .geometric-pattern {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
 /* Brand grid layout */
 .brand-grid {
-  margin-bottom: 2rem;
+  margin-bottom: 6rem; /* Further increased bottom margin */
 }
 
 /* Card container to ensure proper spacing */
 .card-container {
-  margin-bottom: 2rem;
+  margin-bottom: 6rem; /* Significantly increased spacing between cards */
+  padding-bottom: 3rem; /* Additional padding for more separation */
 }
 
 /* Brand card styling */
@@ -13,10 +252,23 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 450px; /* Increased minimum height for consistency */
+  min-height: 500px; /* Increased minimum height for better spacing */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-  margin-bottom: 2.5rem; /* Additional bottom margin to prevent overlap */
-  position: relative; /* Ensure proper stacking context */
+  margin-bottom: 4rem; /* Further increased margin for cards */
+  position: relative;
+  transition: all 0.3s ease;
+  z-index: 2; /* Ensure cards are above background */
+}
+
+/* Brand logo container - increased height */
+.brand-logo-container {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* Increased height */
+  min-height: 200px;
 }
 
 /* Ensure description always has consistent height */
@@ -25,26 +277,210 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 2rem; /* Increased padding */
+  min-height: 300px; /* Ensure minimum content height */
+}
+
+/* Brand title styling */
+.brand-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* Brand description text */
+.brand-description-text {
+  flex-grow: 1;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: var(--text-secondary);
+}
+
+/* Social links container - horizontal layout */
+.brand-social-links {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between; /* Space between button and icons */
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Visit brand button - theme adaptive */
+.visit-brand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--accent-color);
+  color: var(--button-text);
+  border-radius: 0.375rem; /* Slightly less rounded */
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.visit-brand-btn:hover {
+  background-color: rgba(var(--accent-color-rgb), 0.9);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--accent-color-rgb), 0.3);
+}
+
+/* Social icons group - horizontal alignment */
+.social-icons-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Space between icons */
+  margin-left: auto; /* Push to the right */
+}
+
+/* Social icon buttons - light mode adapted */
+.social-icon-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  color: var(--text-color);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.3);
+}
+
+/* GitHub icon - adapts to theme */
+.github-icon {
+  background-color: var(--secondary-color);
+  border-color: var(--text-secondary);
+}
+
+.github-icon:hover {
+  background-color: var(--text-color);
+  color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* LinkedIn icon - consistent blue */
+.linkedin-icon {
+  background-color: #0077b5;
+  border-color: #0077b5;
+  color: white;
+}
+
+.linkedin-icon:hover {
+  background-color: #005885;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 119, 181, 0.3);
 }
 
 /* Fix for grid layout to ensure even spacing */
 .grid {
-  row-gap: 4rem !important; /* Override to force more vertical spacing */
-  margin-bottom: 3rem; /* Add bottom margin to grid container */
+  gap: 6rem !important; /* Significantly increased gap between grid items */
+  margin-bottom: 6rem; /* Further increased bottom margin */
+}
+
+/* Light mode specific adjustments */
+:root:not(.dark) .brand-card {
+  background-color: var(--primary-color);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+:root:not(.dark) .brand-logo-container {
+  background: rgba(0, 0, 0, 0.02);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+:root:not(.dark) .brand-social-links {
+  border-top-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode button styling */
+:root:not(.dark) .visit-brand-btn {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: 2px solid var(--accent-color);
+}
+
+:root:not(.dark) .visit-brand-btn:hover {
+  background-color: var(--accent-color);
+  color: var(--button-text);
+  border-color: var(--accent-color);
+}
+
+:root:not(.dark) .github-icon {
+  background-color: #f8f9fa;
+  color: #24292e;
+  border-color: #e1e4e8;
+}
+
+:root:not(.dark) .github-icon:hover {
+  background-color: #24292e;
+  color: white;
+}
+
+/* Dark mode button styling (explicit for clarity) */
+.dark .visit-brand-btn {
+  background-color: var(--accent-color);
+  color: var(--button-text);
+}
+
+.dark .visit-brand-btn:hover {
+  background-color: rgba(var(--accent-color-rgb), 0.9);
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .brand-card {
-    min-height: 400px;
-    margin-bottom: 3rem; /* Larger margin on mobile */
-  }
-  
-  .card-container {
+    min-height: 450px;
     margin-bottom: 3rem;
   }
   
+  .brand-logo-container {
+    height: 160px;
+    min-height: 160px;
+    padding: 1.5rem;
+  }
+  
+  .brand-description {
+    padding: 1.5rem;
+    min-height: 250px;
+  }
+  
+  .brand-title {
+    font-size: 1.5rem;
+  }
+  
+  .card-container {
+    margin-bottom: 4rem; /* Further increased spacing on mobile */
+    padding-bottom: 2rem;
+  }
+  
   .brand-grid {
-    row-gap: 1rem !important;
+    gap: 4rem !important; /* Further increased gap on mobile */
+    margin-bottom: 4rem;
+  }
+  
+  /* Stack social elements vertically on mobile */
+  .brand-social-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .visit-brand-btn {
+    justify-content: center;
+    width: 100%;
+    order: 1; /* Button first */
+  }
+  
+  .social-icons-group {
+    justify-content: center;
+    margin-left: 0; /* Reset margin on mobile */
+    order: 2; /* Icons second */
   }
 }
