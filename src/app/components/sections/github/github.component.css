@@ -102,3 +102,425 @@ button[disabled] {
   box-shadow: 0 0 0 2px var(--accent-color, #6d28d9);
   border-radius: 4px;
 }
+
+/* GitHub Development Background */
+.github-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+/* Code Blocks */
+.code-block {
+  position: absolute;
+  width: 80px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.7));
+  border-radius: 8px;
+  opacity: 0.3;
+  animation: floatCodeBlock 8s ease-in-out infinite;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.code-line {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
+  animation: typingLine 3s ease-in-out infinite;
+}
+
+.code-line:nth-child(1) {
+  width: 80%;
+  animation-delay: 0s;
+}
+
+.code-line:nth-child(2) {
+  width: 60%;
+  animation-delay: 0.5s;
+}
+
+.code-line:nth-child(3) {
+  width: 90%;
+  animation-delay: 1s;
+}
+
+/* Git Branches */
+.git-branch {
+  position: absolute;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), rgba(var(--accent-color-rgb), 0.5), transparent);
+  opacity: 0.4;
+  animation: branchPulse 6s ease-in-out infinite;
+  border-radius: 2px;
+}
+
+.git-branch::before {
+  content: '';
+  position: absolute;
+  left: 10%;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  animation: commitFlow 6s linear infinite;
+}
+
+.git-branch::after {
+  content: '';
+  position: absolute;
+  right: 10%;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  animation: commitFlow 6s linear infinite 3s;
+}
+
+/* Commit Nodes */
+.commit-node {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: commitPulse 4s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.3);
+}
+
+.commit-node::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--accent-color);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: commitRipple 4s ease-out infinite;
+}
+
+.commit-node::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: commitGlow 2s ease-in-out infinite;
+}
+
+/* Floating GitHub Icons */
+.floating-github-icon {
+  position: absolute;
+  font-size: 20px;
+  opacity: 0.4;
+  animation: floatGitHubIcon 10s ease-in-out infinite;
+  user-select: none;
+  filter: grayscale(0.3);
+}
+
+/* Development Keywords */
+.dev-keyword {
+  position: absolute;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-color);
+  opacity: 0.4;
+  pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  user-select: none;
+  text-shadow: 0 0 8px rgba(var(--accent-color-rgb), 0.3);
+  animation: floatKeyword 12s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+.dev-keyword:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+  text-shadow: 0 0 12px rgba(var(--accent-color-rgb), 0.6);
+}
+
+/* Pull Request Arrows */
+.pr-arrow {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  opacity: 0.3;
+  animation: arrowMove 5s ease-in-out infinite;
+}
+
+.pr-arrow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--accent-color);
+  transform: translateY(-50%);
+}
+
+.pr-arrow::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-left: 8px solid var(--accent-color);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transform: translateY(-50%);
+}
+
+/* Repository Cards */
+.repo-card {
+  position: absolute;
+  width: 60px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(var(--accent-color-rgb), 0.2), rgba(var(--accent-color-rgb), 0.1));
+  border: 1px solid rgba(var(--accent-color-rgb), 0.3);
+  border-radius: 6px;
+  opacity: 0.4;
+  animation: floatRepoCard 7s ease-in-out infinite;
+}
+
+.repo-card::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-color);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.repo-card::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 18px;
+  width: 30px;
+  height: 2px;
+  background: rgba(var(--accent-color-rgb), 0.4);
+  border-radius: 1px;
+}
+
+/* Animations */
+@keyframes floatCodeBlock {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.3; 
+  }
+  25% { 
+    transform: translateY(-15px) rotate(1deg); 
+    opacity: 0.5; 
+  }
+  50% { 
+    transform: translateY(-8px) rotate(-0.5deg); 
+    opacity: 0.4; 
+  }
+  75% { 
+    transform: translateY(-20px) rotate(0.8deg); 
+    opacity: 0.6; 
+  }
+}
+
+@keyframes typingLine {
+  0%, 100% { 
+    width: 0%; 
+    opacity: 0.3; 
+  }
+  50% { 
+    opacity: 0.8; 
+  }
+  100% { 
+    opacity: 0.6; 
+  }
+}
+
+@keyframes branchPulse {
+  0%, 100% { 
+    opacity: 0.4; 
+    transform: scaleY(1); 
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scaleY(1.2); 
+  }
+}
+
+@keyframes commitFlow {
+  0% { 
+    left: 0%; 
+    opacity: 0; 
+  }
+  10% { 
+    opacity: 1; 
+  }
+  90% { 
+    opacity: 1; 
+  }
+  100% { 
+    left: 100%; 
+    opacity: 0; 
+  }
+}
+
+@keyframes commitPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.6; 
+  }
+  50% { 
+    transform: scale(1.3); 
+    opacity: 0.9; 
+  }
+}
+
+@keyframes commitRipple {
+  0% { 
+    transform: scale(1); 
+    opacity: 0.3; 
+  }
+  100% { 
+    transform: scale(2.5); 
+    opacity: 0; 
+  }
+}
+
+@keyframes commitGlow {
+  0%, 100% { 
+    opacity: 0.8; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2); 
+  }
+}
+
+@keyframes floatGitHubIcon {
+  0%, 100% { 
+    transform: translateY(0px) scale(1); 
+    opacity: 0.4; 
+  }
+  33% { 
+    transform: translateY(-20px) scale(1.1); 
+    opacity: 0.6; 
+  }
+  66% { 
+    transform: translateY(-10px) scale(0.9); 
+    opacity: 0.5; 
+  }
+}
+
+@keyframes floatKeyword {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px); 
+    opacity: 0.4; 
+  }
+  25% { 
+    transform: translateY(-12px) translateX(3px); 
+    opacity: 0.6; 
+  }
+  50% { 
+    transform: translateY(-6px) translateX(-2px); 
+    opacity: 0.5; 
+  }
+  75% { 
+    transform: translateY(-18px) translateX(4px); 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes arrowMove {
+  0%, 100% { 
+    transform: translateX(0px); 
+    opacity: 0.3; 
+  }
+  50% { 
+    transform: translateX(10px); 
+    opacity: 0.6; 
+  }
+}
+
+@keyframes floatRepoCard {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.4; 
+  }
+  33% { 
+    transform: translateY(-15px) rotate(2deg); 
+    opacity: 0.6; 
+  }
+  66% { 
+    transform: translateY(-8px) rotate(-1deg); 
+    opacity: 0.5; 
+  }
+}
+
+/* Responsive adjustments for background */
+@media (max-width: 768px) {
+  .code-block {
+    width: 60px;
+    height: 45px;
+  }
+  
+  .floating-github-icon {
+    font-size: 16px;
+  }
+  
+  .dev-keyword {
+    font-size: 10px;
+  }
+  
+  .pr-arrow {
+    width: 30px;
+    height: 15px;
+  }
+  
+  .repo-card {
+    width: 45px;
+    height: 30px;
+  }
+  
+  .commit-node {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* Performance optimizations */
+.github-background * {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .github-background * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
