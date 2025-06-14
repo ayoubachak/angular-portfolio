@@ -6,6 +6,7 @@ import { LinkHoverWebviewDirective } from '../../../directives/link-hover-webvie
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faExternalLinkAlt, faCode } from '@fortawesome/free-solid-svg-icons';
 import { WebviewService } from '../../../services/webview.service';
+import { WebviewPreviewComponent } from '../../webview-preview/webview-preview.component';
 
 interface BackgroundElement {
   id: string;
@@ -26,7 +27,8 @@ interface BackgroundElement {
     CommonModule, 
     ScrollAnimationDirective, 
     LinkHoverWebviewDirective,
-    FontAwesomeModule
+    FontAwesomeModule,
+    WebviewPreviewComponent
   ],
   templateUrl: './ai-projects.component.html',
   styleUrl: './ai-projects.component.css'
@@ -36,6 +38,10 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   
   aiProjects: Project[] = [];
   backgroundElements: BackgroundElement[] = [];
+  // Display control for initial and full list
+  displayedAiProjects: Project[] = [];
+  showDisplayMore: boolean = false;
+  private initialDisplayCount = 4;
   
   // Icons
   faExternalLinkAlt = faExternalLinkAlt;
@@ -69,6 +75,9 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
       this.generateBackgroundElements();
       this.startMouseTracking();
     }, 100);
+    // Set up initial slice and display control
+    this.displayedAiProjects = this.aiProjects.slice(0, this.initialDisplayCount);
+    this.showDisplayMore = this.aiProjects.length > this.initialDisplayCount;
   }
 
   ngOnDestroy(): void {
@@ -238,5 +247,35 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
    */
   hasLinksInDescription(description: string): boolean {
     return this.webviewService.extractUrls(description).length > 0;
+  }
+
+  /**
+   * Display all AI projects when user clicks "Display More"
+   */
+  displayMore(): void {
+    this.displayedAiProjects = this.aiProjects;
+    this.showDisplayMore = false;
+  }
+
+  /**
+   * Handle hover on project image to load preview
+   */
+  onImageHover(url: string): void {
+    this.webviewService.loadUrl(url);
+  }
+
+  /**
+   * Handle mouse leave on project image to reset preview
+   */
+  onImageLeave(): void {
+    this.webviewService.resetWebview();
+  }
+
+  /**
+   * Open repository preview in fullscreen modal
+   */
+  openPreview(url: string): void {
+    this.webviewService.loadUrl(url);
+    this.webviewService.toggleFullscreen();
   }
 }
