@@ -67,88 +67,88 @@
           <!-- Contact Form -->
           <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="flex-grow flex flex-col">
             <div class="space-y-6 flex-grow">
-              <!-- Name Input -->
+            <!-- Name Input -->
               <div class="form-field">
                 <label for="name" class="block text-text-secondary mb-2 font-medium">Name</label>
-                <input 
-                  type="text" 
-                  id="name" 
-                  formControlName="name" 
-                  class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
+              <input 
+                type="text" 
+                id="name" 
+                formControlName="name" 
+                class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
                   [ngClass]="{'border-red-500': formSubmitted && contactForm.get('name')?.invalid}"
                   placeholder="Your full name">
                 <div class="error-container min-h-[20px] mt-1">
                   <div *ngIf="formSubmitted && contactForm.get('name')?.errors" class="text-red-400 text-sm">
-                    <span *ngIf="contactForm.get('name')?.errors?.['required']">Name is required</span>
-                    <span *ngIf="contactForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+                <span *ngIf="contactForm.get('name')?.errors?.['required']">Name is required</span>
+                <span *ngIf="contactForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
                   </div>
-                </div>
               </div>
-              
-              <!-- Email Input -->
+            </div>
+            
+            <!-- Email Input -->
               <div class="form-field">
                 <label for="email" class="block text-text-secondary mb-2 font-medium">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  formControlName="email" 
-                  class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email" 
+                class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
                   [ngClass]="{'border-red-500': formSubmitted && contactForm.get('email')?.invalid}"
                   placeholder="your.email@example.com">
                 <div class="error-container min-h-[20px] mt-1">
                   <div *ngIf="formSubmitted && contactForm.get('email')?.errors" class="text-red-400 text-sm">
-                    <span *ngIf="contactForm.get('email')?.errors?.['required']">Email is required</span>
-                    <span *ngIf="contactForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+                <span *ngIf="contactForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="contactForm.get('email')?.errors?.['email']">Please enter a valid email</span>
                   </div>
-                </div>
               </div>
-              
-              <!-- Subject Input -->
+            </div>
+            
+            <!-- Subject Input -->
               <div class="form-field">
                 <label for="subject" class="block text-text-secondary mb-2 font-medium">Subject</label>
-                <input 
-                  type="text" 
-                  id="subject" 
-                  formControlName="subject" 
-                  class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
+              <input 
+                type="text" 
+                id="subject" 
+                formControlName="subject" 
+                class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors"
                   [ngClass]="{'border-red-500': formSubmitted && contactForm.get('subject')?.invalid}"
                   placeholder="What's this about?">
                 <div class="error-container min-h-[20px] mt-1">
                   <div *ngIf="formSubmitted && contactForm.get('subject')?.errors" class="text-red-400 text-sm">
-                    <span *ngIf="contactForm.get('subject')?.errors?.['required']">Subject is required</span>
-                    <span *ngIf="contactForm.get('subject')?.errors?.['minlength']">Subject must be at least 5 characters</span>
+                <span *ngIf="contactForm.get('subject')?.errors?.['required']">Subject is required</span>
+                <span *ngIf="contactForm.get('subject')?.errors?.['minlength']">Subject must be at least 5 characters</span>
                   </div>
-                </div>
               </div>
-              
-              <!-- Message Input -->
+            </div>
+            
+            <!-- Message Input -->
               <div class="form-field flex-grow">
                 <label for="message" class="block text-text-secondary mb-2 font-medium">Message</label>
-                <textarea 
-                  id="message" 
-                  formControlName="message" 
+              <textarea 
+                id="message" 
+                formControlName="message" 
                   class="w-full px-4 py-3 rounded-md bg-primary-color border border-accent-color/20 text-text-color focus:outline-none focus:border-accent-color transition-colors resize-none flex-grow min-h-[120px]"
                   [ngClass]="{'border-red-500': formSubmitted && contactForm.get('message')?.invalid}"
                   placeholder="Tell me about your project or idea..."
                   style="height: calc(100% - 60px);"></textarea>
                 <div class="error-container min-h-[20px] mt-1">
                   <div *ngIf="formSubmitted && contactForm.get('message')?.errors" class="text-red-400 text-sm">
-                    <span *ngIf="contactForm.get('message')?.errors?.['required']">Message is required</span>
-                    <span *ngIf="contactForm.get('message')?.errors?.['minlength']">Message must be at least 10 characters</span>
+                <span *ngIf="contactForm.get('message')?.errors?.['required']">Message is required</span>
+                <span *ngIf="contactForm.get('message')?.errors?.['minlength']">Message must be at least 10 characters</span>
                   </div>
                 </div>
               </div>
             </div>
             
-            <!-- Submit Button -->
+              <!-- Submit Button -->
             <div class="mt-6 pt-4 border-t border-accent-color/10">
-              <button
-                type="submit" 
+            <button
+              type="submit" 
                 [disabled]="contactForm.invalid && formSubmitted"
                 class="w-full px-6 py-3 bg-accent-color text-button-text rounded-md hover:bg-accent-color/90 disabled:bg-accent-color/50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2 font-medium">
-                <span>Send Message</span>
+              <span>Send Message</span>
                 <fa-icon [icon]="faPaperPlane" class="transform transition-transform group-hover:translate-x-1"></fa-icon>
-              </button>
+            </button>
             </div>
           </form>
         </div>
@@ -187,7 +187,7 @@
               </div>
             </div>
             
-            <!-- Social Links -->
+              <!-- Social Links -->
             <div>
               <h3 class="text-xl font-semibold mb-4">Connect With Me</h3>
               <div class="social-links">

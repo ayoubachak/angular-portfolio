@@ -31,14 +31,54 @@
   position: relative; /* Ensure positioned elements inside use this as reference */
   overflow-y: auto;
   overflow-x: hidden; /* Prevent horizontal scrolling */
+  max-height: 500px; /* Default max height */
+}
+
+/* When GenZ mode is active, adjust the height */
+.skills-container.gen-z-active {
+  max-height: 60vh; /* Use viewport height when GenZ phone is embedded */
 }
 
 /* Mobile adjustments for skills section */
 @media (max-width: 768px) {
   .skills-container {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-height: 300px; /* Much smaller height on mobile to force scrolling */
   }
+  
+  .skills-container.gen-z-active {
+    max-height: 250px; /* Even smaller when GenZ is active on mobile */
+  }
+}
+
+/* Tablet adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .skills-container {
+    max-height: 400px;
+  }
+  
+  .skills-container.gen-z-active {
+    max-height: 350px;
+  }
+}
+
+/* Additional responsive improvements for GenZ mode */
+@media (max-width: 1280px) {
+  .skills-container.gen-z-active {
+    max-height: 45vh;
+  }
+}
+
+/* Ensure the about section doesn't get too tall when GenZ is active */
+.gen-z-active #about {
+  min-height: auto;
+}
+
+.gen-z-active #about .container {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /* Ensure grid items don't overflow */
@@ -841,5 +881,57 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Add visual indicators for scrollable content */
+.skills-container {
+  position: relative;
+}
+
+.skills-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(to bottom, var(--secondary-color), transparent);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.skills-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: linear-gradient(to top, var(--secondary-color), transparent);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Show scroll indicators when content is scrollable */
+.skills-container:hover::before,
+.skills-container:hover::after {
+  opacity: 1;
+}
+
+/* Mobile specific scroll indicators */
+@media (max-width: 768px) {
+  .skills-container::before,
+  .skills-container::after {
+    opacity: 0.5; /* Always show on mobile to indicate scrollability */
+  }
+  
+  .skills-container:hover::before,
+  .skills-container:hover::after {
+    opacity: 0.8;
   }
 }

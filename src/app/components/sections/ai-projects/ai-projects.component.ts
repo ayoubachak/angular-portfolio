@@ -217,7 +217,7 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   trackByElementId(index: number, element: BackgroundElement): string {
     return element.id;
   }
-
+  
   /**
    * Check if description contains URLs
    */
