@@ -26,7 +26,7 @@ export class FooterComponent implements OnInit {
   isSubscribing: boolean = false;
   subscriptionMessage: string = '';
   subscriptionSuccess: boolean = false;
-
+  
   // Icons
   faGithub = faGithub;
   faLinkedin = faLinkedin;
@@ -48,7 +48,7 @@ export class FooterComponent implements OnInit {
     this.location = content.location;
     this.socialLinks = content.socialLinks;
   }
-
+  
   getIcon(platform: string): any {
     switch (platform.toLowerCase()) {
       case 'github': return this.faGithub;
@@ -106,7 +106,7 @@ export class FooterComponent implements OnInit {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
-
+  
   scrollToTop(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

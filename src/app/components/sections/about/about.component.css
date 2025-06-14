@@ -274,3 +274,572 @@
 :root:not(.dark) #about .flex.flex-wrap.gap-3.mb-8 > button:nth-child(1):hover {
   background-color: rgba(var(--accent-color-rgb), 0.8) !important;
 }
+
+/* Creative About Background Decorations */
+.about-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Floating Code Elements */
+.floating-code-element {
+  position: absolute;
+  opacity: 0.6;
+  animation: floatCode 8s ease-in-out infinite;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+}
+
+.floating-code-element:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.floating-code-element:nth-child(1) {
+  top: 15%;
+  left: 5%;
+  animation-delay: 0s;
+}
+
+.floating-code-element:nth-child(2) {
+  top: 60%;
+  right: 8%;
+  animation-delay: -2s;
+}
+
+.floating-code-element:nth-child(3) {
+  bottom: 20%;
+  left: 10%;
+  animation-delay: -4s;
+}
+
+.code-snippet {
+  background: rgba(var(--accent-color-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-color-rgb), 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.code-keyword {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+.code-variable {
+  color: #4ecdc4;
+}
+
+.code-property {
+  color: #45b7d1;
+}
+
+.code-string {
+  color: #96ceb4;
+}
+
+.code-function {
+  color: #feca57;
+}
+
+.code-comment {
+  color: #a0a0a0;
+  font-style: italic;
+}
+
+/* Skill Progress Indicators */
+.skill-indicator {
+  position: absolute;
+  width: 120px;
+  height: 20px;
+  opacity: 0.7;
+  animation: floatSkill 6s ease-in-out infinite;
+}
+
+.skill-indicator:nth-child(4) {
+  top: 25%;
+  right: 15%;
+  animation-delay: 0s;
+}
+
+.skill-indicator:nth-child(5) {
+  top: 45%;
+  left: 15%;
+  animation-delay: -2s;
+}
+
+.skill-indicator:nth-child(6) {
+  bottom: 30%;
+  right: 20%;
+  animation-delay: -4s;
+}
+
+.skill-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(var(--accent-color-rgb), 0.2);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skill-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.7));
+  border-radius: 2px;
+  animation: skillProgress 3s ease-out infinite;
+}
+
+.skill-indicator:nth-child(4) .skill-bar::after {
+  width: 85%;
+}
+
+.skill-indicator:nth-child(5) .skill-bar::after {
+  width: 90%;
+}
+
+.skill-indicator:nth-child(6) .skill-bar::after {
+  width: 80%;
+}
+
+.skill-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  display: block;
+}
+
+/* Floating Tech Icons */
+.floating-tech-icon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  color: rgba(var(--accent-color-rgb), 0.4);
+  animation: floatTechIcon 10s ease-in-out infinite;
+}
+
+.floating-tech-icon:nth-child(7) {
+  top: 20%;
+  left: 25%;
+  animation-delay: 0s;
+}
+
+.floating-tech-icon:nth-child(8) {
+  top: 70%;
+  right: 30%;
+  animation-delay: -3s;
+}
+
+.floating-tech-icon:nth-child(9) {
+  bottom: 15%;
+  left: 40%;
+  animation-delay: -6s;
+}
+
+.floating-tech-icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 5px rgba(var(--accent-color-rgb), 0.3));
+}
+
+/* Growth Path Lines */
+.growth-path {
+  position: absolute;
+  opacity: 0.3;
+  animation: growthPulse 8s ease-in-out infinite;
+}
+
+.growth-path:nth-child(10) {
+  top: 30%;
+  left: 50%;
+  width: 200px;
+  height: 100px;
+  animation-delay: 0s;
+}
+
+.growth-path:nth-child(11) {
+  bottom: 25%;
+  right: 25%;
+  width: 150px;
+  height: 80px;
+  animation-delay: -4s;
+}
+
+.path-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  position: relative;
+}
+
+.path-node {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  position: absolute;
+  top: -3px;
+  animation: nodePulse 2s ease-in-out infinite;
+}
+
+.path-node:nth-child(2) {
+  left: 30%;
+  animation-delay: 0s;
+}
+
+.path-node:nth-child(3) {
+  left: 60%;
+  animation-delay: -0.5s;
+}
+
+.path-node:nth-child(4) {
+  right: 0;
+  animation-delay: -1s;
+}
+
+/* Floating Geometric Shapes */
+.geometric-shape {
+  position: absolute;
+  opacity: 0.2;
+  animation: floatGeometric 12s ease-in-out infinite;
+}
+
+.shape-hexagon {
+  width: 40px;
+  height: 40px;
+  background: var(--accent-color);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  top: 35%;
+  right: 5%;
+  animation-delay: 0s;
+}
+
+.shape-triangle {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 35px solid var(--accent-color);
+  top: 55%;
+  left: 70%;
+  animation-delay: -3s;
+}
+
+.shape-circle {
+  width: 35px;
+  height: 35px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  bottom: 40%;
+  left: 5%;
+  animation-delay: -6s;
+}
+
+.shape-square {
+  width: 30px;
+  height: 30px;
+  background: var(--accent-color);
+  transform: rotate(45deg);
+  top: 10%;
+  right: 40%;
+  animation-delay: -9s;
+}
+
+/* Data Visualization Elements */
+.data-viz {
+  position: absolute;
+  opacity: 0.4;
+  animation: dataVizPulse 6s ease-in-out infinite;
+}
+
+.data-viz:nth-child(16) {
+  top: 40%;
+  right: 10%;
+  width: 80px;
+  height: 50px;
+  animation-delay: 0s;
+}
+
+.data-viz:nth-child(17) {
+  bottom: 35%;
+  left: 60%;
+  width: 100px;
+  height: 60px;
+  animation-delay: -3s;
+}
+
+.chart-bar {
+  width: 12px;
+  background: var(--accent-color);
+  margin: 0 2px;
+  display: inline-block;
+  border-radius: 2px 2px 0 0;
+  animation: chartBarGrow 2s ease-in-out infinite;
+}
+
+.chart-bar:nth-child(1) {
+  height: 20px;
+  animation-delay: 0s;
+}
+
+.chart-bar:nth-child(2) {
+  height: 35px;
+  animation-delay: -0.5s;
+}
+
+.chart-bar:nth-child(3) {
+  height: 25px;
+  animation-delay: -1s;
+}
+
+.chart-bar:nth-child(4) {
+  height: 40px;
+  animation-delay: -1.5s;
+}
+
+.chart-line {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), var(--accent-color), transparent);
+  position: relative;
+  animation: chartLineMove 4s ease-in-out infinite;
+}
+
+/* Binary Rain */
+.binary-rain {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100%;
+  opacity: 0.1;
+}
+
+.binary-digit {
+  position: absolute;
+  color: var(--accent-color);
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  animation: binaryFall 8s linear infinite;
+}
+
+.binary-digit:nth-child(1) {
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.binary-digit:nth-child(2) {
+  left: 30%;
+  animation-delay: -2s;
+}
+
+.binary-digit:nth-child(3) {
+  left: 50%;
+  animation-delay: -4s;
+}
+
+.binary-digit:nth-child(4) {
+  left: 70%;
+  animation-delay: -6s;
+}
+
+.binary-digit:nth-child(5) {
+  left: 90%;
+  animation-delay: -8s;
+}
+
+/* Animations */
+@keyframes floatCode {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-15px) rotate(0.5deg);
+  }
+}
+
+@keyframes floatSkill {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes skillProgress {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes floatTechIcon {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translateY(-15px) rotate(90deg);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-8px) rotate(180deg);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(-12px) rotate(270deg);
+    opacity: 0.7;
+  }
+}
+
+@keyframes growthPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes nodePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(var(--accent-color-rgb), 0.7);
+  }
+  50% {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 10px rgba(var(--accent-color-rgb), 0);
+  }
+}
+
+@keyframes floatGeometric {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(-10px) rotate(240deg);
+  }
+}
+
+@keyframes dataVizPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes chartBarGrow {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.3);
+  }
+}
+
+@keyframes chartLineMove {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes binaryFall {
+  0% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .floating-code-element {
+    display: none; /* Hide complex code elements on mobile */
+  }
+  
+  .skill-indicator {
+    width: 80px;
+    height: 15px;
+  }
+  
+  .skill-label {
+    font-size: 8px;
+  }
+  
+  .floating-tech-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .geometric-shape {
+    transform: scale(0.7);
+  }
+  
+  .data-viz {
+    transform: scale(0.8);
+  }
+  
+  .binary-rain {
+    width: 50px;
+  }
+  
+  .binary-digit {
+    font-size: 10px;
+  }
+}
+
+/* Accessibility - Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .about-background * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

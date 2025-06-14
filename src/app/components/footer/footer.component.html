@@ -102,7 +102,7 @@
         </div>
       </div>
 
-      <!-- Quick Links -->
+        <!-- Quick Links -->
       <div class="md:col-span-1">
         <h3 class="text-text-color text-lg font-semibold mb-4">Quick Links</h3>
         <ul class="space-y-2 text-text-secondary">
@@ -114,7 +114,7 @@
         </ul>
       </div>
 
-      <!-- Contact Info -->
+        <!-- Contact Info -->
       <div class="md:col-span-1">
         <h3 class="text-text-color text-lg font-semibold mb-4">Contact</h3>
         <ul class="space-y-2 text-text-secondary">
@@ -133,12 +133,12 @@
         
         <!-- Subscription Form -->
         <form (ngSubmit)="subscribeToNewsletter()" class="space-y-3">
-          <div class="flex">
-            <input 
-              type="email" 
+        <div class="flex">
+          <input 
+            type="email" 
               [(ngModel)]="subscriberEmail"
               name="subscriberEmail"
-              placeholder="Your email" 
+            placeholder="Your email" 
               [disabled]="isSubscribing"
               class="px-4 py-2 bg-secondary-color text-text-color border border-accent-color/20 rounded-l-md focus:outline-none focus:border-accent-color flex-1 disabled:opacity-50">
             <button 
@@ -147,8 +147,8 @@
               class="px-4 py-2 bg-accent-color text-button-text rounded-r-md hover:bg-accent-color/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
               <span *ngIf="!isSubscribing">Subscribe</span>
               <span *ngIf="isSubscribing">...</span>
-            </button>
-          </div>
+          </button>
+        </div>
           
           <!-- Subscription Message -->
           <div *ngIf="subscriptionMessage" 
@@ -179,10 +179,10 @@
     </div>
   </div>
 
-  <!-- Scroll to Top Button -->
+    <!-- Scroll to Top Button -->
   <button 
     (click)="scrollToTop()" 
     class="fixed bottom-5 right-5 w-12 h-12 rounded-full bg-accent-color text-button-text flex items-center justify-center shadow-lg hover:bg-accent-color/90 transition-colors">
     <fa-icon [icon]="faArrowUp"></fa-icon>
   </button>
-</footer> 
+</footer>

@@ -68,7 +68,7 @@ export class WebviewPreviewComponent implements OnInit {
       setTimeout(() => {
         // Double-check that we're still not in fullscreen mode before closing
         if (this.webviewState && !this.webviewState.isFullscreen) {
-          this.webviewService.resetWebview();
+        this.webviewService.resetWebview();
         }
       }, 300);
     }
