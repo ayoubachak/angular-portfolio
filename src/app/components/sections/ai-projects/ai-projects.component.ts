@@ -4,9 +4,9 @@ import { ContentService, Project } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { LinkHoverWebviewDirective } from '../../../directives/link-hover-webview.directive';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faExternalLinkAlt, faCode } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faCode, faTimesCircle, faMobile, faDesktop } from '@fortawesome/free-solid-svg-icons';
 import { WebviewService } from '../../../services/webview.service';
-import { WebviewPreviewComponent } from '../../webview-preview/webview-preview.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 interface BackgroundElement {
   id: string;
@@ -27,8 +27,7 @@ interface BackgroundElement {
     CommonModule, 
     ScrollAnimationDirective, 
     LinkHoverWebviewDirective,
-    FontAwesomeModule,
-    WebviewPreviewComponent
+    FontAwesomeModule
   ],
   templateUrl: './ai-projects.component.html',
   styleUrl: './ai-projects.component.css'
@@ -46,6 +45,18 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   // Icons
   faExternalLinkAlt = faExternalLinkAlt;
   faCode = faCode;
+  faTimesCircle = faTimesCircle;
+  faMobile = faMobile;
+  faDesktop = faDesktop;
+
+  // Modal state properties (similar to GitHub component)
+  activeProject: Project | null = null;
+  showIframe: boolean = false;
+  safePreviewUrl: SafeResourceUrl | null = null;
+  iframeLoading: boolean = true;
+  isMobileView: boolean = false;
+
+  @ViewChild('previewModal') previewModal!: ElementRef;
 
   // ML Keywords for floating background
   private mlKeywords = [
@@ -66,7 +77,8 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   constructor(
     private contentService: ContentService,
     private webviewService: WebviewService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private domSanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -91,6 +103,46 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
     const rect = this.elementRef.nativeElement.getBoundingClientRect();
     this.mouseX = event.clientX - rect.left;
     this.mouseY = event.clientY - rect.top;
+  }
+
+  /**
+   * Extract GitHub Pages URL from GitHub repository URL
+   */
+  private extractGitHubPagesUrl(repoUrl: string): string | null {
+    try {
+      // Parse GitHub repository URL
+      // Expected format: https://github.com/username/repository-name.git
+      const match = repoUrl.match(/https:\/\/github\.com\/([^\/]+)\/([^\/]+)(?:\.git)?/);
+      
+      if (match) {
+        const username = match[1];
+        const repoName = match[2].replace('.git', ''); // Remove .git if present
+        
+        // Construct GitHub Pages URL
+        // Format: https://username.github.io/repository-name
+        return `https://${username}.github.io/${repoName}`;
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Error extracting GitHub Pages URL:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Get the GitHub Pages URL for a project
+   */
+  getGitHubPagesUrl(project: Project): string | null {
+    if (!project.repoUrl) return null;
+    return this.extractGitHubPagesUrl(project.repoUrl);
+  }
+
+  /**
+   * Check if a project has a GitHub Pages URL
+   */
+  hasGitHubPages(project: Project): boolean {
+    return this.getGitHubPagesUrl(project) !== null;
   }
 
   private generateBackgroundElements(): void {
@@ -258,10 +310,16 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Handle hover on project image to load preview
+   * Handle hover on project image to load preview of GitHub Pages
    */
-  onImageHover(url: string): void {
-    this.webviewService.loadUrl(url);
+  onImageHover(project: Project): void {
+    const githubPagesUrl = this.getGitHubPagesUrl(project);
+    if (githubPagesUrl) {
+      this.webviewService.loadUrl(githubPagesUrl);
+    } else if (project.repoUrl) {
+      // Fallback to repository URL if no GitHub Pages
+      this.webviewService.loadUrl(project.repoUrl);
+    }
   }
 
   /**
@@ -272,10 +330,90 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Open repository preview in fullscreen modal
+   * Open project preview in fullscreen modal (GitHub component approach)
    */
-  openPreview(url: string): void {
-    this.webviewService.loadUrl(url);
-    this.webviewService.toggleFullscreen();
+  openPreview(project: Project): void {
+    console.log('=== openPreview called (GitHub approach) ===');
+    console.log('Project:', project.title);
+    
+    this.activeProject = project;
+    this.iframeLoading = true;
+    
+    const githubPagesUrl = this.getGitHubPagesUrl(project);
+    const urlToLoad = githubPagesUrl || project.repoUrl;
+    
+    console.log('GitHub Pages URL:', githubPagesUrl);
+    console.log('Final URL to load:', urlToLoad);
+    
+    // Create a sanitized URL for the iframe
+    if (urlToLoad) {
+      this.safePreviewUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(urlToLoad);
+    } else {
+      this.safePreviewUrl = null;
+    }
+    
+    this.showIframe = true;
+    
+    // Add body class to prevent scrolling
+    document.body.classList.add('overflow-hidden');
+  }
+
+  /**
+   * Close the preview modal
+   */
+  closePreview(): void {
+    this.showIframe = false;
+    this.activeProject = null;
+    this.safePreviewUrl = null;
+    
+    // Remove body class to allow scrolling
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  /**
+   * Get the preview URL
+   */
+  getPreviewUrl(): SafeResourceUrl | null {
+    return this.safePreviewUrl;
+  }
+
+  /**
+   * Handle iframe load event
+   */
+  onIframeLoad(): void {
+    this.iframeLoading = false;
+  }
+
+  /**
+   * Toggle between mobile and desktop view
+   */
+  toggleMobileView(): void {
+    this.isMobileView = !this.isMobileView;
+  }
+
+  /**
+   * Handle hover on source code link to show GitHub Pages preview
+   */
+  onSourceHover(project: Project): void {
+    const githubPagesUrl = this.getGitHubPagesUrl(project);
+    if (githubPagesUrl) {
+      this.webviewService.loadUrl(githubPagesUrl);
+    }
+  }
+
+  /**
+   * Handle mouse leave on source code link
+   */
+  onSourceLeave(): void {
+    this.webviewService.resetWebview();
+  }
+
+  /**
+   * Open source code repository in new tab
+   */
+  openSourceCode(project: Project): void {
+    if (project.repoUrl) {
+      window.open(project.repoUrl, '_blank', 'noopener,noreferrer');
+    }
   }
 }

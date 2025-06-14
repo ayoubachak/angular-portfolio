@@ -1,17 +1,25 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GithubService, GitHubRepo } from '../../../services/github.service';
+import { WebviewService } from '../../../services/webview.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
 import { LinkHoverWebviewDirective } from '../../../directives/link-hover-webview.directive';
-import { WebviewPreviewComponent } from '../../webview-preview/webview-preview.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { 
-  faCode, faExternalLinkAlt, faCodeBranch, faStar, 
-  faEye, faCalendarAlt, faTimesCircle, faMobile as fasMobile,
-  faDesktop as fasDesktop, faAngleDown, faCheck, faGlobe
+  faExternalLinkAlt, 
+  faCodeBranch, 
+  faStar, 
+  faEye, 
+  faCode, 
+  faCalendarAlt, 
+  faTimesCircle,
+  faMobile as fasMobile,
+  faDesktop as fasDesktop,
+  faAngleDown,
+  faCheck,
+  faGlobe
 } from '@fortawesome/free-solid-svg-icons';
-import { WebviewService } from '../../../services/webview.service';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
@@ -21,7 +29,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     CommonModule, 
     ScrollAnimationDirective,
     LinkHoverWebviewDirective,
-    WebviewPreviewComponent,
     FontAwesomeModule
   ],
   templateUrl: './github.component.html',

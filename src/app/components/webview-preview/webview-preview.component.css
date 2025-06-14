@@ -30,12 +30,14 @@
 
 /* Fullscreen style */
 .webview-modal.fullscreen {
+  position: fixed !important;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.8);
   animation: fade-in 0.3s ease forwards;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99999 !important;
 }
 
 .webview-modal.fullscreen .webview-container {

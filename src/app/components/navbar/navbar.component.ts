@@ -20,7 +20,8 @@ export class NavbarComponent implements OnInit {
   isScrolled: boolean = false;
   mobileMenuOpen: boolean = false;
   activeSection: string = 'intro';
-  sections: string[] = ['intro', 'about', 'education', 'github', 'blog', 'contact'];
+  sections: string[] = [];
+  showBlog: boolean = false;
   
   // Icons
   faGithub = faGithub;
@@ -34,16 +35,23 @@ export class NavbarComponent implements OnInit {
   constructor(private readonly contentService: ContentService) {}
 
   ngOnInit(): void {
-    const portfolioContent = this.contentService.getPortfolioContent();
-    this.name = portfolioContent.name;
+    const content = this.contentService.getPortfolioContent();
+    this.name = content.name;
+    this.avatar = content.avatarUrl;
+    this.socialLinks = content.socialLinks;
+    this.email = content.email;
+    this.showBlog = content.showBlog || false;
     
-    // Force the avatar URL to use the direct path
-    this.avatar = 'assets/images/avatar.jpg';
+    // Build sections array dynamically
+    this.sections = ['intro', 'about', 'education', 'experience', 'ai-projects', 'github', 'training', 'testimonials'];
     
-    this.socialLinks = portfolioContent.socialLinks;
-    this.email = portfolioContent.email;
+    // Add blog section if enabled
+    if (this.showBlog) {
+      this.sections.splice(-1, 0, 'blog'); // Insert blog before the last section (testimonials)
+    }
     
-    console.log('Avatar URL set to:', this.avatar);
+    // Add contact section at the end
+    this.sections.push('contact');
   }
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -112,16 +120,31 @@ export class NavbarComponent implements OnInit {
 
   // Helper method to get proper icon
   getIcon(platform: string): any {
-    const iconMap: {[key: string]: any} = {
-      'GitHub': this.faGithub,
-      'LinkedIn': this.faLinkedin,
-      'Twitter': this.faTwitter,
-      'Facebook': this.faFacebook,
-      'Instagram': this.faInstagram,
-      'Gmail': this.faEnvelope,
-      'Email': this.faEnvelope
+    switch (platform.toLowerCase()) {
+      case 'github': return this.faGithub;
+      case 'linkedin': return this.faLinkedin;
+      case 'twitter': return this.faTwitter;
+      case 'facebook': return this.faFacebook;
+      case 'instagram': return this.faInstagram;
+      case 'email': return this.faEnvelope;
+      default: return this.faLink;
+    }
+  }
+
+  getSectionDisplayName(section: string): string {
+    const displayNames: { [key: string]: string } = {
+      'intro': 'Home',
+      'about': 'About',
+      'education': 'Education',
+      'experience': 'Experience',
+      'ai-projects': 'AI Projects',
+      'github': 'Projects',
+      'training': 'Training',
+      'testimonials': 'Testimonials',
+      'blog': 'Blog',
+      'contact': 'Contact'
     };
     
-    return iconMap[platform] ?? this.faLink;
+    return displayNames[section] || section.charAt(0).toUpperCase() + section.slice(1);
   }
 }

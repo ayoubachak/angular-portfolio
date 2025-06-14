@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild, HostListener, AfterViewInit, OnInit, 
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { GenZEasterEggService } from './services/gen-z-easter-egg.service';
+import { ContentService } from './services/content.service';
+import { inject } from '@angular/core';
 
 // Import all components
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -47,23 +49,29 @@ import { GenZPhoneComponent } from './components/easter-eggs/gen-z-phone.compone
   styleUrl: './app.component.css'
 })
 export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
-  title = 'portfolio';
+  title = 'angular-portfolio';
+  showBlog: boolean = false;
   @ViewChild('customCursor', { static: true }) customCursor!: ElementRef<HTMLDivElement>;
   
-  isGenZEmbedded = false;
-  private genZSubscription!: Subscription;
+  isGenZActive = false;
+  private genZService = inject(GenZEasterEggService);
+  private subscription?: Subscription;
   
-  constructor(private readonly genZService: GenZEasterEggService) { }
+  constructor(private contentService: ContentService) { }
   
   ngOnInit(): void {
-    this.genZSubscription = this.genZService.state$.subscribe(state => {
-      this.isGenZEmbedded = state.isEmbedded;
+    // Initialize showBlog flag from content service
+    const content = this.contentService.getPortfolioContent();
+    this.showBlog = content.showBlog || false;
+    
+    this.subscription = this.genZService.state$.subscribe(state => {
+      this.isGenZActive = state.isEmbedded;
     });
   }
   
   ngOnDestroy(): void {
-    if (this.genZSubscription) {
-      this.genZSubscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 

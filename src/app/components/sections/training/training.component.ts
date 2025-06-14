@@ -10,6 +10,7 @@ interface TrainingItem {
   description: string;
   isVolunteering: boolean;
   logo?: string;
+  linkedinUrl?: string;
 }
 
 @Component({
@@ -22,36 +23,31 @@ interface TrainingItem {
 export class TrainingComponent implements OnInit {
   trainings: TrainingItem[] = [
     {
-      title: 'Machine Learning Certification',
-      organization: 'Stanford University',
-      period: '2022 - 2023',
-      description: 'Completed a comprehensive certification program in machine learning, covering supervised and unsupervised learning algorithms, deep learning, and neural networks.',
+      title: 'Vice President, Training Manager, Sponsoring Manager',
+      organization: 'CIAM Casablanca',
+      period: '09/21 - 06/23',
+      description: 'Trained 200+ members in Python, AI, ML, DL, C, Web Dev, and Catia. Secured sponsorships from tech companies like Binance and IBM. Managed the club\'s committees and represented the club in the Moroccan National Programming Contest 2022.',
       isVolunteering: false,
-      logo: 'assets/images/stanford-logo.png'
+      logo: 'assets/images/training/ciam.jpg',
+      linkedinUrl: 'https://www.linkedin.com/company/ciam-casablanca/'
     },
     {
-      title: 'STEM Education Volunteer',
-      organization: 'Local High School',
-      period: '2021 - Present',
-      description: 'Volunteer teaching computer science and programming to high school students, helping to inspire the next generation of technologists.',
-      isVolunteering: true,
-      logo: 'assets/images/volunteer-logo.png'
-    },
-    {
-      title: 'Web Development Workshop Instructor',
-      organization: 'Tech Bootcamp',
-      period: '2020 - 2021',
-      description: 'Conducted workshops on modern web development techniques using React and Angular for beginners transitioning into tech careers.',
+      title: 'Training Manager, Technical Consultant',
+      organization: 'AEM Mechatronics',
+      period: '09/21 - 06/23',
+      description: 'Trained members in robotics (C/C++, Arduino, Python, Esp32/82, Raspberry Pi 4), IoT, and AI. Developed notable projects such as a Dijkstra visualizer, AR Snake Game, and Minecraft Modding. Led participation in competitions like Orange Digital Transformation AI Competition (1st Prize) and AMSA6 Hackathon (finalist).',
       isVolunteering: false,
-      logo: 'assets/images/workshop-logo.png'
+      logo: 'assets/images/training/ammechatronics.jpg',
+      linkedinUrl: 'https://www.linkedin.com/in/arts-et-m%C3%A9tiers-mechatronics-4825561ba'
     },
     {
-      title: 'Community Code Mentor',
-      organization: 'Code For Good',
-      period: '2019 - Present',
-      description: 'Provide mentoring and technical guidance to non-profit organizations for their technology needs and digital transformation.',
+      title: 'Ambassador for HCIA big data/AI certification',
+      organization: 'Huawei',
+      period: 'Jun 2022 - Aug 2022 · 3 mos',
+      description: 'Served as an ambassador for Huawei\'s HCIA (Huawei Certified ICT Associate) big data and AI certification program. Promoted certification opportunities and provided guidance to students and professionals interested in advancing their skills in big data and artificial intelligence technologies.',
       isVolunteering: true,
-      logo: 'assets/images/mentor-logo.png'
+      logo: 'assets/images/training/huawei.png',
+      linkedinUrl: 'https://www.linkedin.com/company/huawei/'
     }
   ];
   

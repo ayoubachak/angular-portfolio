@@ -1,8 +1,8 @@
-<div class="app-container" [class.gen-z-active]="isGenZEmbedded">
+<div class="app-container" [class.gen-z-active]="isGenZActive">
   <!-- Navbar outside the main content div so it can be independently styled -->
   <app-navbar></app-navbar>
   
-  <div class="main-content" [class.split-view]="isGenZEmbedded">
+  <div class="main-content" [class.split-view]="isGenZActive">
 
   <!-- Intro Section -->
   <app-intro></app-intro>
@@ -32,7 +32,7 @@
   <app-testimonials></app-testimonials>
 
   <!-- Blog Section -->
-  <app-blog></app-blog>
+  <app-blog *ngIf="showBlog"></app-blog>
 
   <!-- Contact Section -->
   <app-contact></app-contact>
@@ -51,5 +51,7 @@
   </div>
   
   <!-- Embedded Phone Container -->
-  <div class="embedded-phone-container" *ngIf="isGenZEmbedded"></div>
+  <div *ngIf="isGenZActive" class="embedded-phone-container">
+    <app-gen-z-phone></app-gen-z-phone>
+  </div>
 </div>

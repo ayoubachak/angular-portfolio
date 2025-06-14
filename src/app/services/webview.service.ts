@@ -33,13 +33,33 @@ export class WebviewService {
   loadUrl(url: string): void {
     // Reset progress and set loading state
     const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    const currentState = this.webviewStateSubject.value;
     this.webviewStateSubject.next({
       url,
       safeUrl,
       isLoading: true,
       progress: 10, // Initial progress
-      isFullscreen: false
+      isFullscreen: currentState.isFullscreen // Preserve current fullscreen state
     });
+
+    // Simulate loading progress
+    this.simulateLoading();
+  }
+
+  /**
+   * Load a URL directly in fullscreen mode
+   */
+  loadUrlFullscreen(url: string): void {
+    // Reset progress and set loading state with fullscreen enabled
+    const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    const newState = {
+      url,
+      safeUrl,
+      isLoading: true,
+      progress: 10, // Initial progress
+      isFullscreen: true
+    };
+    this.webviewStateSubject.next(newState);
 
     // Simulate loading progress
     this.simulateLoading();
@@ -64,6 +84,17 @@ export class WebviewService {
   }
 
   /**
+   * Set fullscreen mode explicitly
+   */
+  setFullscreen(isFullscreen: boolean): void {
+    const currentState = this.webviewStateSubject.value;
+    this.webviewStateSubject.next({
+      ...currentState,
+      isFullscreen
+    });
+  }
+
+  /**
    * Simulate loading progress
    */
   private simulateLoading(): void {
@@ -82,12 +113,14 @@ export class WebviewService {
     intervals.forEach(({ time, progress }) => {
       setTimeout(() => {
         const state = this.webviewStateSubject.value;
+        
         if (state.url === currentState.url && state.isLoading) {
-          this.webviewStateSubject.next({
+          const newState = {
             ...state,
             progress,
             isLoading: progress < 100
-          });
+          };
+          this.webviewStateSubject.next(newState);
         }
       }, time);
     });

@@ -81,6 +81,7 @@ export interface PortfolioContent {
   projects: Project[];
   brands: Brand[];
   testimonials: Testimonial[];
+  showBlog?: boolean; // Flag to control blog section visibility
 }
 
 @Injectable({
@@ -227,17 +228,44 @@ export class ContentService {
       }
     ],
     projects: [
-      
+      {
+        title: 'Genetic AI Flappy Bird',
+        description: 'Built an AI-driven Flappy Bird clone in Angular/TypeScript, implementing a custom feed-forward neural network and a genetic algorithm (selection, crossover, mutation) to evolve 50 bird agents that progressively learn to navigate pipes.',
+        imageUrl: 'assets/images/aiprojects/flappybird.png',
+        tags: ['Angular', 'TypeScript', 'Genetic Algorithm', 'Neural Networks', 'AI'],
+        repoUrl: 'https://github.com/ayoubachak/flappy-bird.git',
+        isAiProject: true
+      },
+      {
+        title: 'RL-Powered Sudoku',
+        description: 'Created a TypeScript/TF.js Sudoku game with Double-DQN & PPO agents that learn via experience replay, action masking and PPO clipping, plus a rule-based tutorial mode offering step-by-step elimination and pattern hints.',
+        imageUrl: 'assets/images/aiprojects/sodoku.png',
+        tags: ['TypeScript', 'TensorFlow.js', 'Reinforcement Learning', 'DQN', 'PPO'],
+        repoUrl: 'https://github.com/ayoubachak/sodoku.git',
+        isAiProject: true
+      },
       {
         title: 'NeuroChess Engine',
-        description: `Developed an Angular chess app featuring AlphaZero-style
-MCTS (UCB1 selection, Dirichlet noise, neural priors with uniform/material-count fallbacks) and multi-backend,
-GPU-optimized tf.js (WebGPU → WebGL → CPU) with an 8-block residual CNN policy/value network. Includes
-player-vs-player, postgame move evaluation, self-play training UI, three-tier bot difficulty and a creative mode for custom
-setups.`,
+        description: 'Developed an Angular chess app featuring AlphaZero-style MCTS (UCB1 selection, Dirichlet noise, neural priors with uniform/material-count fallbacks) and multi-backend, GPU-optimized tf.js (WebGPU → WebGL → CPU) with an 8-block residual CNN policy/value network. Includes player-vs-player, postgame move evaluation, self-play training UI, three-tier bot difficulty and a creative mode for custom setups.',
         imageUrl: 'assets/images/aiprojects/neurochess.png',
         tags: ['Angular', 'MCTS', 'WebGPU', 'WebGL', 'TensorFlow', 'Neural Networks'],
         repoUrl: 'https://github.com/theleetai/chess.git',
+        isAiProject: true
+      },
+      {
+        title: 'NeuroPong',
+        description: 'Built a HTML5/TypeScript Pong game with PvP and PvBot modes, plus a DQN-based training interface that runs two neural agents in self-play—complete with Double-DQN, prioritized replay, batched updates and fast epsilon decay. Integrated real-time D3 network visualizations over canvas to display dual-agent activations and weight flows during gameplay.',
+        imageUrl: 'assets/images/aiprojects/pongrl.png',
+        tags: ['HTML5', 'TypeScript', 'DQN', 'D3.js', 'Neural Networks', 'Visualization'],
+        repoUrl: 'https://github.com/ayoubachak/pong-rl.git',
+        isAiProject: true
+      },
+      {
+        title: 'Interactive Image Transformation Lab',
+        description: 'Created an OpenCV-powered, node-based canvas where users drag-and-drop Input, Transform (Gaussian/custom blur, morphology, sharpening, edge detection, etc.) and Output nodes to build and configure live image-processing pipelines—complete with guided, hands-on lessons.',
+        imageUrl: 'assets/images/aiprojects/image-transform-lab.png',
+        tags: ['OpenCV', 'Computer Vision', 'Node-based UI', 'Image Processing', 'Interactive Learning'],
+        repoUrl: 'https://github.com/ayoubachak/image-transformation-lab.git',
         isAiProject: true
       },
       {
@@ -296,27 +324,31 @@ setups.`,
     ],
     testimonials: [
       {
-        name: 'HCIA AI & Big Data',
-        position: 'Certification',
-        company: 'Huawei',
-        text: 'Professional certification in Artificial Intelligence and Big Data technologies.',
-        avatar: 'assets/images/testimonials/huawei.jpg'
+        name: 'Ismail Essagar',
+        position: 'AI and Computer Science Engineering Student',
+        company: 'Engineering School',
+        text: 'Working with Ayoub on various projects has been an experience that I truly cherish. His dedication and commitment to delivering impeccable work was truly inspiring. His proactive approach and ability to effectively manage tasks never ceased to impress me. Together we have reached remarkable milestones, from winning competitions to successful speedrun projects. He always makes me want to work with him again and overcome challenges together.',
+        avatar: 'assets/images/testimonials/ismailessagar.jpg',
+        linkedinUrl: 'https://www.linkedin.com/in/ismail-essagar'
       },
       {
-        name: 'HCIA 5G',
-        position: 'Certification',
-        company: 'Huawei',
-        text: 'Professional certification in 5G technologies and networking.',
-        avatar: 'assets/images/testimonials/huawei5g.jpg'
+        name: 'ABDELLAH HALLOU',
+        position: 'Data Engineer',
+        company: 'Cloud Solutions',
+        text: 'I\'ve had the pleasure of working closely with Ayoub in a team on numerous projects. He puts his full effort into the things he is working on. Ayoub is super motivated and always ready for all great new projects. His curious nature and discipline make him easy to work with! He\'s a great team player, who always keeps an eye on everything and brings important ideas and perspectives to the projects in a great manner.',
+        avatar: 'assets/images/testimonials/abdellahhalou.jpg',
+        linkedinUrl: 'https://www.linkedin.com/in/abdellah-hallou'
       },
       {
-        name: 'AWS Cloud Foundations',
-        position: 'Certification',
-        company: 'Amazon Web Services',
-        text: 'Professional certification in AWS cloud technologies and services.',
-        avatar: 'assets/images/testimonials/aws.jpg'
-      }
-    ]
+        name: 'Amine EL ARIF',
+        position: 'Cybersecurity Intern',
+        company: 'Michelin',
+        text: 'I have worked with Ayoub on different projects during our studies in Morocco, and I wholeheartedly recommend him as a professional individual. His hard work and commitment are top-notch. He consistently delivers and is reliable in everything he does. Strongly recommend.',
+        avatar: 'assets/images/testimonials/amineelarif.jpg',
+        linkedinUrl: 'https://www.linkedin.com/in/elarif-amine'
+      },
+    ],
+    showBlog: false // Hide blog section by default
   };
 
   constructor() { }

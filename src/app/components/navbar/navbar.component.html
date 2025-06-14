@@ -47,13 +47,15 @@
     </div>
       <!-- Navigation Links and Theme Toggle (only show on larger screens) -->
     <div class="hidden md:flex items-center transition-all duration-300"
-         [ngClass]="{'ml-0': isScrolled, 'ml-4': !isScrolled}">      <div class="flex space-x-8 items-center">
-        <a href="#intro" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('intro')">Home</a>
-        <a href="#about" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('about')">About</a>
-        <a href="#education" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('education')">Education</a>
-        <a href="#github" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('github')">Projects</a>
-        <a href="#blog" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('blog')">Blog</a>
-        <a href="#contact" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" [class.active]="isActive('contact')">Contact</a>
+         [ngClass]="{'ml-0': isScrolled, 'ml-4': !isScrolled}">
+      <div class="flex space-x-8 items-center">
+        <a 
+          *ngFor="let section of sections" 
+          [href]="'#' + section" 
+          class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-1" 
+          [class.active]="isActive(section)">
+          {{ getSectionDisplayName(section) }}
+        </a>
       </div>
       <!-- Theme toggle button with margin -->
       <div class="ml-8">
@@ -103,12 +105,14 @@
         </div>
       </div>
     </div>    <!-- Navigation links with blurred background and padding bottom to avoid overlap with fixed elements -->    <div class="flex flex-col space-y-4 p-6 rounded-lg mb-16">
-      <a href="#intro" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('intro')">Home</a>
-      <a href="#about" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('about')">About</a>
-      <a href="#education" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('education')">Education</a>
-      <a href="#github" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('github')">Projects</a>
-      <a href="#blog" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('blog')">Blog</a>
-      <a href="#contact" (click)="closeMobileMenu()" class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" [class.active]="isActive('contact')">Contact</a>
+      <a 
+        *ngFor="let section of sections" 
+        [href]="'#' + section" 
+        (click)="closeMobileMenu()" 
+        class="nav-link text-text-color hover:text-accent-color transition-colors duration-300 py-2 font-medium" 
+        [class.active]="isActive(section)">
+        {{ getSectionDisplayName(section) }}
+      </a>
     </div>
   </div>
 </header>

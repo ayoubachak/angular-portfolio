@@ -93,6 +93,39 @@ body {
   overflow: hidden;
 }
 
+/* Ensure proper section spacing */
+section {
+  position: relative;
+  width: 100%;
+}
+
+/* Fix for sections when GenZ mode is active */
+.gen-z-active section {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+
+/* Ensure containers have proper spacing */
+.container {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+  .gen-z-active section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .gen-z-active .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 /* Scroll animations base class */
 .scroll-animation {
   transition: all var(--animation-duration) var(--animation-timing);

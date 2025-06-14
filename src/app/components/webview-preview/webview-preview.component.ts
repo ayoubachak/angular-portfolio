@@ -50,13 +50,26 @@ export class WebviewPreviewComponent implements OnInit {
   }
 
   /**
+   * Handle mouseleave event on the webview modal (conditional)
+   */
+  onWebviewMouseLeaveConditional(): void {
+    // Only trigger auto-close logic if not in fullscreen mode
+    if (this.webviewState && !this.webviewState.isFullscreen) {
+      this.onWebviewMouseLeave();
+    }
+  }
+
+  /**
    * Handle mouseleave event on the webview modal
    */
   onWebviewMouseLeave(): void {
     // Only close if not in fullscreen mode
     if (this.webviewState && !this.webviewState.isFullscreen) {
       setTimeout(() => {
-        this.webviewService.resetWebview();
+        // Double-check that we're still not in fullscreen mode before closing
+        if (this.webviewState && !this.webviewState.isFullscreen) {
+          this.webviewService.resetWebview();
+        }
       }, 300);
     }
   }

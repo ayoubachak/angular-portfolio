@@ -4,7 +4,10 @@
   [class.fullscreen]="webviewState.isFullscreen"
   [class.preview]="!webviewState.isFullscreen"
   (mouseenter)="onWebviewMouseEnter()"
-  (mouseleave)="onWebviewMouseLeave()">
+  (mouseleave)="onWebviewMouseLeaveConditional()">
+  <!-- Temporarily removed mouse events for debugging -->
+  <!-- (mouseenter)="onWebviewMouseEnter()" -->
+  <!-- (mouseleave)="onWebviewMouseLeaveConditional()"> -->
   
   <!-- Webview Container -->
   <div class="webview-container bg-primary-color shadow-xl rounded-lg overflow-hidden">
