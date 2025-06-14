@@ -74,6 +74,17 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   private mouseY = 0;
   private animationFrame: number | null = null;
 
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(): void {
+    // Debounce resize events
+    clearTimeout(this.resizeTimeout);
+    this.resizeTimeout = setTimeout(() => {
+      this.regenerateBackgroundElements();
+    }, 250);
+  }
+
+  private resizeTimeout: any;
+
   constructor(
     private contentService: ContentService,
     private webviewService: WebviewService,
@@ -84,7 +95,7 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.aiProjects = this.contentService.getAiProjects();
     setTimeout(() => {
-      this.generateBackgroundElements();
+      this.regenerateBackgroundElements();
       this.startMouseTracking();
     }, 100);
     // Set up initial slice and display control
@@ -95,6 +106,9 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
+    }
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
     }
   }
 
@@ -143,96 +157,6 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
    */
   hasGitHubPages(project: Project): boolean {
     return this.getGitHubPagesUrl(project) !== null;
-  }
-
-  private generateBackgroundElements(): void {
-    const container = this.elementRef.nativeElement;
-    const width = container.offsetWidth;
-    const height = container.offsetHeight;
-
-    // Generate neural nodes
-    for (let i = 0; i < 25; i++) {
-      this.backgroundElements.push({
-        id: `node-${i}`,
-        type: 'node',
-        x: Math.random() * width,
-        y: Math.random() * height
-      });
-    }
-
-    // Generate connections between nodes
-    for (let i = 0; i < 15; i++) {
-      const startX = Math.random() * width;
-      const startY = Math.random() * height;
-      const endX = Math.random() * width;
-      const endY = Math.random() * height;
-      const connectionWidth = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-      const angle = Math.atan2(endY - startY, endX - startX) * 180 / Math.PI;
-
-      this.backgroundElements.push({
-        id: `connection-${i}`,
-        type: 'connection',
-        x: startX,
-        y: startY,
-        width: connectionWidth,
-        height: 1
-      });
-    }
-
-    // Generate floating ML keywords
-    for (let i = 0; i < 30; i++) {
-      const x = Math.random() * (width - 100);
-      const y = Math.random() * (height - 50);
-      this.backgroundElements.push({
-        id: `keyword-${i}`,
-        type: 'keyword',
-        x,
-        y,
-        originalX: x,
-        originalY: y,
-        content: this.mlKeywords[Math.floor(Math.random() * this.mlKeywords.length)]
-      });
-    }
-
-    // Generate transformer blocks
-    for (let i = 0; i < 8; i++) {
-      this.backgroundElements.push({
-        id: `transformer-${i}`,
-        type: 'transformer',
-        x: Math.random() * (width - 60),
-        y: Math.random() * (height - 20)
-      });
-    }
-
-    // Generate attention heads
-    for (let i = 0; i < 12; i++) {
-      this.backgroundElements.push({
-        id: `attention-${i}`,
-        type: 'attention',
-        x: Math.random() * (width - 16),
-        y: Math.random() * (height - 16)
-      });
-    }
-
-    // Generate matrix operations
-    for (let i = 0; i < 6; i++) {
-      this.backgroundElements.push({
-        id: `matrix-${i}`,
-        type: 'matrix',
-        x: Math.random() * (width - 40),
-        y: Math.random() * (height - 30)
-      });
-    }
-
-    // Generate gradient flows
-    for (let i = 0; i < 10; i++) {
-      this.backgroundElements.push({
-        id: `gradient-${i}`,
-        type: 'gradient',
-        x: Math.random() * (width - 2),
-        y: Math.random() * (height - 80)
-      });
-    }
   }
 
   private startMouseTracking(): void {
@@ -307,6 +231,114 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   displayMore(): void {
     this.displayedAiProjects = this.aiProjects;
     this.showDisplayMore = false;
+    
+    // Regenerate background elements to fill the expanded area
+    setTimeout(() => {
+      this.regenerateBackgroundElements();
+    }, 100); // Small delay to ensure DOM has updated
+  }
+
+  /**
+   * Regenerate background elements based on current container size
+   */
+  private regenerateBackgroundElements(): void {
+    // Clear existing elements
+    this.backgroundElements = [];
+    
+    // Get current container dimensions
+    const container = this.elementRef.nativeElement;
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+
+    // Generate neural nodes with better distribution for expanded content
+    const nodeCount = Math.max(25, Math.floor(height / 30)); // More nodes for taller content
+    for (let i = 0; i < nodeCount; i++) {
+      this.backgroundElements.push({
+        id: `node-${i}`,
+        type: 'node',
+        x: Math.random() * width,
+        y: Math.random() * height
+      });
+    }
+
+    // Generate connections between nodes
+    const connectionCount = Math.max(15, Math.floor(height / 50));
+    for (let i = 0; i < connectionCount; i++) {
+      const startX = Math.random() * width;
+      const startY = Math.random() * height;
+      const endX = Math.random() * width;
+      const endY = Math.random() * height;
+      const connectionWidth = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+
+      this.backgroundElements.push({
+        id: `connection-${i}`,
+        type: 'connection',
+        x: startX,
+        y: startY,
+        width: connectionWidth,
+        height: 1
+      });
+    }
+
+    // Generate floating ML keywords with better distribution
+    const keywordCount = Math.max(30, Math.floor(height / 25));
+    for (let i = 0; i < keywordCount; i++) {
+      const x = Math.random() * (width - 100);
+      const y = Math.random() * (height - 50);
+      this.backgroundElements.push({
+        id: `keyword-${i}`,
+        type: 'keyword',
+        x,
+        y,
+        originalX: x,
+        originalY: y,
+        content: this.mlKeywords[Math.floor(Math.random() * this.mlKeywords.length)]
+      });
+    }
+
+    // Generate transformer blocks
+    const transformerCount = Math.max(8, Math.floor(height / 80));
+    for (let i = 0; i < transformerCount; i++) {
+      this.backgroundElements.push({
+        id: `transformer-${i}`,
+        type: 'transformer',
+        x: Math.random() * (width - 60),
+        y: Math.random() * (height - 20)
+      });
+    }
+
+    // Generate attention heads
+    const attentionCount = Math.max(12, Math.floor(height / 60));
+    for (let i = 0; i < attentionCount; i++) {
+      this.backgroundElements.push({
+        id: `attention-${i}`,
+        type: 'attention',
+        x: Math.random() * (width - 16),
+        y: Math.random() * (height - 16)
+      });
+    }
+
+    // Generate matrix operations
+    const matrixCount = Math.max(6, Math.floor(height / 100));
+    for (let i = 0; i < matrixCount; i++) {
+      this.backgroundElements.push({
+        id: `matrix-${i}`,
+        type: 'matrix',
+        x: Math.random() * (width - 40),
+        y: Math.random() * (height - 30)
+      });
+    }
+
+    // Generate gradient flows
+    const gradientCount = Math.max(10, Math.floor(height / 70));
+    for (let i = 0; i < gradientCount; i++) {
+      this.backgroundElements.push({
+        id: `gradient-${i}`,
+        type: 'gradient',
+        x: Math.random() * (width - 2),
+        y: Math.random() * (height - 80)
+      });
+    }
   }
 
   /**
