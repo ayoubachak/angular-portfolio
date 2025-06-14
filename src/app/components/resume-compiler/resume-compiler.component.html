@@ -180,7 +180,7 @@
                       <h4 class="job-title">{{ exp.role }}</h4>
                       <p class="company">{{ exp.company }}</p>
                       <p class="period">{{ exp.startDate }} - {{ exp.endDate }}</p>
-                      <p class="job-description">{{ exp.description }}</p>
+                      <div [innerHTML]="getFormattedExperienceHtml(exp)"></div>
                       <div class="technologies" *ngIf="exp.skills && exp.skills.length > 0">
                         <span *ngFor="let skill of exp.skills" class="tech-tag">{{ skill }}</span>
                       </div>

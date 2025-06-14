@@ -243,11 +243,72 @@
   margin-bottom: 10px;
 }
 
+/* Job Description with Enhanced Bullet Points */
 .job-description {
   font-size: 0.95rem;
   color: var(--text-secondary);
   margin-bottom: 15px;
   text-align: justify;
+  line-height: 1.6;
+}
+
+/* Enhanced bullet point styling for resume */
+.job-description.bullet-format {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resume-bullet-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.resume-bullet-symbol {
+  color: var(--accent-color);
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-color);
+  color: white;
+  font-size: 10px;
+}
+
+.resume-bullet-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: justify;
+}
+
+/* Print-specific bullet point optimizations */
+@media print {
+  .resume-bullet-point {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 4px;
+  }
+  
+  .resume-bullet-symbol {
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
+  }
+  
+  .resume-bullet-text {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
 }
 
 .technologies {

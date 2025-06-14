@@ -141,17 +141,18 @@
               <div 
                 *ngIf="experience.isExpanded || scrollDrivenMode || experience.previewMode" 
                 class="mt-4">
-                <p class="text-text-secondary mb-4 full-description">{{ experience.description }}</p>
+                <div class="text-text-secondary mb-4 full-description experience-description" 
+                     [innerHTML]="formatDescription(experience)"></div>
               </div>
               
               <!-- Collapsed Description with Read More (when collapsed and not in scroll/preview mode) -->
               <div 
                 *ngIf="!experience.isExpanded && !scrollDrivenMode && !experience.previewMode"
                 class="mt-4">
-                <p class="text-text-secondary truncated-description">
-                  {{ (experience.description.length > 150) ? (experience.description | slice:0:150) + '...' : experience.description }}
+                <div class="text-text-secondary truncated-description">
+                  <span [innerHTML]="formatTruncatedDescription(experience)"></span>
                   <span class="read-more-link" (click)="toggleExpand(i)">read more</span>
-                </p>
+                </div>
               </div>
               
               <!-- Skills Section - ALWAYS visible regardless of expanded state -->

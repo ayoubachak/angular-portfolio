@@ -679,7 +679,10 @@ print(f"Accuracy: {accuracy:.2f}")`,
       role: 'AI Trainer',
       startDate: 'Oct 2024',
       endDate: 'Present',
-      description: 'Contract Part-time, Remote position based in France. Specialized in training and aligning large language models (LLMs) for code generation tasks, improving model performance and accuracy in programming contexts. Working with multilingual data to enhance language capabilities across Arabic, English, and French, focusing on alignment techniques to ensure high-quality code generation and cross-lingual understanding.',
+      bulletPoints: [
+        'Contract Part-time, Remote position based in France. Specialized in training and aligning large language models (LLMs) for code generation tasks, improving model performance and accuracy in programming contexts',
+        'Working with multilingual data to enhance language capabilities across Arabic, English, and French, focusing on alignment techniques to ensure high-quality code generation and cross-lingual understanding'
+      ],
       logo: 'assets/images/companies/alignerr-logo.jpg',
       skills: ['LLM Training', 'Model Alignment', 'Code Generation', 'NLP', 'Multilingual Models'],
       isExpanded: false,
@@ -696,7 +699,11 @@ print(f"Accuracy: {accuracy:.2f}")`,
       role: 'AI Researcher',
       startDate: 'Aug 2024',
       endDate: 'Present',
-      description: 'Part-time research position as a Python Certified Expert (as certified by Micro1) focused on fine-tuning and aligning language models to generate correct and advanced Python code. Working on LLM alignment tasks to ensure high-quality code generation across various domains. Developing optimization techniques for small language models in specific industry verticals, enabling efficient, specialized LLMs to run on edge devices while maintaining high accuracy for Python code generation tasks.',
+      bulletPoints: [
+        'Part-time research position as a Python Certified Expert (as certified by Micro1) focused on fine-tuning and aligning language models to generate correct and advanced Python code',
+        'Working on LLM alignment tasks to ensure high-quality code generation across various domains',
+        'Developing optimization techniques for small language models in specific industry verticals, enabling efficient, specialized LLMs to run on edge devices while maintaining high accuracy for Python code generation tasks'
+      ],
       logo: 'assets/images/companies/micro1-logo.jpg',
       certificate: 'assets/images/certifications/micro1.jpg',
       skills: ['NLP', 'LLMs', 'PyTorch', 'Model Optimization', 'Research'],
@@ -981,6 +988,71 @@ print(f"Accuracy: {accuracy:.2f}")`,
         node.y = centerY + Math.sin(angle) * radius;
       }
     });
+  }
+
+  // Format experience description to handle bullet points and line breaks
+  formatDescription(experience: ExperienceWithState): string {
+    // Use bulletPoints if available, otherwise fall back to description
+    if (experience.bulletPoints && experience.bulletPoints.length > 0) {
+      const formattedPoints = experience.bulletPoints.map(point => {
+        const trimmed = point.trim();
+        return `<div class="bullet-point"><span class="bullet-symbol">•</span> ${trimmed}</div>`;
+      }).join('');
+      
+      return `<div class="bullet-list">${formattedPoints}</div>`;
+    }
+    
+    // Fallback to old description format
+    if (experience.description) {
+      // Split by double line breaks to get bullet points
+      const bulletPoints = experience.description.split('\n\n').filter(point => point.trim());
+      
+      // If we have multiple bullet points, format them as a list
+      if (bulletPoints.length > 1) {
+        const formattedPoints = bulletPoints.map(point => {
+          const trimmed = point.trim();
+          // Remove existing bullet symbol if present and add consistent formatting
+          const cleanPoint = trimmed.startsWith('•') ? trimmed.substring(1).trim() : trimmed;
+          return `<div class="bullet-point"><span class="bullet-symbol">•</span> ${cleanPoint}</div>`;
+        }).join('');
+        
+        return `<div class="bullet-list">${formattedPoints}</div>`;
+      }
+      
+      // Single paragraph - just replace line breaks with <br>
+      return experience.description.replace(/\n/g, '<br>');
+    }
+    
+    return '';
+  }
+
+  // Format truncated description for collapsed view
+  formatTruncatedDescription(experience: ExperienceWithState): string {
+    // Use bulletPoints if available
+    if (experience.bulletPoints && experience.bulletPoints.length > 0) {
+      // Show first bullet point
+      const firstPoint = experience.bulletPoints[0].trim();
+      return `<div class="bullet-point"><span class="bullet-symbol">•</span> ${firstPoint}</div>`;
+    }
+    
+    // Fallback to old description format
+    if (experience.description) {
+      // For truncated view, show first bullet point or first 150 characters
+      const bulletPoints = experience.description.split('\n\n').filter(point => point.trim());
+      
+      if (bulletPoints.length > 1) {
+        // Show first bullet point
+        const firstPoint = bulletPoints[0].trim();
+        const cleanPoint = firstPoint.startsWith('•') ? firstPoint.substring(1).trim() : firstPoint;
+        return `<div class="bullet-point"><span class="bullet-symbol">•</span> ${cleanPoint}</div>`;
+      }
+      
+      // Single paragraph - truncate normally
+      const truncated = experience.description.length > 150 ? experience.description.substring(0, 150) + '...' : experience.description;
+      return truncated.replace(/\n/g, '<br>');
+    }
+    
+    return '';
   }
 
   // Render the network diagram visualization for part-time experiences

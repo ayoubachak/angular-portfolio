@@ -1296,16 +1296,205 @@ p.text-text-secondary {
 /* Certificate ribbon styling */
 .certificate-ribbon {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: -8px;
+  right: -8px;
   width: 60px;
-  transform: translate(25%, -25%) rotate(15deg);
+  height: 60px;
+  background: linear-gradient(45deg, #6d28d9, #8b5cf6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 20;
-  pointer-events: auto;
+  transition: all 0.3s ease;
+  border: 3px solid var(--primary-color);
+  cursor: pointer;
 }
+
 .certificate-ribbon img {
-  width: 100%;
-  display: block;
-  border-radius: 0.25rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Bullet point formatting styles */
+.bullet-list {
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+.bullet-point {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  line-height: 1.7;
+  padding: 8px 0;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+  padding-left: 4px;
+}
+
+.bullet-point:last-child {
+  margin-bottom: 0;
+}
+
+.bullet-point:hover {
+  background: rgba(109, 40, 217, 0.05);
+  transform: translateX(4px);
+  padding-left: 8px;
+}
+
+.bullet-symbol {
+  color: var(--accent-color);
+  font-weight: bold;
+  margin-right: 12px;
+  margin-top: 4px;
+  flex-shrink: 0;
+  font-size: 16px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-color), rgba(109, 40, 217, 0.8));
+  color: white;
+  font-size: 12px;
+  box-shadow: 0 2px 8px rgba(109, 40, 217, 0.3);
+  transition: all 0.3s ease;
+}
+
+.bullet-point:hover .bullet-symbol {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(109, 40, 217, 0.4);
+}
+
+.experience-description {
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+.experience-description .bullet-list {
+  margin-top: 8px;
+}
+
+.bullet-point span:not(.bullet-symbol) {
+  flex: 1;
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Enhanced spacing for preview mode */
+.experience-card.preview-active .bullet-point {
+  margin-bottom: 20px;
+  padding: 12px 8px;
+  background: rgba(109, 40, 217, 0.08);
+  border-left: 3px solid var(--accent-color);
+  border-radius: 8px;
+  transform: translateX(0);
+}
+
+.experience-card.preview-active .bullet-point:hover {
+  background: rgba(109, 40, 217, 0.12);
+  transform: translateX(6px);
+  box-shadow: 0 4px 16px rgba(109, 40, 217, 0.2);
+}
+
+.experience-card.preview-active .bullet-symbol {
+  background: linear-gradient(135deg, var(--accent-color), #8b5cf6);
+  box-shadow: 0 0 16px rgba(109, 40, 217, 0.4);
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { 
+    box-shadow: 0 0 16px rgba(109, 40, 217, 0.4);
+    transform: scale(1);
+  }
+  50% { 
+    box-shadow: 0 0 24px rgba(109, 40, 217, 0.6);
+    transform: scale(1.05);
+  }
+}
+
+/* Staggered animation for bullet points */
+.bullet-point:nth-child(1) { animation-delay: 0.1s; }
+.bullet-point:nth-child(2) { animation-delay: 0.2s; }
+.bullet-point:nth-child(3) { animation-delay: 0.3s; }
+.bullet-point:nth-child(4) { animation-delay: 0.4s; }
+.bullet-point:nth-child(5) { animation-delay: 0.5s; }
+.bullet-point:nth-child(6) { animation-delay: 0.6s; }
+
+.experience-card.preview-active .bullet-point {
+  animation: slideInBullet 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+@keyframes slideInBullet {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Special styling for different bullet point positions */
+.bullet-point:first-child .bullet-symbol {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.bullet-point:nth-child(2) .bullet-symbol {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.bullet-point:nth-child(3) .bullet-symbol {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.bullet-point:nth-child(4) .bullet-symbol {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.bullet-point:nth-child(5) .bullet-symbol {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.bullet-point:nth-child(6) .bullet-symbol {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
+/* Mobile responsive bullet points */
+@media (max-width: 768px) {
+  .bullet-point {
+    margin-bottom: 14px;
+    padding: 6px 0;
+  }
+  
+  .bullet-symbol {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    font-size: 11px;
+  }
+  
+  .bullet-point span:not(.bullet-symbol) {
+    font-size: 14px;
+  }
+  
+  .experience-card.preview-active .bullet-point {
+    margin-bottom: 16px;
+    padding: 10px 6px;
+  }
+  
+  .bullet-point:hover {
+    transform: translateX(2px);
+    padding-left: 6px;
+  }
+  
+  .experience-card.preview-active .bullet-point:hover {
+    transform: translateX(4px);
+  }
 }

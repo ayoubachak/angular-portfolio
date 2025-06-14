@@ -85,9 +85,9 @@ export class ResumeConfigService {
           ['Python', 'Machine Learning', 'AI', 'Data Science', 'TensorFlow', 'PyTorch', 'Neural Networks']
           .some(aiTech => skill.toLowerCase().includes(aiTech.toLowerCase()))
         ) || 
-        exp.description?.toLowerCase().includes('ai') ||
-        exp.description?.toLowerCase().includes('machine learning') ||
-        exp.description?.toLowerCase().includes('data science')
+        this.getExperienceContent(exp).toLowerCase().includes('ai') ||
+        this.getExperienceContent(exp).toLowerCase().includes('machine learning') ||
+        this.getExperienceContent(exp).toLowerCase().includes('data science')
       );
     } else {
       return content.experience.filter(exp => 
@@ -95,12 +95,21 @@ export class ResumeConfigService {
           ['JavaScript', 'TypeScript', 'React', 'Angular', 'Vue', 'Node.js', 'Java', 'C#', 'Python']
           .some(softwareTech => skill.toLowerCase().includes(softwareTech.toLowerCase()))
         ) || 
-        exp.description?.toLowerCase().includes('software') ||
-        exp.description?.toLowerCase().includes('development') ||
-        exp.description?.toLowerCase().includes('programming')
+        this.getExperienceContent(exp).toLowerCase().includes('software') ||
+        this.getExperienceContent(exp).toLowerCase().includes('development') ||
+        this.getExperienceContent(exp).toLowerCase().includes('programming')
       );
     }
   }
+
+  // Helper method to get experience content (handles both bulletPoints and description)
+  private getExperienceContent(experience: Experience): string {
+    if (experience.bulletPoints && experience.bulletPoints.length > 0) {
+      return experience.bulletPoints.join(' ');
+    }
+    return experience.description || '';
+  }
+
   private getRelevantProjects(type: 'ai-engineering' | 'software-engineering'): Project[] {
     const content = this.contentService.getPortfolioContent();
     const allProjects = content.projects;

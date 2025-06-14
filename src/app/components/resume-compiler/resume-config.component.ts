@@ -73,7 +73,7 @@ export type ResumeType = 'ai-engineering' | 'software-engineering';
                 <div class="item-content">
                   <h4 class="item-title">{{ exp.role }}</h4>
                   <p class="item-subtitle">{{ exp.company }} • {{ exp.startDate }} - {{ exp.endDate }}</p>
-                  <p class="item-description">{{ exp.description | slice:0:100 }}...</p>
+                  <p class="item-description">{{ getExperienceDescription(exp) | slice:0:100 }}...</p>
                   <div class="item-tags" *ngIf="exp.skills">
                     <span *ngFor="let skill of exp.skills.slice(0, 3)" class="tag">{{ skill }}</span>
                   </div>
@@ -274,5 +274,13 @@ export class ResumeConfigComponent implements OnInit {
 
   onCancel(): void {
     this.configCancelled.emit();
+  }
+
+  // Get experience description for display (handles both bulletPoints and description)
+  getExperienceDescription(experience: Experience): string {
+    if (experience.bulletPoints && experience.bulletPoints.length > 0) {
+      return experience.bulletPoints[0]; // Show first bullet point
+    }
+    return experience.description || '';
   }
 }

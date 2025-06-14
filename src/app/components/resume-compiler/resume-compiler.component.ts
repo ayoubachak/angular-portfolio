@@ -297,9 +297,9 @@ export class ResumeCompilerComponent implements OnInit, OnDestroy {
               tech.toLowerCase().includes('data') ||
               tech.toLowerCase().includes('neural')
             ) || 
-            exp.description.toLowerCase().includes('ai') ||
-            exp.description.toLowerCase().includes('machine learning') ||
-            exp.description.toLowerCase().includes('data')
+            this.getExperienceContent(exp).toLowerCase().includes('ai') ||
+            this.getExperienceContent(exp).toLowerCase().includes('machine learning') ||
+            this.getExperienceContent(exp).toLowerCase().includes('data')
           )
           .slice(0, 4)
           .map(exp => exp.company),
@@ -349,9 +349,9 @@ export class ResumeCompilerComponent implements OnInit, OnDestroy {
               tech.toLowerCase().includes('web') ||
               tech.toLowerCase().includes('api')
             ) ||
-            exp.description.toLowerCase().includes('web') ||
-            exp.description.toLowerCase().includes('software') ||
-            exp.description.toLowerCase().includes('development')
+            this.getExperienceContent(exp).toLowerCase().includes('web') ||
+            this.getExperienceContent(exp).toLowerCase().includes('software') ||
+            this.getExperienceContent(exp).toLowerCase().includes('development')
           )
           .slice(0, 4)
           .map(exp => exp.company),
@@ -388,5 +388,36 @@ export class ResumeCompilerComponent implements OnInit, OnDestroy {
         customSummary: '' // Use default about section
       };
     }
+  }
+
+  // Helper method to get experience content for filtering (handles both bulletPoints and description)
+  private getExperienceContent(experience: Experience): string {
+    if (experience.bulletPoints && experience.bulletPoints.length > 0) {
+      return experience.bulletPoints.join(' ');
+    }
+    return experience.description || '';
+  }
+
+  // Format experience description for resume display
+  getFormattedExperienceDescription(experience: Experience): string {
+    if (experience.bulletPoints && experience.bulletPoints.length > 0) {
+      // For resume, convert bullet points to a paragraph format
+      return experience.bulletPoints.join('. ') + '.';
+    }
+    return experience.description || '';
+  }
+
+  // Format experience description with HTML bullet points for resume display
+  getFormattedExperienceHtml(experience: Experience): string {
+    if (experience.bulletPoints && experience.bulletPoints.length > 0) {
+      const bulletHtml = experience.bulletPoints.map(point => 
+        `<div class="resume-bullet-point">
+          <span class="resume-bullet-symbol">•</span>
+          <span class="resume-bullet-text">${point.trim()}</span>
+        </div>`
+      ).join('');
+      return `<div class="job-description bullet-format">${bulletHtml}</div>`;
+    }
+    return `<div class="job-description">${experience.description || ''}</div>`;
   }
 }
