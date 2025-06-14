@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ContentService, Experience } from '../../../services/content.service';
 import { ScrollAnimationDirective } from '../../../directives/scroll-animation.directive';
@@ -13,6 +13,17 @@ interface TrainingItem {
   linkedinUrl?: string;
 }
 
+interface BackgroundElement {
+  id: string;
+  type: 'floating-book' | 'certificate-badge' | 'graduation-cap' | 'skill-node' | 'knowledge-connection' | 'learning-path' | 'training-keyword' | 'achievement-star';
+  x: number;
+  y: number;
+  width?: number;
+  height?: number;
+  content?: string;
+  delay?: number;
+}
+
 @Component({
   selector: 'app-training',
   standalone: true,
@@ -20,7 +31,7 @@ interface TrainingItem {
   templateUrl: './training.component.html',
   styleUrl: './training.component.css'
 })
-export class TrainingComponent implements OnInit {
+export class TrainingComponent implements OnInit, OnDestroy {
   trainings: TrainingItem[] = [
     {
       title: 'Vice President, Training Manager, Sponsoring Manager',
@@ -54,10 +65,25 @@ export class TrainingComponent implements OnInit {
   // Filtered lists
   trainingItems: TrainingItem[] = [];
   volunteeringItems: TrainingItem[] = [];
+  backgroundElements: BackgroundElement[] = [];
   
   activeTab: 'all' | 'training' | 'volunteering' = 'all';
 
-  constructor(private contentService: ContentService) {}
+  // Training-related keywords for floating animation
+  private trainingKeywords = [
+    'Learning', 'Growth', 'Skills', 'Knowledge', 'Training', 'Development',
+    'Education', 'Mentoring', 'Teaching', 'Coaching', 'Certification',
+    'Workshop', 'Seminar', 'Course', 'Program', 'Achievement', 'Progress',
+    'Excellence', 'Mastery', 'Expertise', 'Innovation', 'Leadership',
+    'Collaboration', 'Networking', 'Community', 'Volunteering'
+  ];
+
+  private animationFrame: number | null = null;
+
+  constructor(
+    private contentService: ContentService,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     // Filter items by type
@@ -66,6 +92,138 @@ export class TrainingComponent implements OnInit {
     
     // Initial display is all items
     this.showAll();
+
+    setTimeout(() => {
+      this.generateBackgroundElements();
+    }, 100);
+  }
+
+  ngOnDestroy(): void {
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+    }
+  }
+
+  private generateBackgroundElements(): void {
+    const container = this.elementRef.nativeElement;
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
+
+    // Generate floating books
+    for (let i = 0; i < 10; i++) {
+      this.backgroundElements.push({
+        id: `floating-book-${i}`,
+        type: 'floating-book',
+        x: Math.random() * (width - 40),
+        y: Math.random() * (height - 50),
+        delay: Math.random() * 10
+      });
+    }
+
+    // Generate certificate badges
+    for (let i = 0; i < 6; i++) {
+      this.backgroundElements.push({
+        id: `certificate-badge-${i}`,
+        type: 'certificate-badge',
+        x: Math.random() * (width - 50),
+        y: Math.random() * (height - 50),
+        delay: Math.random() * 8
+      });
+    }
+
+    // Generate graduation caps
+    for (let i = 0; i < 8; i++) {
+      this.backgroundElements.push({
+        id: `graduation-cap-${i}`,
+        type: 'graduation-cap',
+        x: Math.random() * (width - 35),
+        y: Math.random() * (height - 35),
+        delay: Math.random() * 12
+      });
+    }
+
+    // Generate skill nodes
+    for (let i = 0; i < 12; i++) {
+      this.backgroundElements.push({
+        id: `skill-node-${i}`,
+        type: 'skill-node',
+        x: Math.random() * (width - 25),
+        y: Math.random() * (height - 25),
+        delay: Math.random() * 5
+      });
+    }
+
+    // Generate knowledge connections
+    for (let i = 0; i < 8; i++) {
+      const startX = Math.random() * width;
+      const endX = Math.random() * width;
+      const lineWidth = Math.abs(endX - startX);
+      
+      this.backgroundElements.push({
+        id: `knowledge-connection-${i}`,
+        type: 'knowledge-connection',
+        x: Math.min(startX, endX),
+        y: Math.random() * height,
+        width: lineWidth,
+        delay: Math.random() * 7
+      });
+    }
+
+    // Generate learning paths
+    for (let i = 0; i < 6; i++) {
+      this.backgroundElements.push({
+        id: `learning-path-${i}`,
+        type: 'learning-path',
+        x: Math.random() * (width - 3),
+        y: Math.random() * (height - 80),
+        delay: Math.random() * 6
+      });
+    }
+
+    // Generate training keywords
+    for (let i = 0; i < 8; i++) {
+      this.backgroundElements.push({
+        id: `training-keyword-${i}`,
+        type: 'training-keyword',
+        x: -100, // Start off-screen
+        y: Math.random() * (height - 50),
+        content: this.trainingKeywords[Math.floor(Math.random() * this.trainingKeywords.length)],
+        delay: Math.random() * 15
+      });
+    }
+
+    // Generate achievement stars
+    for (let i = 0; i < 12; i++) {
+      this.backgroundElements.push({
+        id: `achievement-star-${i}`,
+        type: 'achievement-star',
+        x: Math.random() * (width - 20),
+        y: Math.random() * (height - 20),
+        content: '⭐',
+        delay: Math.random() * 4
+      });
+    }
+  }
+
+  getElementStyle(element: BackgroundElement): any {
+    const baseStyle: any = {
+      left: `${element.x}px`,
+      top: `${element.y}px`,
+      animationDelay: `${element.delay || 0}s`
+    };
+
+    if (element.width) {
+      baseStyle['width'] = `${element.width}px`;
+    }
+    if (element.height) {
+      baseStyle['height'] = `${element.height}px`;
+    }
+
+    return baseStyle;
+  }
+
+  trackByElementId(index: number, element: BackgroundElement): string {
+    return element.id;
   }
 
   showAll(): void {

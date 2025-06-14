@@ -1,0 +1,267 @@
+/* Testimonials Background Animation */
+.testimonials-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Quote Bubbles */
+.quote-bubble {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, rgba(109, 40, 217, 0.1), rgba(139, 92, 246, 0.1));
+  border-radius: 50% 50% 50% 10%;
+  border: 1px solid rgba(109, 40, 217, 0.2);
+  animation: floatQuote 8s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+.quote-bubble::before {
+  content: '"';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: rgba(109, 40, 217, 0.4);
+  font-family: serif;
+}
+
+.quote-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 20px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid rgba(109, 40, 217, 0.1);
+}
+
+/* Connection Lines */
+.connection-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(109, 40, 217, 0.3), transparent);
+  animation: connectionPulse 6s ease-in-out infinite;
+  opacity: 0.5;
+}
+
+/* Network Nodes */
+.network-node {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, rgba(109, 40, 217, 0.6), rgba(139, 92, 246, 0.3));
+  border-radius: 50%;
+  animation: nodePulse 4s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(109, 40, 217, 0.3);
+}
+
+.network-node::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(109, 40, 217, 0.2);
+  border-radius: 50%;
+  animation: rippleEffect 3s ease-out infinite;
+}
+
+/* Floating Words */
+.floating-word {
+  position: absolute;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(109, 40, 217, 0.3);
+  animation: floatWord 12s linear infinite;
+  opacity: 0.7;
+  pointer-events: auto;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.floating-word:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  color: rgba(109, 40, 217, 0.6);
+  text-shadow: 0 0 10px rgba(109, 40, 217, 0.4);
+}
+
+/* Star Ratings */
+.floating-star {
+  position: absolute;
+  font-size: 16px;
+  color: rgba(255, 193, 7, 0.4);
+  animation: starTwinkle 3s ease-in-out infinite;
+}
+
+/* Recommendation Badges */
+.recommendation-badge {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(34, 197, 94, 0.1));
+  border-radius: 8px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  animation: badgeFloat 10s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recommendation-badge::before {
+  content: '✓';
+  font-size: 18px;
+  font-weight: bold;
+  color: rgba(16, 185, 129, 0.5);
+}
+
+/* Animations */
+@keyframes floatQuote {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.6;
+  }
+  25% { 
+    transform: translateY(-15px) rotate(2deg); 
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(-10px) rotate(-1deg); 
+    opacity: 0.7;
+  }
+  75% { 
+    transform: translateY(-20px) rotate(1deg); 
+    opacity: 0.9;
+  }
+}
+
+@keyframes connectionPulse {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scaleX(0.8);
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: scaleX(1.2);
+  }
+}
+
+@keyframes nodePulse {
+  0%, 100% { 
+    transform: scale(1); 
+    opacity: 0.6;
+  }
+  50% { 
+    transform: scale(1.3); 
+    opacity: 1;
+  }
+}
+
+@keyframes rippleEffect {
+  0% { 
+    transform: scale(1); 
+    opacity: 0.6;
+  }
+  100% { 
+    transform: scale(3); 
+    opacity: 0;
+  }
+}
+
+@keyframes floatWord {
+  0% { 
+    transform: translateX(-100px) translateY(0px); 
+    opacity: 0;
+  }
+  10% { 
+    opacity: 0.7;
+  }
+  90% { 
+    opacity: 0.7;
+  }
+  100% { 
+    transform: translateX(calc(100vw + 100px)) translateY(-20px); 
+    opacity: 0;
+  }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { 
+    opacity: 0.4; 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2);
+  }
+}
+
+@keyframes badgeFloat {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  33% { 
+    transform: translateY(-10px) rotate(5deg); 
+  }
+  66% { 
+    transform: translateY(-5px) rotate(-3deg); 
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .quote-bubble {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .quote-bubble::before {
+    font-size: 16px;
+  }
+  
+  .floating-word {
+    font-size: 12px;
+  }
+  
+  .network-node {
+    width: 8px;
+    height: 8px;
+  }
+  
+  .recommendation-badge {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .recommendation-badge::before {
+    font-size: 14px;
+  }
+}
+
+/* Performance optimizations */
+.testimonials-background * {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .testimonials-background * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
