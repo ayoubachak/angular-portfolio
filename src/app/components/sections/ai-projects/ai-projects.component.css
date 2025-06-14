@@ -1,0 +1,265 @@
+/* Neural Network Background */
+.neural-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Specific classes for each element type */
+.neural-node {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(45deg, #6d28d9, #8b5cf6);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.neural-node::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 12px;
+  height: 12px;
+  border: 1px solid #6d28d9;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: ripple 2s ease-out infinite;
+}
+
+.neural-connection {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #6d28d9, transparent);
+  opacity: 0.4;
+  animation: dataFlow 4s linear infinite;
+}
+
+.neural-keyword {
+  position: absolute;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6d28d9;
+  opacity: 0.7;
+  pointer-events: auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  user-select: none;
+  text-shadow: 0 0 10px rgba(109, 40, 217, 0.3);
+}
+
+.neural-keyword:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  text-shadow: 0 0 15px rgba(109, 40, 217, 0.6);
+}
+
+.neural-keyword.repelled {
+  transform: scale(0.8);
+  opacity: 0.4;
+}
+
+.neural-transformer {
+  position: absolute;
+  width: 60px;
+  height: 20px;
+  border: 1px solid #6d28d9;
+  border-radius: 4px;
+  opacity: 0.3;
+  animation: transformerGlow 5s ease-in-out infinite;
+}
+
+.neural-transformer::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -10px;
+  width: 8px;
+  height: 1px;
+  background: #6d28d9;
+  transform: translateY(-50%);
+}
+
+.neural-transformer::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  width: 8px;
+  height: 1px;
+  background: #6d28d9;
+  transform: translateY(-50%);
+}
+
+.neural-attention {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #8b5cf6;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: attentionPulse 3s ease-in-out infinite;
+}
+
+.neural-attention::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: #8b5cf6;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: innerPulse 2s ease-in-out infinite;
+}
+
+.neural-matrix {
+  position: absolute;
+  width: 40px;
+  height: 30px;
+  border: 1px solid #6d28d9;
+  border-radius: 2px;
+  opacity: 0.3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 2px;
+}
+
+.neural-matrix::before,
+.neural-matrix::after {
+  content: '';
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #6d28d9, transparent);
+  animation: matrixFlow 2s linear infinite;
+}
+
+.neural-matrix::after {
+  animation-delay: 1s;
+}
+
+.neural-gradient {
+  position: absolute;
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(180deg, transparent, #6d28d9, #8b5cf6, transparent);
+  opacity: 0.5;
+  animation: gradientMove 6s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 0.9; }
+}
+
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes dataFlow {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes transformerGlow {
+  0%, 100% { 
+    opacity: 0.3; 
+    box-shadow: 0 0 5px rgba(109, 40, 217, 0.2);
+  }
+  50% { 
+    opacity: 0.6; 
+    box-shadow: 0 0 15px rgba(109, 40, 217, 0.4);
+  }
+}
+
+@keyframes attentionPulse {
+  0%, 100% { 
+    transform: scale(1); 
+    border-color: #8b5cf6;
+  }
+  50% { 
+    transform: scale(1.3); 
+    border-color: #6d28d9;
+  }
+}
+
+@keyframes innerPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes matrixFlow {
+  0% { opacity: 0; transform: translateX(-100%); }
+  50% { opacity: 0.6; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+@keyframes gradientMove {
+  0%, 100% { transform: translateY(-20px); opacity: 0.3; }
+  50% { transform: translateY(20px); opacity: 0.7; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes floatReverse {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(10px); }
+}
+
+@keyframes drift {
+  0% { transform: translateX(0px); }
+  25% { transform: translateX(5px); }
+  50% { transform: translateX(-3px); }
+  75% { transform: translateX(7px); }
+  100% { transform: translateX(0px); }
+}
+
+/* Apply floating animations to different elements */
+.neural-node:nth-child(odd) { animation: pulse 3s ease-in-out infinite, float 4s ease-in-out infinite; }
+.neural-node:nth-child(even) { animation: pulse 3s ease-in-out infinite, floatReverse 5s ease-in-out infinite; }
+
+.neural-keyword:nth-child(3n) { animation: float 6s ease-in-out infinite; }
+.neural-keyword:nth-child(3n+1) { animation: floatReverse 7s ease-in-out infinite; }
+.neural-keyword:nth-child(3n+2) { animation: drift 8s ease-in-out infinite; }
+
+.neural-transformer:nth-child(odd) { animation: transformerGlow 5s ease-in-out infinite, float 6s ease-in-out infinite; }
+.neural-attention:nth-child(even) { animation: attentionPulse 3s ease-in-out infinite, floatReverse 4s ease-in-out infinite; }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .neural-node { width: 6px; height: 6px; }
+  .neural-keyword { font-size: 10px; }
+  .neural-transformer { width: 40px; height: 15px; }
+  .neural-attention { width: 12px; height: 12px; }
+  .neural-matrix { width: 30px; height: 20px; }
+}
+
+/* Performance optimizations */
+.neural-background * {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .neural-background * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

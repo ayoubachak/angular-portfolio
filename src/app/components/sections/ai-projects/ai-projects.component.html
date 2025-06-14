@@ -1,4 +1,17 @@
 <section id="ai-projects" class="py-24 bg-primary-color relative overflow-hidden">
+  <!-- Neural Network Background -->
+  <div class="neural-background" #neuralBackground>
+    <!-- Neural Nodes -->
+    <div 
+      *ngFor="let element of backgroundElements; trackBy: trackByElementId"
+      [class]="'neural-' + element.type"
+      [ngStyle]="getElementStyle(element)">
+      
+      <!-- Display content for keywords -->
+      <span *ngIf="element.type === 'keyword'">{{ element.content }}</span>
+    </div>
+  </div>
+
   <!-- Background Decoration -->
   <div class="absolute inset-0 opacity-5">
     <div class="absolute top-0 left-0 w-full h-full">

@@ -155,11 +155,11 @@ export class ResumeCompilerComponent implements OnInit, OnDestroy {
         removeContainer: false,
         imageTimeout: 15000,
         logging: false,
-        ignoreElements: (element) => {
+        ignoreElements: (element: HTMLElement) => {
           // Ignore any overlay elements that might interfere
           return element.classList.contains('fixed') && !element.contains(this.resumePreview.nativeElement);
         }
-      });
+      } as any); // Using type assertion as the options type seems to be outdated
       
       const imgData = canvas.toDataURL('image/png', 1.0);
       

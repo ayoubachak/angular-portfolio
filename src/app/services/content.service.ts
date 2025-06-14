@@ -34,6 +34,7 @@ export interface Experience {
   endDate: string;
   description: string;
   logo?: string;
+  certificate?: string;
   skills?: string[];
 }
 
@@ -186,6 +187,7 @@ export class ContentService {
         endDate: 'Sep 2025',
         description: 'Working on a No-Code UI Builder solution to allow Ansys clients to easily get solutions running in minutes instead of days by providing them with a robust Drag-n-Drop UI. Users then can export their solutions from canvas to Python Dash code. Working on integrating an AI agent with the UI-Builder so that creating solutions would be done using natural language to abstract potentially complex components to users with no expertise.',
         logo: 'assets/images/companies/ansys-logo.png',
+        certificate: 'R&D Engineer Certificate',
         skills: ['Python', 'UI Builder', 'Dash', 'No-Code', 'AI Agents']
       },
       {
@@ -195,6 +197,7 @@ export class ContentService {
         endDate: 'Aug 2024',
         description: 'Designed & fine-tuned a prompt-based code-generation pipeline using Mistral 7B & Phi-2 70B, incorporating chain-of-thought prompting and dynamic temperature scheduling to boost functional correctness. Evaluated on a 1,000-snippet benchmark with unit tests, achieving 40% pass@1 (vs. 12% heuristic baseline) and 65% pass@5 cutting manual debugging time by 3×. Built a FastAPI orchestration platform to manage LLM agents, automated test execution, and result aggregation; integrated ChromaDB for code retrieval, PostgreSQL for test metadata, and AI agents for failure triage—processing 200+ tests/min at sub 200 ms latency.',
         logo: 'assets/images/companies/alten-logo.png',
+        certificate: 'Machine Learning Engineer Certificate',
         skills: ['FastAPI', 'NLP', 'LLMs', 'ChromaDB', 'PostgreSQL', 'AI Agents']
       },
       {
@@ -204,6 +207,7 @@ export class ContentService {
         endDate: 'Sep 2023',
         description: 'Designed and deployed an automation device using Raspberry Pi Zero W to monitor and update Cisco network devices remotely, reducing manual intervention in remote locations and costs by thousands of $. Developed a log analysis system with Flask backend and React (TypeScript) frontend that utilized an NLP model to classify and prioritize critical infrastructure issues, pruned the NLP TFLite model for optimal performance on Raspberry Pi.',
         logo: 'assets/images/companies/cbi-logo.jpg',
+        certificate: 'Software Engineer Certificate',
         skills: ['Flask', 'React', 'TypeScript', 'NLP', 'TFLite', 'Raspberry Pi']
       },
       {
@@ -213,6 +217,7 @@ export class ContentService {
         endDate: 'Jan 2023',
         description: 'Implemented a gamification system to increase user engagement with features including achievement badges, leaderboards, and progress tracking. Deployed the solution on AWS EC2 using Docker and Kubernetes for scalability and seamless updates. Enhanced content discoverability by integrating an ML-powered real-time search feature, utilizing Pinecone with BERT and HNSW indexing for efficient vector similarity search. Deployed via AWS Lambda and integrated through a REST API.',
         logo: 'assets/images/companies/kezakoo-logo.webp',
+        certificate: 'Software Engineer Certificate',
         skills: ['AWS EC2', 'Docker', 'Kubernetes', 'ML', 'Pinecone', 'BERT', 'AWS Lambda', 'REST API', 'WordPress'],
       },
       {
@@ -222,6 +227,7 @@ export class ContentService {
         endDate: 'Mar 2022',
         description: 'Developed a smart IoT Android app integrating BLE (Bluetooth 5.0), nRF, RFID, GPS, and 3G connectivity for seamless tracking. Collaborated with Protomain for hardware integration, ensuring secure data transmission with encryption between IoT devices and the app. Built using Android Studio and Java. Launched the Miratti community portfolio website with user authentication and data sharing via WordPress REST API, deployed on AWS with SMTP setup for real-time notifications.',
         logo: 'assets/images/companies/miratti-logo.png',
+        certificate: 'IoT and Software Engineer Certificate',
         skills: ['IoT', 'Android', 'BLE', 'RFID', 'GPS', 'WordPress', 'AWS']
       }
     ],
