@@ -8,6 +8,7 @@ import { ScrollAnimationDirective } from '../../../directives/scroll-animation.d
 import { EasterEggHintComponent } from '../../../components/easter-eggs/easter-egg-hint.component';
 import { GenZEasterEggTriggerDirective } from '../../../directives/gen-z-easter-egg-trigger.directive';
 import { GenZEasterEggService } from '../../../services/gen-z-easter-egg.service';
+import { SplashCursorComponent } from '../../splash-cursor/splash-cursor.component';
 
 @Component({
   selector: 'app-intro',
@@ -17,7 +18,8 @@ import { GenZEasterEggService } from '../../../services/gen-z-easter-egg.service
     FontAwesomeModule, 
     ScrollAnimationDirective, 
     EasterEggHintComponent,
-    GenZEasterEggTriggerDirective
+    GenZEasterEggTriggerDirective,
+    SplashCursorComponent
   ],
   templateUrl: './intro.component.html',
   styleUrl: './intro.component.css'
