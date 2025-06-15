@@ -109,8 +109,9 @@ export class TrainingComponent implements OnInit, OnDestroy {
     const width = container.offsetWidth;
     const height = container.offsetHeight;
 
-    // Generate floating books
-    for (let i = 0; i < 10; i++) {
+    // Reduced background elements for better performance
+    // Generate floating books (reduced from 10 to 3)
+    for (let i = 0; i < 3; i++) {
       this.backgroundElements.push({
         id: `floating-book-${i}`,
         type: 'floating-book',
@@ -120,8 +121,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate certificate badges
-    for (let i = 0; i < 6; i++) {
+    // Generate certificate badges (reduced from 6 to 2)
+    for (let i = 0; i < 2; i++) {
       this.backgroundElements.push({
         id: `certificate-badge-${i}`,
         type: 'certificate-badge',
@@ -131,8 +132,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate graduation caps
-    for (let i = 0; i < 8; i++) {
+    // Generate graduation caps (reduced from 8 to 3)
+    for (let i = 0; i < 3; i++) {
       this.backgroundElements.push({
         id: `graduation-cap-${i}`,
         type: 'graduation-cap',
@@ -142,8 +143,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate skill nodes
-    for (let i = 0; i < 12; i++) {
+    // Generate skill nodes (reduced from 12 to 4)
+    for (let i = 0; i < 4; i++) {
       this.backgroundElements.push({
         id: `skill-node-${i}`,
         type: 'skill-node',
@@ -153,8 +154,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate knowledge connections
-    for (let i = 0; i < 8; i++) {
+    // Generate knowledge connections (reduced from 8 to 2)
+    for (let i = 0; i < 2; i++) {
       const startX = Math.random() * width;
       const endX = Math.random() * width;
       const lineWidth = Math.abs(endX - startX);
@@ -169,8 +170,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate learning paths
-    for (let i = 0; i < 6; i++) {
+    // Generate learning paths (reduced from 6 to 2)
+    for (let i = 0; i < 2; i++) {
       this.backgroundElements.push({
         id: `learning-path-${i}`,
         type: 'learning-path',
@@ -180,8 +181,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate training keywords
-    for (let i = 0; i < 8; i++) {
+    // Generate training keywords (reduced from 8 to 3)
+    for (let i = 0; i < 3; i++) {
       this.backgroundElements.push({
         id: `training-keyword-${i}`,
         type: 'training-keyword',
@@ -192,8 +193,8 @@ export class TrainingComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate achievement stars
-    for (let i = 0; i < 12; i++) {
+    // Generate achievement stars (reduced from 12 to 4)
+    for (let i = 0; i < 4; i++) {
       this.backgroundElements.push({
         id: `achievement-star-${i}`,
         type: 'achievement-star',

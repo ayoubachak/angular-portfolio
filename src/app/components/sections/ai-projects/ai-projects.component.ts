@@ -76,7 +76,7 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
 
   @HostListener('window:resize', ['$event'])
   onWindowResize(): void {
-    // Debounce resize events
+    // Debounce resize to improve performance
     clearTimeout(this.resizeTimeout);
     this.resizeTimeout = setTimeout(() => {
       this.regenerateBackgroundElements();
@@ -93,17 +93,21 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.aiProjects = this.contentService.getAiProjects();
-    setTimeout(() => {
-      this.regenerateBackgroundElements();
-      this.startMouseTracking();
-    }, 100);
-    // Set up initial slice and display control
+    const content = this.contentService.getPortfolioContent();
+    this.aiProjects = content.projects.filter(p => p.isAiProject);
+    
+    // Show only initial count to start
     this.displayedAiProjects = this.aiProjects.slice(0, this.initialDisplayCount);
     this.showDisplayMore = this.aiProjects.length > this.initialDisplayCount;
+    
+    // Generate background elements once on init
+    setTimeout(() => {
+      this.regenerateBackgroundElements();
+    }, 100);
   }
 
   ngOnDestroy(): void {
+    // Clean up timeouts and animation frames
     if (this.animationFrame) {
       cancelAnimationFrame(this.animationFrame);
     }
@@ -112,11 +116,8 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    const rect = this.elementRef.nativeElement.getBoundingClientRect();
-    this.mouseX = event.clientX - rect.left;
-    this.mouseY = event.clientY - rect.top;
+    // Removed continuous mouse tracking for better performance
   }
 
   /**
@@ -160,34 +161,7 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
   }
 
   private startMouseTracking(): void {
-    const updatePositions = () => {
-      this.backgroundElements.forEach(element => {
-        if (element.type === 'keyword' && element.originalX !== undefined && element.originalY !== undefined) {
-          const dx = this.mouseX - element.x;
-          const dy = this.mouseY - element.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const repelDistance = 100;
-
-          if (distance < repelDistance && distance > 0) {
-            const force = (repelDistance - distance) / repelDistance;
-            const repelX = element.x - (dx / distance) * force * 30;
-            const repelY = element.y - (dy / distance) * force * 30;
-            
-            element.x = repelX;
-            element.y = repelY;
-          } else {
-            // Gradually return to original position
-            const returnForce = 0.05;
-            element.x += (element.originalX - element.x) * returnForce;
-            element.y += (element.originalY - element.y) * returnForce;
-          }
-        }
-      });
-
-      this.animationFrame = requestAnimationFrame(updatePositions);
-    };
-
-    updatePositions();
+    // Removed mouse tracking for better performance
   }
 
   getElementStyle(element: BackgroundElement): any {
@@ -250,8 +224,8 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
     const width = container.offsetWidth;
     const height = container.offsetHeight;
 
-    // Generate neural nodes with better distribution for expanded content
-    const nodeCount = Math.max(25, Math.floor(height / 30)); // More nodes for taller content
+    // Generate fewer neural nodes for better performance (reduced from 25+ to 8)
+    const nodeCount = Math.min(8, Math.floor(height / 80));
     for (let i = 0; i < nodeCount; i++) {
       this.backgroundElements.push({
         id: `node-${i}`,
@@ -261,8 +235,8 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate connections between nodes
-    const connectionCount = Math.max(15, Math.floor(height / 50));
+    // Generate fewer connections (reduced from 15+ to 4)
+    const connectionCount = Math.min(4, Math.floor(height / 120));
     for (let i = 0; i < connectionCount; i++) {
       const startX = Math.random() * width;
       const startY = Math.random() * height;
@@ -280,8 +254,8 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
       });
     }
 
-    // Generate floating ML keywords with better distribution
-    const keywordCount = Math.max(30, Math.floor(height / 25));
+    // Generate fewer ML keywords (reduced from 30+ to 6, no mouse interaction)
+    const keywordCount = Math.min(6, Math.floor(height / 100));
     for (let i = 0; i < keywordCount; i++) {
       const x = Math.random() * (width - 100);
       const y = Math.random() * (height - 50);
@@ -290,53 +264,18 @@ export class AiProjectsComponent implements OnInit, OnDestroy {
         type: 'keyword',
         x,
         y,
-        originalX: x,
-        originalY: y,
         content: this.mlKeywords[Math.floor(Math.random() * this.mlKeywords.length)]
       });
     }
 
-    // Generate transformer blocks
-    const transformerCount = Math.max(8, Math.floor(height / 80));
+    // Generate fewer transformer blocks (reduced from 8+ to 3)
+    const transformerCount = Math.min(3, Math.floor(height / 160));
     for (let i = 0; i < transformerCount; i++) {
       this.backgroundElements.push({
         id: `transformer-${i}`,
         type: 'transformer',
         x: Math.random() * (width - 60),
         y: Math.random() * (height - 20)
-      });
-    }
-
-    // Generate attention heads
-    const attentionCount = Math.max(12, Math.floor(height / 60));
-    for (let i = 0; i < attentionCount; i++) {
-      this.backgroundElements.push({
-        id: `attention-${i}`,
-        type: 'attention',
-        x: Math.random() * (width - 16),
-        y: Math.random() * (height - 16)
-      });
-    }
-
-    // Generate matrix operations
-    const matrixCount = Math.max(6, Math.floor(height / 100));
-    for (let i = 0; i < matrixCount; i++) {
-      this.backgroundElements.push({
-        id: `matrix-${i}`,
-        type: 'matrix',
-        x: Math.random() * (width - 40),
-        y: Math.random() * (height - 30)
-      });
-    }
-
-    // Generate gradient flows
-    const gradientCount = Math.max(10, Math.floor(height / 70));
-    for (let i = 0; i < gradientCount; i++) {
-      this.backgroundElements.push({
-        id: `gradient-${i}`,
-        type: 'gradient',
-        x: Math.random() * (width - 2),
-        y: Math.random() * (height - 80)
       });
     }
   }

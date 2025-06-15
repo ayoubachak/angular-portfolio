@@ -274,7 +274,7 @@ print(f"Accuracy: {accuracy:.2f}")`,
   // Setup intersection observers to track scroll position for each experience card
   setupScrollObservers(): void {
     if (typeof IntersectionObserver !== 'undefined') {
-      // Card view observer
+      // Simplified card view observer with fewer thresholds
       const cardObserver = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
@@ -287,64 +287,37 @@ print(f"Accuracy: {accuracy:.2f}")`,
             }
           });
         },
-        { threshold: [0.1, 0.5, 0.9] }
+        { threshold: [0.3, 0.7] } // Reduced from 3 to 2 thresholds
       );
       
-      // Debounce timer for smoother preview transitions
-      let previewUpdateTimers: { [key: number]: any } = {};
-      
-      // Preview mode observer with more detailed thresholds for scroll progress
+      // Simplified preview mode observer - only when scroll mode is enabled
       const previewObserver = new IntersectionObserver(
         (entries) => {
+          if (!this.scrollDrivenMode) return; // Early exit if not in scroll mode
+          
           entries.forEach(entry => {
             const index = parseInt(entry.target.getAttribute('data-preview-index') || '-1');
-            if (index >= 0 && this.scrollDrivenMode) {
-              // Only update if scroll-driven mode is enabled
-              
-              // Calculate scroll progress regardless of preview state
+            if (index >= 0) {
               const bounds = entry.boundingClientRect;
               const windowHeight = window.innerHeight;
               const viewportCenter = windowHeight / 2;
               const elementCenter = bounds.top + (bounds.height / 2);
               
-              // Enhanced centeredness calculation for smoother transitions
-              // Uses a bell curve for more natural feeling transitions
-              const normalizedPosition = (elementCenter - viewportCenter) / (windowHeight / 2);
-              const centeredness = Math.max(0, 1 - Math.pow(normalizedPosition, 2) * 0.8);
+              // Simplified centeredness calculation
+              const normalizedPosition = Math.abs(elementCenter - viewportCenter) / (windowHeight / 2);
+              const centeredness = Math.max(0, 1 - normalizedPosition);
               
-              // Smoothly update scroll progress
-              // Slight animation easing by blending with previous value
-              const prevProgress = this.experiences[index].scrollProgress || 0;
-              this.experiences[index].scrollProgress = prevProgress * 0.2 + centeredness * 0.8;
+              // Direct update without smoothing to reduce calculations
+              this.experiences[index].scrollProgress = centeredness;
               
-              // Clear any pending timers for this experience
-              if (previewUpdateTimers[index]) {
-                clearTimeout(previewUpdateTimers[index]);
-              }
-              
-              // Debounced state updates to prevent flickering
-              previewUpdateTimers[index] = setTimeout(() => {
-                // Add hysteresis to prevent flickering - only change state when clearly crossing thresholds
-                const wasInPreview = this.experiences[index].previewMode;
-                const currentProgress = this.experiences[index].scrollProgress;
-                
-                // Use different thresholds for entering vs exiting preview mode
-                // With increased hysteresis
-                if (!wasInPreview && currentProgress > 0.7) {
-                  // Enter preview mode only when well into the threshold
-                  this.experiences[index].previewMode = true;
-                } else if (wasInPreview && currentProgress < 0.45) { // Lower threshold for exiting
-                  // Exit preview mode only when clearly below threshold
-                  this.experiences[index].previewMode = false;
-                }
-              }, 50); // Short delay to smooth out transitions
+              // Simple threshold check without hysteresis
+              this.experiences[index].previewMode = centeredness > 0.6;
             }
           });
         },
         { 
-          // Smoother, more frequent thresholds for better responsiveness
-          threshold: Array.from({ length: 21 }, (_, i) => i * 0.05), // 0, 0.05, 0.1, ..., 1
-          rootMargin: "-5% 0px -5% 0px" // Adjusted margin to provide stable behavior
+          threshold: [0.4, 0.6, 0.8], // Reduced from 21 to 3 thresholds
+          rootMargin: "-10% 0px -10% 0px"
         }
       );
 
@@ -464,72 +437,43 @@ print(f"Accuracy: {accuracy:.2f}")`,
   getPreviewModeStyle(experience: ExperienceWithState): any {
     if (!this.scrollDrivenMode) return {};
     
-    // Create a smooth transition for scaling
-    // Start with a base scale that's slightly larger than 1
+    // Simplified scaling with better performance
     let scale = 1;
     let opacity = experience.inView ? 1 : 0;
-    let transformOrigin = 'center';
     let translateY = '0';
     let boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-    let blur = 0;
     
-    // If in preview mode, enhance the scale based on scroll progress
+    // If in preview mode, enhance the scale
     if (experience.previewMode) {
-      // Non-linear easing for smoother scaling effect
-      const easedProgress = this.easeInOutCubic(experience.scrollProgress);
-      scale = 1 + (easedProgress * 0.12); // Slightly larger scale for more noticeable effect
+      scale = 1 + (experience.scrollProgress * 0.08); // Reduced scale effect
       
-      // Enhanced shadow based on scroll progress
-      const shadowIntensity = Math.min(0.3, 0.1 + (easedProgress * 0.2));
-      boxShadow = `0 ${8 + (easedProgress * 12)}px ${15 + (easedProgress * 20)}px rgba(0, 0, 0, ${shadowIntensity})`;
+      // Enhanced shadow
+      const shadowIntensity = Math.min(0.2, 0.1 + (experience.scrollProgress * 0.1));
+      boxShadow = `0 ${8 + (experience.scrollProgress * 8)}px ${15 + (experience.scrollProgress * 10)}px rgba(0, 0, 0, ${shadowIntensity})`;
       
-      // Find the index to determine transform origin and direction (alternating effect)
-      const expIndex = this.experiences.findIndex(exp => exp === experience);
-      const isEven = expIndex % 2 === 0;
-      
-      // Set transform origin for a more dynamic feel
-      transformOrigin = isEven ? 'center left' : 'center right';
-      
-      // Slight floating effect based on progress
-      translateY = `${-5 * easedProgress}px`;
+      // Slight floating effect
+      translateY = `${-3 * experience.scrollProgress}px`;
     }
-    
-    // Add staggered transitions for smoother animations
-    const expIndex = this.experiences.findIndex(exp => exp === experience);
-    const staggerDelay = Math.min(expIndex * 50, 200); // Max 200ms delay
     
     return {
       transform: `scale(${scale}) translateY(${translateY})`,
       opacity: opacity,
-      transformOrigin: transformOrigin,
       boxShadow: boxShadow,
-      transitionDelay: experience.previewMode ? `${staggerDelay}ms` : '0ms',
-      transitionDuration: experience.previewMode ? '1.8s' : '1.2s',
-      transitionProperty: 'transform, opacity, box-shadow, background-color',
-      transitionTimingFunction: 'cubic-bezier(0.19, 1, 0.22, 1)'
+      transitionDuration: experience.previewMode ? '0.6s' : '0.4s',
+      transitionProperty: 'transform, opacity, box-shadow',
+      transitionTimingFunction: 'ease-out'
     };
   }
   
-  // Cubic easing function for smoother animations
-  easeInOutCubic(x: number): number {
-    return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-  }
-    // Calculate background animation style based on scroll progress
+  // Calculate background animation style - simplified
   getBackgroundStyle(experience: ExperienceWithState, animation: TechAnimation): any {
-    if (!animation.backgroundPattern) return {};
-    
-    const scrollOffset = experience.scrollProgress * 100;
-    const opacity = 0.08 + (experience.scrollProgress * 0.05); // Slightly increase opacity based on scroll
-    
+    // Removed complex background patterns for performance
     return {
-      backgroundImage: animation.backgroundPattern,
-      backgroundSize: '400px 400px',
-      backgroundPosition: `${scrollOffset}px ${scrollOffset}px`,
-      backgroundColor: `${animation.color}15`, // Light version of the tech color
-      '--tech-color': animation.color, // Pass the color as a CSS variable
-      transition: 'all 0.8s cubic-bezier(0.22, 1, 0.36, 1)'
+      backgroundColor: `${animation.color}08`, // Very light version of the tech color
+      transition: 'background-color 0.3s ease'
     };
   }
+
   // Format code for background display
   formatCodeForBackground(code: string): string {
     // Escape HTML entities
@@ -823,8 +767,8 @@ print(f"Accuracy: {accuracy:.2f}")`,
   }
     // Set up auto mode detection and switching based on user interaction
   private setupAutoModeDetection(): void {
-    // Set up a periodic check for inactivity
-    this.autoModeInterval = setInterval(() => this.checkForInactivity(), 2000);
+    // Disabled auto-carousel for performance
+    // this.autoModeInterval = setInterval(() => this.checkForInactivity(), 2000);
   }
   
   // Monitor user interactions to determine when to enable auto mode
@@ -833,70 +777,26 @@ print(f"Accuracy: {accuracy:.2f}")`,
   @HostListener('window:keydown')
   @HostListener('window:scroll')
   @HostListener('touchstart')
-  @HostListener('touchmove')  onUserInteraction(): void {
+  @HostListener('touchmove')
+  onUserInteraction(): void {
+    // Simplified interaction tracking
     this._userInteracted = true;
     this._lastInteractionTime = Date.now();
-    
-    // If auto carousel was active, disable it on user interaction
-    if (this._autoCarouselActive) {
-      this.stopAutoCarousel();
-    }
   }
-    // Check for user inactivity to start auto mode
+  
+  // Check for user inactivity to start auto mode
   private checkForInactivity(): void {
-    if (Date.now() - this._lastInteractionTime > this.inactivityTimeout && !this._autoCarouselActive) {
-      this.startAutoCarousel();
-    }
+    // Disabled for performance
   }
-    // Start auto carousel mode for experiences
+  
+  // Start auto carousel mode for experiences
   private startAutoCarousel(): void {
-    // Don't start if already active
-    if (this._autoCarouselActive) return;
-    
-    this._autoCarouselActive = true;
-    
-    // Keep the current mode (don't force scroll mode)
-    // This respects the user's preferred interaction style
-    
-    // Highlight each experience in sequence
-    let currentIndex = 0;
-    
-    const highlightNext = () => {
-      if (!this._autoCarouselActive) return;
-      
-      // Reset all experiences
-      this.experiences.forEach(exp => {
-        exp.previewMode = false;
-        exp.scrollProgress = 0;
-      });
-      
-      // Set current experience to preview mode
-      if (this.experiences[currentIndex]) {
-        this.experiences[currentIndex].previewMode = true;
-        this.experiences[currentIndex].scrollProgress = 1; // Full preview
-        this.activeExperienceIndex = currentIndex;
-      }
-      
-      // Move to next experience
-      currentIndex = (currentIndex + 1) % this.experiences.length;
-      
-      // Continue carousel after delay
-      setTimeout(highlightNext, 4000); // 4 seconds per experience
-    };
-    
-    // Start the carousel
-    highlightNext();
+    // Disabled for performance
   }
   
   // Stop auto carousel mode
   private stopAutoCarousel(): void {
-    this._autoCarouselActive = false;
-    
-    // Reset all experiences to non-preview mode
-    this.experiences.forEach(exp => {
-      exp.previewMode = false;
-      exp.scrollProgress = 0;
-    });
+    // Disabled for performance
   }
 
   // Create network diagram data for part-time job visualization

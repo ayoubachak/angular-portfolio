@@ -82,8 +82,13 @@ export class AppComponent implements AfterViewInit, OnInit, OnDestroy {
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
+    // Throttle mouse updates for better performance
+    if (Date.now() - this.lastMouseUpdate < 16) return; // ~60fps max
+    
     const cursorEl = this.customCursor.nativeElement;
-    cursorEl.style.left = `${event.clientX}px`;
-    cursorEl.style.top = `${event.clientY}px`;
+    cursorEl.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+    this.lastMouseUpdate = Date.now();
   }
+  
+  private lastMouseUpdate = 0;
 }
