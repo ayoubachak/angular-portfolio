@@ -86,24 +86,21 @@ import { trigger, transition, style, animate, state } from '@angular/animations'
           </div>
           
           <div *ngIf="isGenZ === false" class="non-gen-z-content">
-            <p>No worries! Here's something else...</p>
             <div class="loading-animation" *ngIf="isLoading">
               <div class="loading-spinner"></div>
               <p>Loading classic vibes...</p>
             </div>
-            <video 
-              #rickVideo
+            <iframe 
               class="rick-video" 
               [class.loaded]="!isLoading"
-              autoplay 
-              loop 
-              controls
-              playsinline
-              (loadeddata)="onVideoLoad()"
-              (error)="onVideoError()">
-              <source src="assets/videos/minecraft_phone.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
+              width="100%" 
+              height="100%"
+              src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&mute=0&controls=1&fs=0&modestbranding=1&rel=0&showinfo=0"
+              frameborder="0" 
+              allow="autoplay; encrypted-media"
+              allowfullscreen
+              (load)="onIframeLoad()">
+            </iframe>
           </div>
         </div>
 
@@ -679,6 +676,11 @@ export class GenZPhoneComponent implements OnInit, OnDestroy {  // FontAwesome i
   
   onVideoError(): void {
     console.error('Video failed to load');
+    this.isLoading = false;
+  }
+  
+  // Handle iframe load for non-GenZ content
+  onIframeLoad(): void {
     this.isLoading = false;
   }
 }
