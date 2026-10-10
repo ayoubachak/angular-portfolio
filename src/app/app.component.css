@@ -1,121 +1,57 @@
-.app-container {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-  position: relative;
+:host { display: block; }
+
+.coming-soon {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 2rem;
+  overflow: hidden;
+  background: #f7f7f5;
+}
+
+h1 {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  margin: 0;
+  color: #111;
+  font-weight: 800;
+  line-height: .83;
+  letter-spacing: -.09em;
 }
 
-.main-content {
-  width: 100%;
-  transition: width 0.3s ease, padding-right 0.3s ease;
+.outlined {
+  color: transparent;
+  font-size: clamp(3.1rem, 10.2vw, 10rem);
+  -webkit-text-stroke: 1.5px #111;
 }
 
-.gen-z-active .main-content.split-view {
-  width: 66%;
-  max-width: 66%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 5px; /* Add padding to prevent content from sticking to the edge */
+.solid {
+  position: relative;
+  align-self: flex-end;
+  margin-top: .04em;
+  font-size: clamp(4.5rem, 16vw, 16rem);
 }
 
-/* Fix for about section and skills when split view is active */
-.gen-z-active .skills-container {
-  width: 100%;
-  max-width: 100%;
+.solid::after {
+  content: '';
+  display: inline-block;
+  width: .045em;
+  height: .72em;
+  margin-left: .08em;
+  background: currentColor;
+  animation: blink 1.25s steps(1) infinite;
 }
 
-.embedded-phone-container {
-  width: 34%;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 950; /* Below navbar but above content */
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (max-width: 480px) {
+  .coming-soon { padding: 1rem; }
+  .outlined { -webkit-text-stroke-width: 1px; }
 }
 
-/* Mobile responsive layout */
-@media (max-width: 768px) {
-  .gen-z-active .main-content.split-view {
-    width: 100%;
-    max-width: 100%;
-    height: 50vh;
-  }
-  
-  .embedded-phone-container {
-    width: 100%;
-    height: 50vh;
-    position: fixed;
-    top: 50vh; /* Position at bottom half */
-    right: 0;
-    bottom: 0;
-  }
-}
-
-/* Navbar styles */
-app-navbar {
-  position: sticky;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  pointer-events: auto; /* Ensure clicks are registered */
-  transition: width 0.3s ease;
-  display: block;
-}
-
-/* When GenZ is active, adjust navbar width */
-.gen-z-active app-navbar {
-  width: 66%;
-  max-width: 66%;
-}
-
-/* Mobile responsive navbar */
-@media (max-width: 768px) {
-  .gen-z-active app-navbar {
-    width: 100%;
-    max-width: 100%;
-  }
-}
-
-/* Custom cursor styles */
-.custom-cursor {
-  position: fixed;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--accent-color);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 9999;
-  transition: width 0.2s, height 0.2s;
-  display: none; /* Initially hidden until JS loads */
-  mix-blend-mode: difference;
-}
-
-/* Disable custom cursor on mobile devices */
-@media (max-width: 768px) {
-  .custom-cursor {
-    display: none !important; /* Force hide on mobile */
-  }
-  
-  .gen-z-active .main-content.split-view {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 50vh !important;
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  
-  .gen-z-active app-navbar {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-  
-  /* Adjust easter egg position for mobile */
-  .gen-z-active .easter-egg-hint {
-    top: 10px !important;
-    left: 10px !important;
-  }
+@media (prefers-reduced-motion: reduce) {
+  .solid::after { animation: none; }
 }

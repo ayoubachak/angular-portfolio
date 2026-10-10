@@ -1,57 +1,6 @@
-<div class="app-container" [class.gen-z-active]="isGenZActive">
-  <!-- Navbar outside the main content div so it can be independently styled -->
-  <app-navbar></app-navbar>
-  
-  <div class="main-content" [class.split-view]="isGenZActive">
-
-  <!-- Intro Section -->
-  <app-intro></app-intro>
-
-  <!-- About Section -->
-  <app-about></app-about>
-
-  <!-- Education Section -->
-  <app-education></app-education>
-  
-  <!-- Experience Section -->
-  <app-experience></app-experience>
-
-  <!-- GitHub Projects Section -->
-  <app-github></app-github>
-
-  <!-- AI Projects Section -->
-  <app-ai-projects></app-ai-projects>
-
-  <!-- Brands Section -->
-  <app-brands></app-brands>
-
-  <!-- Training & Volunteering Section -->
-  <app-training></app-training>
-
-  <!-- Testimonials Section -->
-  <app-testimonials></app-testimonials>
-
-  <!-- Blog Section -->
-  <app-blog *ngIf="showBlog"></app-blog>
-
-  <!-- Contact Section -->
-  <app-contact></app-contact>
-  <!-- Footer -->
-  <app-footer></app-footer>
-    <!-- Resume Compiler -->
-  <app-resume-compiler></app-resume-compiler>
-  <!-- Global Webview Preview -->
-  <app-webview-preview></app-webview-preview>
-  
-  <!-- Easter Egg Components -->
-  <app-light-mode-easter-egg></app-light-mode-easter-egg>
-  <app-gen-z-phone></app-gen-z-phone>
-  <!-- Custom cursor element -->
-  <div class="custom-cursor" #customCursor></div>
-  </div>
-  
-  <!-- Embedded Phone Container -->
-  <div *ngIf="isGenZActive" class="embedded-phone-container">
-    <app-gen-z-phone></app-gen-z-phone>
-  </div>
-</div>
+<main class="coming-soon">
+  <h1 aria-label="Coming Soon">
+    <span class="outlined">COMING</span>
+    <span class="solid">SOON</span>
+  </h1>
+</main>
