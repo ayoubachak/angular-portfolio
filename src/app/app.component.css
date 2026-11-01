@@ -1,57 +1,21 @@
-:host { display: block; }
-
-.coming-soon {
-  display: grid;
-  place-items: center;
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding: 2rem;
-  overflow: hidden;
-  background: #f7f7f5;
-}
-
-h1 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: fit-content;
-  margin: 0;
-  color: #111;
-  font-weight: 800;
-  line-height: .83;
-  letter-spacing: -.09em;
-}
-
-.outlined {
-  color: transparent;
-  font-size: clamp(3.1rem, 10.2vw, 10rem);
-  -webkit-text-stroke: 1.5px #111;
-}
-
-.solid {
-  position: relative;
-  align-self: flex-end;
-  margin-top: .04em;
-  font-size: clamp(4.5rem, 16vw, 16rem);
-}
-
-.solid::after {
-  content: '';
-  display: inline-block;
-  width: .045em;
-  height: .72em;
-  margin-left: .08em;
-  background: currentColor;
-  animation: blink 1.25s steps(1) infinite;
-}
-
-@keyframes blink { 50% { opacity: 0; } }
-
-@media (max-width: 480px) {
-  .coming-soon { padding: 1rem; }
-  .outlined { -webkit-text-stroke-width: 1px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .solid::after { animation: none; }
-}
+:host { display: block; color: #171717; }
+main { width: min(88%, 620px); margin: 0 auto; padding: clamp(5rem, 16vh, 10rem) 0 4rem; }
+h1 { margin: 0 0 .7rem; font-size: clamp(2rem, 6vw, 3rem); line-height: 1.15; letter-spacing: -.055em; font-weight: 800; }
+p { margin: 0 0 1.2rem; font-size: 1rem; line-height: 1.8; }
+.definition { color: #70706a; font-size: .8rem; }
+a { color: inherit; text-underline-offset: .25em; font-size: .9rem; }
+a:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+nav { display: flex; flex-wrap: wrap; gap: .9rem 1.5rem; margin-top: 2rem; }
+.back { display: inline-block; margin-bottom: 3rem; }
+.euler-header { margin: 0 0 2.5rem; }
+.euler-header img { display: block; width: 100%; height: clamp(220px, 42vw, 320px); object-fit: cover; object-position: 50% 32%; filter: grayscale(1); }
+.euler-header figcaption { margin-top: .6rem; font-size: .65rem; line-height: 1.7; color: #70706a; }
+.euler-header a { font-size: inherit; }
+.maths-notes { margin-top: 2.5rem; }
+.maths-notes section { margin-bottom: 3rem; }
+.maths-notes p { margin-bottom: .4rem; }
+.formula { font-family: 'Cambria Math', Georgia, serif; font-size: clamp(1.15rem, 3.5vw, 1.5rem); line-height: 2; }
+.formula sup, .formula sub { font-size: .65em; }
+.formula sub { margin-inline: .15em .3em; }
+.maths-notes .condition { color: #70706a; font-size: .75rem; }
+.condition a { font-size: inherit; }

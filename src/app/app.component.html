@@ -1,6 +1,61 @@
-<main class="coming-soon">
-  <h1 aria-label="Coming Soon">
-    <span class="outlined">COMING</span>
-    <span class="solid">SOON</span>
-  </h1>
+<main>
+  @if (page === 'home') {
+    <h1>First principles</h1>
+    <p class="definition">A first principle is a foundational proposition or assumption from which other propositions are derived.</p>
+    <nav aria-label="Pages">
+      <a href="#/blog">Blog</a>
+      <a href="#/maths">Maths</a>
+      <a href="#/physics">Physics</a>
+      <a href="#/circuits">Circuits</a>
+      <a href="#/ai">AI</a>
+    </nav>
+  } @else {
+    <a class="back" href="#/">← Back</a>
+    @if (page === 'maths') {
+      <figure class="euler-header">
+        <img src="images/euler.jpg" alt="Portrait of Leonhard Euler by Jakob Emanuel Handmann" width="500" height="646" fetchpriority="high">
+        <figcaption>Leonhard Euler, 1753. <a href="https://commons.wikimedia.org/wiki/File:Leonhard_Euler.jpg">Handmann / public domain</a></figcaption>
+      </figure>
+    }
+    <h1>{{ labels[page] }}</h1>
+    @if (page === 'maths') {
+      <div class="maths-notes">
+        <section aria-label="Euler's identity">
+          <p class="formula">e<sup>iπ</sup> + 1 = 0</p>
+          <p>The part that gets me is that an exponential can describe a rotation at all. The derivation tells you why it works, but I don't think that makes the connection any less strange.</p>
+        </section>
+        <section aria-label="Euler product">
+          <p class="formula">ζ(s) = ∏<sub>p prime</sub> (1 − p<sup>−s</sup>)<sup>−1</sup></p>
+          <p>The primes are already in there, inside a sum over all the positive integers. Unique factorisation is what lets you pull them out into a product.</p>
+          <p class="condition">Re(s) &gt; 1, where the series and product converge absolutely.</p>
+        </section>
+        <section aria-label="Euler characteristic">
+          <p class="formula">V − E + F = 2 − 2g</p>
+          <p>You can redraw the triangles and change every count in this expression. Their alternating sum still belongs to the surface, regardless of how you divided it up.</p>
+          <p class="condition">A closed, connected, orientable surface of genus g.</p>
+        </section>
+        <section aria-label="Analytic continuation">
+          <p class="formula">ζ(−1) = −1/12</p>
+          <p>This is where the notation starts causing arguments. The continued function has a value at −1. The original series doesn't suddenly acquire a finite sum.</p>
+          <p class="condition">The value is obtained by analytic continuation; 1 + 2 + 3 + ⋯ diverges. <a href="https://dlmf.nist.gov/25.6" aria-label="Reference for zeta function values">↗</a></p>
+        </section>
+        <section aria-label="Fourier transform of a Gaussian">
+          <p class="formula">ℱ(e<sup>−πx²</sup>)(ξ) = e<sup>−πξ²</sup></p>
+          <p>A Fourier transform usually gives you something that looks quite different. This Gaussian comes back exactly as it was, provided we've agreed on where the 2π goes.</p>
+          <p class="condition">Using ℱf(ξ) = ∫<sub>ℝ</sub> f(x)e<sup>−2πixξ</sup> dx. <a href="https://www.math.utoronto.ca/colliand/notes/2011-03-14_Fourier_Transform.html" aria-label="Reference for the Fourier transform of a Gaussian">↗</a></p>
+        </section>
+        <section aria-label="Cardinality">
+          <p class="formula">|ℕ| = |ℚ| &lt; |ℝ|</p>
+          <p>There is a rational number between any two distinct real numbers. You can still put all the rationals on a list. Try to do the same with the reals and there will always be something missing.</p>
+          <p class="condition"><a href="https://courses.csail.mit.edu/6.042/spring18/countable.pdf" aria-label="Reference for countable and uncountable sets">↗</a></p>
+        </section>
+      </div>
+    } @else if (page === 'robots') {
+      <p>but they are full of false positives.</p>
+    } @else if (page === 'blog') {
+      <a href="#/robots">I kinda love robots.</a>
+    } @else {
+      <p>Nothing here yet.</p>
+    }
+  }
 </main>
